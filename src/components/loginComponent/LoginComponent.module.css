@@ -1,0 +1,72 @@
+.loginLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 278px;
+  height: 44px;
+  border-radius: 6px;
+  border: 1px solid black;
+  font-size: 18px;
+  text-align: center; 
+  line-height: 50px;
+  &:hover{
+    background-color: gray;
+    color: white;
+  }
+}
+
+.loginBoxInput {
+  display: contents;
+}
+
+.loginForm {
+  display: contents;
+}
+
+.loginBlock {
+  position: fixed;
+  display: flex;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 366px;
+  height: 439px;
+  border-radius: 12px;
+  background-color: white;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding-block: 41px;
+}
+
+.loginButton {
+  width: 278px;
+  height: 48px;
+  border-radius: 6px;
+  background-color: #580EA2;
+  font-size: 18px;
+  color: #FFFF;
+  margin-top: 30px;
+  &:hover {
+    background-color: #463f4d;
+  }
+}
+
+.loginInput {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  border-bottom: 1px solid black;
+  width: 278px;
+  color: #828c94;;
+  margin-top: 30px;
+}
+
+.registrError {
+  color: red
+}
+
+.disabled {
+  background-color: gray;
+}

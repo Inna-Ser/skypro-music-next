@@ -1,0 +1,36 @@
+.menuListItem {
+  padding: 5px;
+    margin-bottom: 16px;
+    gap: 20;
+  }
+
+.navigatorMenu {
+      display: block;
+    visibility: visible;
+}
+
+.menuList {
+padding: 18px 0 10px 0;}
+
+.menuLink {
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-decoration: none;
+}
+
+.menuButtonChangeTheme {
+  background: transparent;
+  border: none;
+}
+
+.light {
+  color: black;
+}
+
+.active {
+  color: #b672ff;
+}
+
+

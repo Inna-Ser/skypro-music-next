@@ -1,0 +1,42 @@
+.mainNav {
+    width: 244px;
+    background-color: #1C1C1C;
+    padding: 20px 0 20px 36px;
+  }
+
+  .navLogo {
+    width: 113.33px;
+    height: 43px;
+    padding: 13px 0 13px 0;
+    background-color: transparent;
+    margin-bottom: 20px;
+  }
+  
+  .navBurger {
+    width: 20px;
+    height: 36px;
+    padding: 13px 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+  }
+  
+  .logoImage {
+    width: 113.33px;
+    height: 17px;
+    color: #181818;
+  }
+
+  .light {
+    width: 244px;
+    background-color: #F6F5F3;
+    padding: 20px 0 20px 36px;
+  }
+  

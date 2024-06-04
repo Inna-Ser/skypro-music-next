@@ -1,0 +1,88 @@
+.filterListContaner {
+    max-height: 305px;
+    position: absolute;
+    top: 50px;
+    width: 248px;
+    height: fit-content;
+    background-color: #313131;
+    padding: 34px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: auto;
+  }
+
+.filterListItem {
+    cursor: pointer;
+  &:hover {
+      text-decoration: underline;
+      color: #bb5ee2;
+  }}
+
+.filterListGenre {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;}
+
+.centerblockFilter {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-bottom: 51px;}
+
+.filterTitle {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    margin-right: 15px;}
+    
+.filterWrapper {
+    position: relative;}
+
+.filterButton {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    border: 1px solid#928888 ;
+    border-radius: 60px;
+    padding: 6px 20px;
+  & FilterButton:not(:last-child) {
+    margin-right: 10px;
+  } 
+  &:hover {
+    border-color: #d9b6ff;
+    color: #d9b6ff;
+    cursor: pointer;
+  }
+}
+
+.light {
+  max-height: 305px;
+    position: absolute;
+    top: 50px;
+    width: 248px;
+    height: fit-content;
+    padding: 34px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: auto;
+  background-color: #F6F5F3;
+}
+
+.active {
+  border-color: #b672ff;
+  color: #b672ff;
+}
