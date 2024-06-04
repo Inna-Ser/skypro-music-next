@@ -1,0 +1,51 @@
+
+.widthrapper
+{width: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  background-color: #383838;}
+  
+.contaner
+  {max-width: 1920px;
+  height: 100vh;
+  margin: 0 auto;
+  position: relative;
+  background-color: #181818;}
+
+  @font-face {
+    font-family: "StratosSkyeng";
+    src: local("StratosSkyeng"), local("StratosSkyeng"),
+      url("../../public/fonts/StratosSkyeng.woff2") format("woff2"),
+      url("../../public/fonts/StratosSkyeng.woff") format("woff");
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  ._btnIcon:hover svg {
+    fill: transparent;
+    stroke: #acacac;
+    cursor: pointer;
+  }
+  
+  ._btnText:active {
+    border-color: #ad61ff;
+    color: #ad61ff;
+    cursor: pointer;
+  }
+  
+  ._btnIcon:active svg {
+    fill: transparent;
+    stroke: #ffffff;
+    cursor: pointer;
+  }
+  
+  ._btnIcon:active .track-play__like-svg,
+  ._btnIcon:active .track-play__dislike-svg {
+    fill: #7d7b7b;
+    stroke: #ffffff;
+    cursor: pointer;
+  }
+  
+  
+  
+  
