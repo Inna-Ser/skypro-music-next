@@ -1,12 +1,18 @@
-import { NavLink } from "react-router-dom";
+"use client";
 import styles from "./Personal.module.css";
 import { useContext } from "react";
-import { UserContext } from "../../../userContext";
 import { useThemeContext } from "../../../themesComponent/ThemesComponent";
 import Image from "next/image";
+import Link from "next/link";
+import React, { createContext, useState } from 'react';
+import { UserContext } from "@/UserContext";
+
 
 export const Personal = () => {
-  const { user } = useContext(UserContext);
+  // const { user } = useContext(UserContext);
+  // if (!user) {
+  //   return <div>...loading</div>
+  // }
   const { theme } = useThemeContext();
   return (
     <div className={styles.sidebarPersonal}>
@@ -15,16 +21,18 @@ export const Personal = () => {
           theme.mode === "dark" ? styles.sidebarPersonalName : styles.light
         }
       >
-        {user.username}
+        Иванов
       </p>
-      <NavLink className={styles.sidebarIcon} to="/login">
+      <Link className={styles.sidebarIcon} href="/login">
         <Image
           alt="logout"
           src={
-            theme.mode === "dark" ? "img/logoutDark.png" : "img/logoutLight.png"
+            "/img/logoutDark.png"
+            // theme.mode === "dark" ? "img/logoutDark.png" : "img/logoutLight.png"
           }
+          width={50} height={50}
         />
-      </NavLink>
+      </Link>
     </div>
   );
 };

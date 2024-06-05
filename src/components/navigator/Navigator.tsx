@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import classNames from "classnames";
 import styles from "./Navigator.module.css";
@@ -19,7 +20,7 @@ export const Navigator = () => {
         <Image
           className={styles.logoImage}
           src={theme.mode === "dark" ? "/img/logo.png" : "/img/logo_modal.png"}
-          alt="logo"
+          alt="logo" width={50} height={50}
         />
       </div>{" "}
       <div

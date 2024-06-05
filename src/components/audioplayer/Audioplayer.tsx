@@ -1,3 +1,4 @@
+"use client";
 import {
   Next,
   Pause,
@@ -9,13 +10,13 @@ import {
   TrackPlayAuthor,
   TrackPlayImage,
   TrackPlayLike,
-} from "../audioplayerComponents/AudioplayerComponents.jsx";
-import { VolumeBlock } from "./volumeBlock/VolumeBlock.jsx";
-import { TrackTime } from "./trackTime/TrackTime.jsx";
+} from "@components/audioplayerComponents/AudioplayerComponents";
+import { VolumeBlock } from "./volumeBlock/VolumeBlock";
+import { TrackTime } from "./trackTime/TrackTime";
 import styles from "./Audioplayer.module.css";
 import { useEffect, useRef, useState } from "react";
-import { ProgressBar } from "./progressbar/Progressbar.jsx";
-import { useThemeContext } from "../../themesComponent/ThemesComponent.js";
+import { ProgressBar } from "./progressbar/Progressbar";
+import { useThemeContext } from "../../themesComponent/ThemesComponent";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setIsDisliked,
@@ -24,8 +25,8 @@ import {
   setIsShuffle,
   setNext,
   setPrev,
-} from "../../store/slices/trackSlice.js";
-import { isDisabled } from "@testing-library/user-event/dist/utils/index.js";
+} from "../../store/slices/trackSlice";
+// import { isDisabled } from "@testing-library/user-event/dist/utils/index.js";
 
 export const Audioplayer = () => {
   const audioRef = useRef(null);
@@ -83,18 +84,18 @@ export const Audioplayer = () => {
     // запускаем воспроизведение
   };
 
-  const playRepeatTrack = () => {
-    audioRef.current.loop = !isLoop;
-    setIsLoop((prev) => !prev);
-  };
+  // const playRepeatTrack = () => {
+  //   audioRef.current.loop = !isLoop;
+  //   setIsLoop((prev) => !prev);
+  // };
 
   const toggleLike = () => {
     dispatch(setIsLiked(true));
   };
 
-  const toggleDislike = () => {
-    dispatch(setIsDisliked(!isDisabled));
-  };
+  // const toggleDislike = () => {
+  //   dispatch(setIsDisliked(!isDisabled));
+  // };
 
   const { theme } = useThemeContext();
 
@@ -104,15 +105,15 @@ export const Audioplayer = () => {
         className={styles.audioControler}
         controls
         ref={audioRef}
-        src={currentTrack.track_file}
+        // src={currentTrack.track_file}
       />
       <div className={styles.bar}>
         <TrackTime audioRef={audioRef}></TrackTime>
         <div className={styles.barContent}>
-          <ProgressBar
+          {/* <ProgressBar
             audioRef={audioRef}
             togglePlay={togglePlay}
-          ></ProgressBar>
+          ></ProgressBar> */}
           <div
             className={
               theme.mode === "dark" ? styles.barPlayerBlock : styles.light
@@ -127,7 +128,7 @@ export const Audioplayer = () => {
                   <Play togglePlay={togglePlay} />
                 )}
                 <Next playNextTrack={playNextTrack} />
-                <Repeat playRepeatTrack={playRepeatTrack} isActive={isLoop} />
+                {/* <Repeat playRepeatTrack={"none"} isActive={isLoop} /> */}
                 <Shuffle
                   playShuffleTrack={() => dispatch(setIsShuffle())}
                   isActive={isShuffle}
@@ -136,13 +137,13 @@ export const Audioplayer = () => {
               <TrackPlayImage />
               <div className={styles.playerTrackPlay}>
                 <div className={styles.trackPlayContain}>
-                  <TrackPlayAuthor name={currentTrack.name} />
+                  <TrackPlayAuthor name={"name"} />
                 </div>
-                <TrackPlayAlbum author={currentTrack.author} />
-                <TrackPlayLike
+                <TrackPlayAlbum author={"author"} />
+                {/* <TrackPlayLike
                   toggleLike={toggleLike}
-                  toggleDislike={toggleDislike}
-                />
+                  toggleDislike={"none"}
+                /> */}
               </div>
             </div>
             <VolumeBlock />

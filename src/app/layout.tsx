@@ -18,10 +18,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ReduxProvider>
-        <body className={inter.className}></body>
-        <div className="wrapper">
-          <div className="contaner">{children}</div>{" "}
-        </div>
+        <body className={inter.className}>
+          <div className="wrapper">
+            <div className="contaner">{children}</div>{" "}
+          </div>
+        </body>
       </ReduxProvider>
     </html>
   );

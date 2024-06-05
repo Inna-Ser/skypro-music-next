@@ -1,36 +1,42 @@
-import { NavLink, useLocation } from "react-router-dom";
+"use client";
+import { useRouter } from "next/router";
 import styles from "./Menu.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classNames from "classnames";
 import Image from "next/image";
 import { useThemeContext } from "@/themesComponent/ThemesComponent";
 import { menu } from "@/utils/menu";
+import Link from "next/link";
 
 const MenuItem = (props) => {
   const { theme } = useThemeContext();
   return (
     <li className={styles.menuListItem}>
-      <NavLink
+      <Link
         className={classNames(styles.menuLink, styles[theme.mode], {
           [styles.active]: props.isActive,
         })}
-        to={props.link}
-        exact
+        href={props.link}
+        // exact
       >
         {props.title}
-      </NavLink>
+      </Link>
     </li>
   );
 };
 
 export const Menu = () => {
-  const location = useLocation();
-  const [curentPage, setCurentPage] = useState(location.pathname);
   const { theme, toggleTheme } = useThemeContext();
+  const [curentPage, setCurentPage] = useState("");
 
-  const handleClick = () => {
-    toggleTheme(theme);
-  };
+  // useEffect(() => {
+  //   const location = useRouter();
+  //   setCurrentPage(location.pathname);
+  // }, []);
+
+  // const handleClick = () => {
+  //   toggleTheme(theme);
+  // };
 
   return (
     <div className={styles.navigatorMenu}>
@@ -43,7 +49,9 @@ export const Menu = () => {
             isActive={curentPage === item.link}
           />
         ))}
-        <button className={styles.menuButtonChangeTheme} onClick={handleClick}>
+        <button className={styles.menuButtonChangeTheme} 
+        // onClick={handleClick}
+        >
           <Image
             src={
               theme.mode === "dark"
@@ -52,6 +60,8 @@ export const Menu = () => {
             }
             alt="cheng_theme"
             style={{ cursor: "pointer" }}
+            width={50}
+            height={50}
           />
         </button>
       </ul>
