@@ -4,11 +4,18 @@ import { filterYears } from "../../utils/filterYears";
 import styles from "./Filter.module.css";
 import classNames from "classnames";
 
-type Props = {
-  tracks: [];
+type Track = {
+  author: string;
+  year: number;
+  genre: string;
+  index: number;
 };
 
-const FilterAuthor = ({ tracks }: Props) => {
+type Props = {
+  tracks: Track[];
+};
+const FilterAuthor = ({ tracks }: { tracks: Track[] }) => {
+  
   return (
     <ul className={styles.filterListContaner}>
       {tracks.map(({ author, index }) => (
@@ -20,7 +27,7 @@ const FilterAuthor = ({ tracks }: Props) => {
   );
 };
 
-const FilterYear = ({ tracks }: Props) => {
+const FilterYear = ({ tracks }: { tracks: Track[] }) => {
   return (
     <ul className={styles.filterListContaner}>
       {tracks.map(({ year, index }) => (
@@ -32,7 +39,7 @@ const FilterYear = ({ tracks }: Props) => {
   );
 };
 
-const FilterGenre = ({ tracks }: Props) => {
+const FilterGenre = ({ tracks }: { tracks: Track[] }) => {
   const arrGenre = tracks.map((item) => item.genre);
   const uniqueGenre = [...new Set(arrGenre)];
   return (
@@ -69,12 +76,11 @@ export const Filter = ({ tracks }: Props) => {
               ? classNames(styles.filterButton, styles.active)
               : styles.filterButton
           }
-          exact="true"
           onClick={() => toggleVisibility("author")}
         >
           исполнителю
         </div>
-        {visible === "author" && <FilterAuthor />}
+        {visible === "author" && <FilterAuthor tracks={tracks} />}
       </div>
       <div className={styles.filterWrapper}>
         <div
@@ -87,7 +93,7 @@ export const Filter = ({ tracks }: Props) => {
         >
           году выпуска
         </div>
-        {visible === "years" && <FilterYear />}
+        {visible === "years" && <FilterYear tracks={tracks} />}
       </div>
       <div className={styles.filterWrapper}>
         <div
