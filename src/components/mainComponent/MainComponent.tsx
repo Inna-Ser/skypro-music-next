@@ -9,9 +9,9 @@ export const MainComponent = () => {
   return (
     <div className={styles.main}>
       <Navigator />
-      <Centerblock tracks={tracks}/>
+      <Centerblock tracks={tracks} />
       <Sidebar />
-      <Audioplayer />
+      <Audioplayer tracks={tracks} />
     </div>
   );
 };

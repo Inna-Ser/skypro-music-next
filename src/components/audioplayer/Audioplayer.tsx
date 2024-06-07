@@ -22,10 +22,11 @@ export const Audioplayer = ({ name, author }: Props) => {
   const audioRef = useRef<null | HTMLAudioElement>(null);
   const [isLoop, setIsLoop] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState(null);
 
   const togglePlay = () => {
     if (audioRef.current?.paused) {
-      // audioRef.current.play().catch((err) => console.log(err));
+      audioRef.current.play().catch((err) => console.log(err));
       setIsPlaying(true);
     }
   };

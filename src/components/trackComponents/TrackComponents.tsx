@@ -15,7 +15,7 @@ type Props = {
 export const TrackTitle = (props: Props) => {
   return (
     <div className={styles.trackTitle}>
-      <TrackTitleImg id={props.id} />
+      <TrackTitleImg id={props.id} isPlaying={props.isPlaying} setCurrentTrack={props.setCurrentTrack} />
       <TrackTitleText title={props.title} />
     </div>
   );

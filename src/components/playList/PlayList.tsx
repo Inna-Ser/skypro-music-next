@@ -8,6 +8,7 @@ export const PlayList = () => {
   const [tracksList, setTracksList] = useState(Array(12));
   const [addTodoError, setAddTodoError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentTrack, setCurrentTrack] = useState(null);
 
   useEffect(() => {
     getTracks()
@@ -24,7 +25,7 @@ export const PlayList = () => {
       {tracksList.map((track) => (
         <Track
           id={track.id}
-          setCurrentTrack={() => dispatch(setCurrentTrack(track))}
+          setCurrentTrack={() => setCurrentTrack(track)}
           isLoading={setIsLoading}
           key={track.id}
           title={track.name}

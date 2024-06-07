@@ -15,11 +15,14 @@ type Props = {
   tracks: Track[];
 };
 const FilterAuthor = ({ tracks }: { tracks: Track[] }) => {
-  
+  const uniqueAuthors = Array.from(
+    new Set(tracks.map((track) => track.author))
+  );
+
   return (
     <ul className={styles.filterListContaner}>
-      {tracks.map(({ author, index }) => (
-        <li className={styles.filterListItem} key={index}>
+      {uniqueAuthors.map((author) => (
+        <li className={styles.filterListItem} key={author}>
           {author}
         </li>
       ))}
@@ -28,10 +31,12 @@ const FilterAuthor = ({ tracks }: { tracks: Track[] }) => {
 };
 
 const FilterYear = ({ tracks }: { tracks: Track[] }) => {
+  const uniqueYear = Array.from(new Set(tracks.map((track) => track.year)));
+
   return (
     <ul className={styles.filterListContaner}>
-      {tracks.map(({ year, index }) => (
-        <li className={styles.filterListItem} key={index}>
+      {uniqueYear.map((year) => (
+        <li className={styles.filterListItem} key={year}>
           {year}
         </li>
       ))}
@@ -40,8 +45,7 @@ const FilterYear = ({ tracks }: { tracks: Track[] }) => {
 };
 
 const FilterGenre = ({ tracks }: { tracks: Track[] }) => {
-  const arrGenre = tracks.map((item) => item.genre);
-  const uniqueGenre = [...new Set(arrGenre)];
+  const uniqueGenre = Array.from(new Set(tracks.map((track) => track.genre)));
   return (
     <div className={styles.filterListGenre}>
       <ul className={styles.filterListContaner}>

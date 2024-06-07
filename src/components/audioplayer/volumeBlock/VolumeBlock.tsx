@@ -6,7 +6,7 @@ export const VolumeBlock = () => {
     <div className={classNames(styles.barVolumeBlock, styles.volume)}>
       <div className={styles.volumeContent}>
         <div className={styles.volumeImage}>
-          <svg className={styles.volumeSvg} alt="volume">
+          <svg className={styles.volumeSvg} >
             <use xlinkHref={"img/icon/sprite.svg#icon-volume-cancel-dark"}>
               /
             </use>
