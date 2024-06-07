@@ -3,11 +3,16 @@ import {
   TrackTitleText,
 } from "./trackTitleComponent/TrackTitleComponent";
 import styles from "./TrackComponents.module.css";
-import { useThemeContext } from "../../themesComponent/ThemesComponent";
-import { useSelector } from "react-redux";
 import classNames from "classnames";
 
-export const TrackTitle = (props) => {
+type Props = {
+  id: number;
+  title: string;
+  author: string;
+  album: string;
+  time: number;
+};
+export const TrackTitle = (props: Props) => {
   return (
     <div className={styles.trackTitle}>
       <TrackTitleImg id={props.id} />
@@ -16,23 +21,15 @@ export const TrackTitle = (props) => {
   );
 };
 
-export const TrackAuthor = (props) => {
-  const { theme } = useThemeContext();
-
+export const TrackAuthor = (props: Props) => {
   return (
     <div className={styles.trackAuthor}>
-      <div
-        className={
-          theme.mode === "dark" ? styles.trackAuthorLink : styles.light
-        }
-      >
-        {props.author}
-      </div>
+      <div className={styles.trackAuthorLink}>{props.author}</div>
     </div>
   );
 };
 
-export const TrackAlbum = (props) => {
+export const TrackAlbum = (props: Props) => {
   return (
     <div className={styles.trackAlbum}>
       <div className={styles.trackAlbumLink}>{props.album}</div>
@@ -40,24 +37,12 @@ export const TrackAlbum = (props) => {
   );
 };
 
-export const TrackTime = (props) => {
-  const currentTrack = useSelector((store) => store.tracks.currentTrack);
-  const isLiked = useSelector((store) => store.tracks.isLiked);
-  const { theme } = useThemeContext();
-
+export const TrackTime = (props: Props) => {
   return (
     <div className={styles.trackTime}>
       <svg
-        className={
-          theme.mode === "dark"
-            ? !isLiked
-              ? styles.trackLikeSvg
-              : classNames(styles.trackLikeSvg, styles.active)
-            : !isLiked
-            ? classNames(styles.trackLikeSvg, styles.light)
-            : classNames(styles.trackLikeSvg, styles.lightImgActive)
-        }
-        alt="like"
+        className={styles.trackLikeSvg}
+        // alt="like"
       >
         <use xlinkHref="img/icon/sprite.svg#icon-like"></use>
       </svg>

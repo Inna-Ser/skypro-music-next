@@ -4,16 +4,17 @@ import styles from "./Menu.module.css";
 import { useEffect, useState } from "react";
 import classNames from "classnames";
 import Image from "next/image";
-import { useThemeContext } from "@/themesComponent/ThemesComponent";
 import { menu } from "@/utils/menu";
 import Link from "next/link";
 
-const MenuItem = (props) => {
-  const { theme } = useThemeContext();
+type Props = {
+  isActive: boolean, link: string, title: string 
+};
+const MenuItem = (props: Props) => {
   return (
     <li className={styles.menuListItem}>
       <Link
-        className={classNames(styles.menuLink, styles[theme.mode], {
+        className={classNames(styles.menuLink, {
           [styles.active]: props.isActive,
         })}
         href={props.link}
@@ -26,18 +27,7 @@ const MenuItem = (props) => {
 };
 
 export const Menu = () => {
-  const { theme, toggleTheme } = useThemeContext();
   const [curentPage, setCurentPage] = useState("");
-
-  // useEffect(() => {
-  //   const location = useRouter();
-  //   setCurrentPage(location.pathname);
-  // }, []);
-
-  // const handleClick = () => {
-  //   toggleTheme(theme);
-  // };
-
   return (
     <div className={styles.navigatorMenu}>
       <ul className={styles.menuList}>
@@ -49,15 +39,12 @@ export const Menu = () => {
             isActive={curentPage === item.link}
           />
         ))}
-        <button className={styles.menuButtonChangeTheme} 
-        // onClick={handleClick}
+        <button
+          className={styles.menuButtonChangeTheme}
+          // onClick={handleClick}
         >
           <Image
-            src={
-              theme.mode === "dark"
-                ? "/img/icon/dark.svg"
-                : "/img/icon/light.svg"
-            }
+            src={"/img/icon/dark.svg"}
             alt="cheng_theme"
             style={{ cursor: "pointer" }}
             width={50}

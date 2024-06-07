@@ -1,20 +1,21 @@
-import { useSelector } from "react-redux";
-import { useThemeContext } from "../../../themesComponent/ThemesComponent";
 import styles from "./TrackTitleComponent.module.css";
 import classNames from "classnames";
 
-export const TrackTitleImg = (props) => {
-  const { theme } = useThemeContext();
-  const currentTrack = useSelector((store) => store.tracks.currentTrack);
-  const isPlaying = useSelector((store) => store.tracks.isPlaying);
+type Props ={
+  id: number;
+title: string;
+isPlaying: boolean;
+setCurrentTrack: (track: any) => void;
+}
+export const TrackTitleImg = ({ id, isPlaying, setCurrentTrack }: Props) => {
 
   return (
     <div
       className={
-        theme.mode === "dark" ? styles.trackTitleImage : styles.lightImg
+        styles.trackTitleImage
       }
     >
-      {currentTrack?.id === props.id ? (
+      {setCurrentTrack?.id === id ? (
         <div
           className={classNames(styles.currentMarker, {
             [styles.active]: isPlaying,
@@ -24,9 +25,7 @@ export const TrackTitleImg = (props) => {
         <svg className={styles.trackTitleSvg} alt="music">
           <use
             xlinkHref={
-              theme.mode === "dark"
-                ? "img/icon/sprite.svg#icon-note-dark"
-                : "img/icon/sprite.svg#icon-note-light"
+              "img/icon/sprite.svg#icon-note-dark"
             }
           ></use>
         </svg>
@@ -35,12 +34,11 @@ export const TrackTitleImg = (props) => {
   );
 };
 
-export const TrackTitleText = (props) => {
-  const { theme } = useThemeContext();
+export const TrackTitleText = (props: Props) => {
   return (
     <div className={styles.trackTitleText}>
       <a
-        className={theme.mode === "dark" ? styles.trackTitleLink : styles.light}
+        className={styles.trackTitleLink}
       >
         {props.title}
         <span className={styles.trackTitleSpan}></span>

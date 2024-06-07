@@ -3,8 +3,6 @@ import { Filter } from "@components/filterItem/Filter";
 import styles from "./Centerblock.module.css";
 import { PlayList } from "@components/playList/PlayList";
 import classNames from "classnames";
-import { useThemeContext } from "../../themesComponent/ThemesComponent";
-import { UserContext } from "@/userContext";
 
 const ContentTitle = () => {
   return (
@@ -19,7 +17,7 @@ const ContentTitle = () => {
         АЛЬБОМ
       </div>
       <div className={classNames(styles.playlistTitleCol, styles.col04)}>
-        <svg className={styles.playlistTitleSvg} alt="title">
+        <svg className={styles.playlistTitleSvg}>
           <use xlinkHref="img/icon/sprite.svg#icon-watch"></use>
         </svg>
       </div>
@@ -28,17 +26,10 @@ const ContentTitle = () => {
 };
 
 const Search = () => {
-  const { theme } = useThemeContext();
   return (
     <div className={classNames(styles.centerblockSearch, styles.search)}>
       <svg className={styles.searchSvg}>
-        <use
-          xlinkHref={
-            theme.mode === "dark"
-              ? "img/icon/sprite.svg#icon-search-dark"
-              : "img/icon/sprite.svg#icon-search-light"
-          }
-        ></use>
+        <use xlinkHref={"img/icon/sprite.svg#icon-search-dark"}></use>
       </svg>
       <input
         className={styles.searchText}
@@ -49,8 +40,11 @@ const Search = () => {
     </div>
   );
 };
-
-export const Centerblock = ({ isLoading, setCurrentTrack }) => {
+type Props = {
+  isLoading: boolean;
+  setCurrentTrack: (track: any) => void;
+};
+export const Centerblock = ({ isLoading, setCurrentTrack }: Props) => {
   return (
     <div className={classNames(styles.mainCenterblock, styles.centerblock)}>
       <Search />
@@ -58,15 +52,7 @@ export const Centerblock = ({ isLoading, setCurrentTrack }) => {
       <Filter />
       <div className={styles.centerblockContent}>
         <ContentTitle />
-        <UserContext.Consumer>
-          {(getToken) => (
-            <PlayList
-              isLoading={isLoading}
-              getToken={getToken}
-              setCurrentTrack={setCurrentTrack}
-            />
-          )}
-        </UserContext.Consumer>
+        <PlayList isLoading={isLoading} setCurrentTrack={setCurrentTrack} />
       </div>
     </div>
   );

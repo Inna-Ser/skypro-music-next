@@ -1,103 +1,41 @@
 "use client";
 import {
   Next,
-  Pause,
-  Play,
   Prev,
-  Repeat,
   Shuffle,
   TrackPlayAlbum,
   TrackPlayAuthor,
   TrackPlayImage,
-  TrackPlayLike,
-} from "@components/audioplayerComponents/AudioplayerComponents";
+} from "@/components/audioplayerComponents/AudioplayerComponents";
 import { VolumeBlock } from "./volumeBlock/VolumeBlock";
 import { TrackTime } from "./trackTime/TrackTime";
 import styles from "./Audioplayer.module.css";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { ProgressBar } from "./progressbar/Progressbar";
-import { useThemeContext } from "../../themesComponent/ThemesComponent";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  setIsDisliked,
-  setIsLiked,
-  setIsPlaying,
-  setIsShuffle,
-  setNext,
-  setPrev,
-} from "../../store/slices/trackSlice";
-// import { isDisabled } from "@testing-library/user-event/dist/utils/index.js";
 
-export const Audioplayer = () => {
-  const audioRef = useRef(null);
-  const isPlaying = useSelector((store) => store.tracks.isPlaying);
-  const currentTrack = useSelector((store) => store.tracks.currentTrack);
-  const isShuffle = useSelector((store) => store.tracks.isShuffle);
+// import { isDisabled } from "@testing-library/user-event/dist/utils/index.js";
+type Props = {
+  name: string;
+  author: string;
+};
+export const Audioplayer = ({ name, author }: Props) => {
+  const audioRef = useRef<null | HTMLAudioElement>(null);
   const [isLoop, setIsLoop] = useState(false);
-  const dispatch = useDispatch();
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const togglePlay = () => {
-    if (audioRef.current.paused) {
+    if (audioRef.current?.paused) {
       // audioRef.current.play().catch((err) => console.log(err));
-      dispatch(setIsPlaying(true));
+      setIsPlaying(true);
     }
   };
 
   const togglePause = () => {
-    if (audioRef.current.play) {
+    if (audioRef.current?.play) {
       audioRef.current.pause();
-      dispatch(setIsPlaying(false));
+      setIsPlaying(false);
     }
   };
-
-  useEffect(() => {
-    const handleEnded = () => dispatch(setNext());
-    const handleLoadedMetadata = () => {
-      if (isPlaying && audioRef.current) {
-        audioRef.current.play().catch((err) => console.log(err));
-      } else {
-        audioRef.current.pause();
-      }
-    };
-    const currentRef = audioRef.current;
-
-    currentRef?.addEventListener("ended", handleEnded);
-    currentRef?.addEventListener("loadedmetadata", handleLoadedMetadata);
-
-    return () => {
-      currentRef?.removeEventListener("ended", handleEnded);
-      currentRef?.removeEventListener("loadedmetadata", handleLoadedMetadata);
-    };
-  }, [isPlaying]);
-
-  const playNextTrack = () => {
-    dispatch(setNext());
-  };
-
-  const playPrevTrack = () => {
-    if (audioRef.current.currentTime > 5) {
-      audioRef.current.currentTime = 0;
-      audioRef.current.play();
-    } else {
-      dispatch(setPrev()); // переключаемся на предыдущий трек
-    }
-    // запускаем воспроизведение
-  };
-
-  // const playRepeatTrack = () => {
-  //   audioRef.current.loop = !isLoop;
-  //   setIsLoop((prev) => !prev);
-  // };
-
-  const toggleLike = () => {
-    dispatch(setIsLiked(true));
-  };
-
-  // const toggleDislike = () => {
-  //   dispatch(setIsDisliked(!isDisabled));
-  // };
-
-  const { theme } = useThemeContext();
 
   return (
     <>
@@ -110,36 +48,24 @@ export const Audioplayer = () => {
       <div className={styles.bar}>
         <TrackTime audioRef={audioRef}></TrackTime>
         <div className={styles.barContent}>
-          {/* <ProgressBar
+          <ProgressBar
             audioRef={audioRef}
             togglePlay={togglePlay}
-          ></ProgressBar> */}
-          <div
-            className={
-              theme.mode === "dark" ? styles.barPlayerBlock : styles.light
-            }
-          >
+          ></ProgressBar>
+          <div className={styles.barPlayerBlock}>
             <div className={styles.barPlayer}>
               <div className={styles.playerControls}>
-                <Prev playPrevTrack={playPrevTrack} />
-                {isPlaying ? (
-                  <Pause togglePause={togglePause} />
-                ) : (
-                  <Play togglePlay={togglePlay} />
-                )}
-                <Next playNextTrack={playNextTrack} />
+                <Prev />
+                <Next />
                 {/* <Repeat playRepeatTrack={"none"} isActive={isLoop} /> */}
-                <Shuffle
-                  playShuffleTrack={() => dispatch(setIsShuffle())}
-                  isActive={isShuffle}
-                />
+                <Shuffle />
               </div>
               <TrackPlayImage />
               <div className={styles.playerTrackPlay}>
                 <div className={styles.trackPlayContain}>
-                  <TrackPlayAuthor name={"name"} />
+                  <TrackPlayAuthor name={name} />
                 </div>
-                <TrackPlayAlbum author={"author"} />
+                <TrackPlayAlbum author={author} />
                 {/* <TrackPlayLike
                   toggleLike={toggleLike}
                   toggleDislike={"none"}
