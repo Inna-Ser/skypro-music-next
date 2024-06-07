@@ -18,7 +18,7 @@ export const Navigator = () => {
         <Image
           className={styles.logoImage}
           src={"/img/logo.png"}
-          alt="logo" width={50} height={50}
+          alt="logo" width={227} height={34}
         />
       </div>{" "}
       <div

@@ -4,12 +4,14 @@ import { filterYears } from "../../utils/filterYears";
 import styles from "./Filter.module.css";
 import classNames from "classnames";
 
-const FilterAuthor = () => {
-  const [tracksList, setTracksList] = useState(Array(12));
+type Props = {
+  tracks: [];
+};
 
+const FilterAuthor = ({ tracks }: Props) => {
   return (
     <ul className={styles.filterListContaner}>
-      {tracksList.map(({ author, index }) => (
+      {tracks.map(({ author, index }) => (
         <li className={styles.filterListItem} key={index}>
           {author}
         </li>
@@ -18,16 +20,10 @@ const FilterAuthor = () => {
   );
 };
 
-const FilterYear = () => {
-  const [tracksList, setTracksList] = useState(Array(12));
-
+const FilterYear = ({ tracks }: Props) => {
   return (
-    <ul
-      className={
-        styles.filterListContaner 
-      }
-    >
-      {tracksList.map(({ year, index }) => (
+    <ul className={styles.filterListContaner}>
+      {tracks.map(({ year, index }) => (
         <li className={styles.filterListItem} key={index}>
           {year}
         </li>
@@ -36,19 +32,12 @@ const FilterYear = () => {
   );
 };
 
-type Props = {
-tracks: [];
-}
 const FilterGenre = ({ tracks }: Props) => {
   const arrGenre = tracks.map((item) => item.genre);
   const uniqueGenre = [...new Set(arrGenre)];
   return (
     <div className={styles.filterListGenre}>
-      <ul
-        className={
-          styles.filterListContaner
-        }
-      >
+      <ul className={styles.filterListContaner}>
         {uniqueGenre.map((genre, index) => (
           <li className={styles.filterListItem} key={index}>
             {genre}{" "}
@@ -59,16 +48,16 @@ const FilterGenre = ({ tracks }: Props) => {
   );
 };
 
-export const Filter = () => {
-  const [visible, setVisible] = useState(null);
+export const Filter = ({ tracks }: Props) => {
+  const [visible, setVisible] = useState<string | null>(null);
 
-  // const toggleVisibility = (value) => {
-  //   if (value === visible) {
-  //     setVisible(null);
-  //   } else {
-  //     setVisible(value);
-  //   }
-  // };
+  const toggleVisibility = (value: string | null) => {
+    if (value === visible) {
+      setVisible(null);
+    } else {
+      setVisible(value);
+    }
+  };
 
   return (
     <div className={styles.centerblockFilter}>
@@ -80,8 +69,8 @@ export const Filter = () => {
               ? classNames(styles.filterButton, styles.active)
               : styles.filterButton
           }
-          // exact="true"
-          // onClick={() => toggleVisibility("author")}
+          exact="true"
+          onClick={() => toggleVisibility("author")}
         >
           исполнителю
         </div>

@@ -43,13 +43,14 @@ const Search = () => {
 type Props = {
   isLoading: boolean;
   setCurrentTrack: (track: any) => void;
+  tracks: [];
 };
-export const Centerblock = ({ isLoading, setCurrentTrack }: Props) => {
+export const Centerblock = ({ isLoading, setCurrentTrack, tracks }: Props) => {
   return (
     <div className={classNames(styles.mainCenterblock, styles.centerblock)}>
       <Search />
       <h2 className={styles.centerblockH2}>Треки</h2>
-      <Filter />
+      <Filter tracks={tracks} />
       <div className={styles.centerblockContent}>
         <ContentTitle />
         <PlayList isLoading={isLoading} setCurrentTrack={setCurrentTrack} />

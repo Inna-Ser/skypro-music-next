@@ -47,8 +47,8 @@ export const Menu = () => {
             src={"/img/icon/dark.svg"}
             alt="cheng_theme"
             style={{ cursor: "pointer" }}
-            width={50}
-            height={50}
+            width={39}
+            height={39}
           />
         </button>
       </ul>
