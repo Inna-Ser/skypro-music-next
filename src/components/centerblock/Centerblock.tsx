@@ -43,7 +43,14 @@ const Search = () => {
 type Props = {
   isLoading: boolean;
   setCurrentTrack: (track: any) => void;
-  tracks: [];
+  tracks: Array<{
+    id: number;
+    title: string;
+    author: string;
+    album: string;
+    duration_in_seconds: number;
+    isLiked: boolean;
+  }>;
 };
 export const Centerblock = ({ isLoading, setCurrentTrack, tracks }: Props) => {
   return (
@@ -53,7 +60,7 @@ export const Centerblock = ({ isLoading, setCurrentTrack, tracks }: Props) => {
       <Filter tracks={tracks} />
       <div className={styles.centerblockContent}>
         <ContentTitle />
-        <PlayList isLoading={isLoading} setCurrentTrack={setCurrentTrack} />
+        <PlayList isLoading={isLoading} setCurrentTrack={setCurrentTrack} tracks={tracks} />
       </div>
     </div>
   );

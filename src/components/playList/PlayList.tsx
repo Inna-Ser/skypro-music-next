@@ -4,11 +4,10 @@ import styles from "./PlayList.module.css";
 import { useEffect, useState } from "react";
 import { getTracks } from "@/api/Api";
 
-export const PlayList = () => {
+export const PlayList = ({ tracks, setCurrentTrack }) => {
   const [tracksList, setTracksList] = useState(Array(12));
   const [addTodoError, setAddTodoError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentTrack, setCurrentTrack] = useState(null);
 
   useEffect(() => {
     getTracks()

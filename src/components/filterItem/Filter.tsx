@@ -30,13 +30,14 @@ const FilterAuthor = ({ tracks }: { tracks: Track[] }) => {
   );
 };
 
-const FilterYear = ({ tracks }: { tracks: Track[] }) => {
-  const uniqueYear = Array.from(new Set(tracks.map((track) => track.year)));
-
+type FilterYearProps = {
+  year: string;
+};
+const FilterYear = ({ year }: FilterYearProps) => {
   return (
     <ul className={styles.filterListContaner}>
-      {uniqueYear.map((year) => (
-        <li className={styles.filterListItem} key={year}>
+      {filterYears.map(({ year }, index) => (
+        <li className={styles.filterListItem} key={index}>
           {year}
         </li>
       ))}
