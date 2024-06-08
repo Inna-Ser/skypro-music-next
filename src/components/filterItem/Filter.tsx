@@ -5,24 +5,23 @@ import styles from "./Filter.module.css";
 import classNames from "classnames";
 
 type Track = {
+  id: number;
+  title: string;
   author: string;
-  year: number;
-  genre: string;
-  index: number;
+  album: string;
 };
-
 type Props = {
   tracks: Track[];
 };
-const FilterAuthor = ({ tracks }: { tracks: Track[] }) => {
+const FilterAuthor = ({ tracks }: Props) => {
   const uniqueAuthors = Array.from(
     new Set(tracks.map((track) => track.author))
   );
 
   return (
     <ul className={styles.filterListContaner}>
-      {uniqueAuthors.map((author) => (
-        <li className={styles.filterListItem} key={author}>
+      {uniqueAuthors.map((author, index) => (
+        <li className={styles.filterListItem} key={index}>
           {author}
         </li>
       ))}
@@ -36,9 +35,9 @@ type FilterYearProps = {
 const FilterYear = ({ year }: FilterYearProps) => {
   return (
     <ul className={styles.filterListContaner}>
-      {filterYears.map(({ year }, index) => (
+      {filterYears.map((FilterYearProps, index) => (
         <li className={styles.filterListItem} key={index}>
-          {year}
+          {FilterYearProps.year}
         </li>
       ))}
     </ul>
@@ -50,19 +49,19 @@ const FilterGenre = ({ tracks }: { tracks: Track[] }) => {
   return (
     <div className={styles.filterListGenre}>
       <ul className={styles.filterListContaner}>
+        Expand Down
         {uniqueGenre.map((genre, index) => (
           <li className={styles.filterListItem} key={index}>
-            {genre}{" "}
+            {genre}
           </li>
         ))}
       </ul>
     </div>
   );
 };
-
 export const Filter = ({ tracks }: Props) => {
+  console.log(tracks);
   const [visible, setVisible] = useState<string | null>(null);
-
   const toggleVisibility = (value: string | null) => {
     if (value === visible) {
       setVisible(null);
@@ -70,7 +69,6 @@ export const Filter = ({ tracks }: Props) => {
       setVisible(value);
     }
   };
-
   return (
     <div className={styles.centerblockFilter}>
       <div className={styles.filterTitle}>Искать по:</div>

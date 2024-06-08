@@ -1,10 +1,23 @@
+"use client"
 import classNames from "classnames";
 import { Track } from "./track/Track";
 import styles from "./PlayList.module.css";
 import { useEffect, useState } from "react";
 import { getTracks } from "@/api/Api";
 
-export const PlayList = ({ tracks, setCurrentTrack }) => {
+type Props = {
+  isLoading: boolean;
+  setCurrentTrack: (track: any) => void;
+  tracks: Array<{
+    id: number;
+    title: string;
+    author: string;
+    album: string;
+    duration_in_seconds: number;
+    isLiked: boolean;
+  }>;
+};
+export const PlayList = ({ tracks, setCurrentTrack }: Props) => {
   const [tracksList, setTracksList] = useState(Array(12));
   const [addTodoError, setAddTodoError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
