@@ -12,34 +12,36 @@ import { TrackItem } from "@/tipes";
 
 type Props = {
   isLoading: boolean;
-  setCurrentTrack: (track: any) => void;
-  tracks: TrackItem[];
+  title: string;
+  author: string;
+  album: string;
+  genre: string;
+  time: number;
+  id: number;
 };
-export const Track = ({isLoading, setCurrentTrack, tracks} : Props) => {
-  const track = tracks.length > 0 ? tracks[0] : null;
-
+export const Track = ({ isLoading, title, author, album, time, id }: Props) => {
   return (
-    <div onClick={setCurrentTrack} className={styles.playlistItem}>
+    <div className={styles.playlistItem}>
       <div className={classNames(styles.playlistTrack, styles.track)}>
         {isLoading ? (
           <Skeleton width={"50px"} height={"50px"} baseColor="grey" />
         ) : (
-          <TrackTitle title={track.title} id={track.id} />
+          <TrackTitle title={title} id={id} />
         )}
         {isLoading ? (
           <Skeleton width={"350px"} height={"20px"} baseColor="grey" />
         ) : (
-          <TrackAuthor author={track.author} />
+          <TrackAuthor author={author} />
         )}
         {isLoading ? (
           <Skeleton width={"305px"} height={"20px"} baseColor="grey" />
         ) : (
-          <TrackAlbum album={track.album} />
+          <TrackAlbum album={album} />
         )}
         {isLoading ? (
           <Skeleton width={"320px"} height={"20px"} baseColor="grey" />
         ) : (
-          <TrackTime time={track.time} isLiked={track.isLiked} />
+          <TrackTime time={time} />
         )}
       </div>
     </div>

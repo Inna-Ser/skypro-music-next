@@ -7,34 +7,21 @@ import { getTracks } from "@/api/Api";
 import { TrackItem, Tracks } from "@/tipes";
 
 type Props = {
-  tracks: Tracks;
   tracksList: TrackItem[];
+  isLoading: boolean;
   setTracksList: (tracks: TrackItem[]) => void;
 };
 
-export const PlayList = ({ tracks, setTracksList, tracksList }: Props) => {
-  const [addTodoError, setAddTodoError] = useState<string | null>(null);
-
-  useEffect(() => {
-    getTracks()
-      .then((data) => {
-        setTracksList(data);
-        setAddTodoError(null); // Сброс ошибки, если запрос успешно выполнен
-      })
-      .catch((error) => {
-        setAddTodoError(error.message);
-      });
-  }, []);
-
+export const PlayList = ({ isLoading, setTracksList, tracksList }: Props) => {
+  
   return (
     <div className={classNames(styles.content__playlist, styles.playlist)}>
-      {addTodoError && <p style={{ color: "purple" }}>{addTodoError}</p>}
+      <p style={{ color: "purple" }}></p>
       {tracksList.map((track) => (
         <Track
           key={track.id}
-          isLoading={track.isLoading}
-          setCurrentTrack={track.setCurrentTrack}
-          title={track.title}
+          isLoading={isLoading}
+          title={track.name}
           author={track.author}
           album={track.album}
           time={track.duration_in_seconds}

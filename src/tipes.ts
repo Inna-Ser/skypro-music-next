@@ -3,7 +3,7 @@ export type Tracks = {
     setCurrentTrack: (track: any) => void;
     tracks: Array<{
       id: number;
-      title: string;
+      name: string;
       author: string;
       album: string;
       genre: string
@@ -22,7 +22,7 @@ export type User = {
 
 export  type TrackItem ={
   id: number;
-  title: string;
+  name: string;
   author: string;
   release_date: string;
   genre: string;

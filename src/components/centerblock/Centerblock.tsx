@@ -4,7 +4,8 @@ import styles from "./Centerblock.module.css";
 import { PlayList } from "@components/playList/PlayList";
 import classNames from "classnames";
 import { TrackItem, Tracks } from "@/tipes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getTracks } from "@/api/Api";
 
 const ContentTitle = () => {
   return (
@@ -44,25 +45,33 @@ const Search = () => {
 };
 
 type Props = {
+  tracksList: TrackItem[];
   isLoading: boolean;
-  setCurrentTrack: (track: any) => void;
-  tracks: TrackItem[];
+  setTracksList: (track: TrackItem[]) => void;
 };
-export const Centerblock = ({ isLoading, setCurrentTrack, tracks }: Props) => {
-  const [tracksList, setTracksList] = useState<TrackItem[]>(tracks);
-  
+export const Centerblock = ({ isLoading }: Props) => {
+  const [tracksList, setTracksList] = useState<TrackItem[]>([]);
+  useEffect(() => {
+    getTracks()
+      .then((data) => {
+        setTracksList(data);
+      })
+      .catch((error) => {
+        new Error(error.message);
+      });
+  }, [setTracksList]);
 
   return (
     <div className={classNames(styles.mainCenterblock, styles.centerblock)}>
       <Search />
       <h2 className={styles.centerblockH2}>Треки</h2>
-      <Filter tracks={tracks} />
+      <Filter tracksList={tracksList} />
       <div className={styles.centerblockContent}>
         <ContentTitle />
         <PlayList
           isLoading={isLoading}
-          setCurrentTrack={setCurrentTrack}
-          tracksList={tracks}
+          // setCurrentTrack={setCurrentTrack}
+          tracksList={tracksList}
           setTracksList={setTracksList}
         />
       </div>

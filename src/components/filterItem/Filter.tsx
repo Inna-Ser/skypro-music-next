@@ -3,12 +3,16 @@ import { useState } from "react";
 import { filterYears } from "../../utils/filterYears";
 import styles from "./Filter.module.css";
 import classNames from "classnames";
-import { Tracks } from "@/tipes";
+import { TrackItem, Tracks } from "@/tipes";
 
-
-const FilterAuthor = ({ tracks }: Tracks) => {
+type Props = {
+  tracksList: TrackItem[];
+  author: string;
+  genre: string;
+};
+const FilterAuthor = ({ tracksList }: Props) => {
   const uniqueAuthors = Array.from(
-    new Set(tracks.map((track) => track.author))
+    new Set(tracksList.map((track) => track.author))
   );
 
   return (
@@ -25,20 +29,22 @@ const FilterAuthor = ({ tracks }: Tracks) => {
 type FilterYearProps = {
   year: string;
 };
-const FilterYear = ( year : FilterYearProps) => {
+const FilterYear = ({ year }: FilterYearProps) => {
   return (
     <ul className={styles.filterListContaner}>
-      {filterYears.map((FilterYearProps, index) => (
+      {filterYears.map((filterYear, index) => (
         <li className={styles.filterListItem} key={index}>
-          {FilterYearProps.year}
+          {filterYear.year}
         </li>
       ))}
     </ul>
   );
 };
 
-const FilterGenre = ({ tracks }: Tracks) => {
-  const uniqueGenre = Array.from(new Set(tracks.map((track) => track.genre)));
+const FilterGenre = ({ tracksList }: Props) => {
+  const uniqueGenre = Array.from(
+    new Set(tracksList.map((track) => track.genre))
+  );
   return (
     <div className={styles.filterListGenre}>
       <ul className={styles.filterListContaner}>
@@ -52,8 +58,8 @@ const FilterGenre = ({ tracks }: Tracks) => {
     </div>
   );
 };
-export const Filter = ({ tracks }: Tracks) => {
-  console.log(tracks);
+export const Filter = ({ tracksList }: Props) => {
+  console.log(tracksList);
   const [visible, setVisible] = useState<string | null>(null);
   const toggleVisibility = (value: string | null) => {
     if (value === visible) {
@@ -76,7 +82,7 @@ export const Filter = ({ tracks }: Tracks) => {
         >
           исполнителю
         </div>
-        {visible === "author" && <FilterAuthor tracks={tracks} />}
+        {visible === "author" && <FilterAuthor tracksList={tracksList} />}
       </div>
       <div className={styles.filterWrapper}>
         <div
@@ -89,7 +95,7 @@ export const Filter = ({ tracks }: Tracks) => {
         >
           году выпуска
         </div>
-        {visible === "years" && <FilterYear tracks={tracks} />}
+        {visible === "years" && <FilterYear />}
       </div>
       <div className={styles.filterWrapper}>
         <div
@@ -102,7 +108,7 @@ export const Filter = ({ tracks }: Tracks) => {
         >
           жанру
         </div>
-        {visible === "genre" && <FilterGenre tracks={tracks} />}
+        {visible === "genre" && <FilterGenre tracksList={tracksList} />}
       </div>
     </div>
   );
