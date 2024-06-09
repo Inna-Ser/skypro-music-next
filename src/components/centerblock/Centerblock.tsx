@@ -3,6 +3,8 @@ import { Filter } from "@components/filterItem/Filter";
 import styles from "./Centerblock.module.css";
 import { PlayList } from "@components/playList/PlayList";
 import classNames from "classnames";
+import { TrackItem, Tracks } from "@/tipes";
+import { useState } from "react";
 
 const ContentTitle = () => {
   return (
@@ -40,19 +42,16 @@ const Search = () => {
     </div>
   );
 };
+
 type Props = {
   isLoading: boolean;
   setCurrentTrack: (track: any) => void;
-  tracks: Array<{
-    id: number;
-    title: string;
-    author: string;
-    album: string;
-    duration_in_seconds: number;
-    isLiked: boolean;
-  }>;
+  tracks: TrackItem[];
 };
 export const Centerblock = ({ isLoading, setCurrentTrack, tracks }: Props) => {
+  const [tracksList, setTracksList] = useState<TrackItem[]>(tracks);
+  
+
   return (
     <div className={classNames(styles.mainCenterblock, styles.centerblock)}>
       <Search />
@@ -60,7 +59,12 @@ export const Centerblock = ({ isLoading, setCurrentTrack, tracks }: Props) => {
       <Filter tracks={tracks} />
       <div className={styles.centerblockContent}>
         <ContentTitle />
-        <PlayList isLoading={isLoading} setCurrentTrack={setCurrentTrack} tracks={tracks} />
+        <PlayList
+          isLoading={isLoading}
+          setCurrentTrack={setCurrentTrack}
+          tracksList={tracks}
+          setTracksList={setTracksList}
+        />
       </div>
     </div>
   );

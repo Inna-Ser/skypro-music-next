@@ -4,15 +4,9 @@ import {
 } from "./trackTitleComponent/TrackTitleComponent";
 import styles from "./TrackComponents.module.css";
 import classNames from "classnames";
+import { Track, Tracks } from "@/tipes";
 
-type Props = {
-  id: number;
-  title: string;
-  author: string;
-  album: string;
-  time: number;
-};
-export const TrackTitle = (props: Props) => {
+export const TrackTitle = (props: Track) => {
   return (
     <div className={styles.trackTitle}>
       <TrackTitleImg id={props.id} isPlaying={props.isPlaying} setCurrentTrack={props.setCurrentTrack} />
@@ -21,7 +15,7 @@ export const TrackTitle = (props: Props) => {
   );
 };
 
-export const TrackAuthor = (props: Props) => {
+export const TrackAuthor = (props: Tracks) => {
   return (
     <div className={styles.trackAuthor}>
       <div className={styles.trackAuthorLink}>{props.author}</div>
@@ -29,7 +23,7 @@ export const TrackAuthor = (props: Props) => {
   );
 };
 
-export const TrackAlbum = (props: Props) => {
+export const TrackAlbum = (props: Tracks) => {
   return (
     <div className={styles.trackAlbum}>
       <div className={styles.trackAlbumLink}>{props.album}</div>

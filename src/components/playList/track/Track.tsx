@@ -8,30 +8,38 @@ import {
 import "react-loading-skeleton/dist/skeleton.css";
 import classNames from "classnames";
 import styles from "./Track.module.css";
+import { TrackItem } from "@/tipes";
 
-export const Track = (props) => {
+type Props = {
+  isLoading: boolean;
+  setCurrentTrack: (track: any) => void;
+  tracks: TrackItem[];
+};
+export const Track = ({isLoading, setCurrentTrack, tracks} : Props) => {
+  const track = tracks.length > 0 ? tracks[0] : null;
+
   return (
-    <div onClick={props.setCurrentTrack} className={styles.playlistItem}>
+    <div onClick={setCurrentTrack} className={styles.playlistItem}>
       <div className={classNames(styles.playlistTrack, styles.track)}>
-        {props.setIsLoading ? (
+        {isLoading ? (
           <Skeleton width={"50px"} height={"50px"} baseColor="grey" />
         ) : (
-          <TrackTitle title={props.title} id={props.id} />
+          <TrackTitle title={track.title} id={track.id} />
         )}
-        {props.setIsLoading ? (
+        {isLoading ? (
           <Skeleton width={"350px"} height={"20px"} baseColor="grey" />
         ) : (
-          <TrackAuthor author={props.author} />
+          <TrackAuthor author={track.author} />
         )}
-        {props.setIsLoading ? (
+        {isLoading ? (
           <Skeleton width={"305px"} height={"20px"} baseColor="grey" />
         ) : (
-          <TrackAlbum album={props.album} />
+          <TrackAlbum album={track.album} />
         )}
-        {props.setIsLoading ? (
+        {isLoading ? (
           <Skeleton width={"320px"} height={"20px"} baseColor="grey" />
         ) : (
-          <TrackTime time={props.time} isLiked={props.isLiked} />
+          <TrackTime time={track.time} isLiked={track.isLiked} />
         )}
       </div>
     </div>

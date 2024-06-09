@@ -3,17 +3,10 @@ import { useState } from "react";
 import { filterYears } from "../../utils/filterYears";
 import styles from "./Filter.module.css";
 import classNames from "classnames";
+import { Tracks } from "@/tipes";
 
-type Track = {
-  id: number;
-  title: string;
-  author: string;
-  album: string;
-};
-type Props = {
-  tracks: Track[];
-};
-const FilterAuthor = ({ tracks }: Props) => {
+
+const FilterAuthor = ({ tracks }: Tracks) => {
   const uniqueAuthors = Array.from(
     new Set(tracks.map((track) => track.author))
   );
@@ -32,7 +25,7 @@ const FilterAuthor = ({ tracks }: Props) => {
 type FilterYearProps = {
   year: string;
 };
-const FilterYear = ({ year }: FilterYearProps) => {
+const FilterYear = ( year : FilterYearProps) => {
   return (
     <ul className={styles.filterListContaner}>
       {filterYears.map((FilterYearProps, index) => (
@@ -44,7 +37,7 @@ const FilterYear = ({ year }: FilterYearProps) => {
   );
 };
 
-const FilterGenre = ({ tracks }: { tracks: Track[] }) => {
+const FilterGenre = ({ tracks }: Tracks) => {
   const uniqueGenre = Array.from(new Set(tracks.map((track) => track.genre)));
   return (
     <div className={styles.filterListGenre}>
@@ -59,7 +52,7 @@ const FilterGenre = ({ tracks }: { tracks: Track[] }) => {
     </div>
   );
 };
-export const Filter = ({ tracks }: Props) => {
+export const Filter = ({ tracks }: Tracks) => {
   console.log(tracks);
   const [visible, setVisible] = useState<string | null>(null);
   const toggleVisibility = (value: string | null) => {

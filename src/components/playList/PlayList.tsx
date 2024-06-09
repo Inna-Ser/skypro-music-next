@@ -1,30 +1,26 @@
-"use client"
+"use client";
 import classNames from "classnames";
 import { Track } from "./track/Track";
 import styles from "./PlayList.module.css";
 import { useEffect, useState } from "react";
 import { getTracks } from "@/api/Api";
+import { TrackItem, Tracks } from "@/tipes";
 
 type Props = {
-  isLoading: boolean;
-  setCurrentTrack: (track: any) => void;
-  tracks: Array<{
-    id: number;
-    title: string;
-    author: string;
-    album: string;
-    duration_in_seconds: number;
-    isLiked: boolean;
-  }>;
+  tracks: Tracks;
+  tracksList: TrackItem[];
+  setTracksList: (tracks: TrackItem[]) => void;
 };
-export const PlayList = ({ tracks, setCurrentTrack }: Props) => {
-  const [tracksList, setTracksList] = useState(Array(12));
-  const [addTodoError, setAddTodoError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+
+export const PlayList = ({ tracks, setTracksList, tracksList }: Props) => {
+  const [addTodoError, setAddTodoError] = useState<string | null>(null);
 
   useEffect(() => {
     getTracks()
-      .then((data) => setTracksList(data))
+      .then((data) => {
+        setTracksList(data);
+        setAddTodoError(null); // Сброс ошибки, если запрос успешно выполнен
+      })
       .catch((error) => {
         setAddTodoError(error.message);
       });
@@ -32,19 +28,16 @@ export const PlayList = ({ tracks, setCurrentTrack }: Props) => {
 
   return (
     <div className={classNames(styles.content__playlist, styles.playlist)}>
-      <p style={{ color: "purple" }}>{addTodoError}</p>
-
+      {addTodoError && <p style={{ color: "purple" }}>{addTodoError}</p>}
       {tracksList.map((track) => (
         <Track
-          id={track.id}
-          setCurrentTrack={() => setCurrentTrack(track)}
-          isLoading={setIsLoading}
           key={track.id}
-          title={track.name}
+          isLoading={track.isLoading}
+          setCurrentTrack={track.setCurrentTrack}
+          title={track.title}
           author={track.author}
           album={track.album}
           time={track.duration_in_seconds}
-          isLiked={track.isLiked}
         />
       ))}
     </div>

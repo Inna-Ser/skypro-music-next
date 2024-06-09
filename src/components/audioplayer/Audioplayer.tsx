@@ -15,7 +15,6 @@ import styles from "./Audioplayer.module.css";
 import { useEffect, useRef, useState } from "react";
 import { ProgressBar } from "./progressbar/Progressbar";
 
-// import { isDisabled } from "@testing-library/user-event/dist/utils/index.js";
 type Props = {
   currentTrack: {
     name: string;
@@ -25,7 +24,6 @@ type Props = {
 };
 export const Audioplayer = ({currentTrack}: Props) => {
   const audioRef = useRef<null | HTMLAudioElement>(null);
-  const [isLoop, setIsLoop] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
@@ -82,7 +80,6 @@ export const Audioplayer = ({currentTrack}: Props) => {
               <div className={styles.playerTrackPlay}>
                 <div className={styles.trackPlayContain}>
                   <TrackPlayAuthor name={currentTrack ? currentTrack.name : "No track selected"} />
- />
                 </div>
                 <TrackPlayAlbum author={currentTrack ? currentTrack.author : "Unknown"} />
                 {/* <TrackPlayLike

@@ -1,13 +1,9 @@
+import { Track, Tracks } from "@/tipes";
 import styles from "./TrackTitleComponent.module.css";
 import classNames from "classnames";
 
-type Props ={
-  id: number;
-title: string;
-isPlaying: boolean;
-setCurrentTrack: (track: any) => void;
-}
-export const TrackTitleImg = ({ id, isPlaying, setCurrentTrack }: Props) => {
+
+export const TrackTitleImg = ({ id, isPlaying, setCurrentTrack }: Track) => {
 
   return (
     <div
@@ -22,7 +18,7 @@ export const TrackTitleImg = ({ id, isPlaying, setCurrentTrack }: Props) => {
           })}
         ></div>
       ) : (
-        <svg className={styles.trackTitleSvg} alt="music">
+        <svg className={styles.trackTitleSvg} >
           <use
             xlinkHref={
               "img/icon/sprite.svg#icon-note-dark"
