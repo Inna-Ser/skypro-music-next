@@ -12,21 +12,30 @@ import { TrackItem } from "@/tipes";
 
 type Props = {
   isLoading: boolean;
-  title: string;
+  name: string;
   author: string;
   album: string;
   genre: string;
   time: number;
   id: number;
+  setCurrentTrack: () => void;
 };
-export const Track = ({ isLoading, title, author, album, time, id }: Props) => {
+export const Track = ({
+  isLoading,
+  name,
+  author,
+  album,
+  time,
+  id,
+  setCurrentTrack,
+}: Props) => {
   return (
-    <div className={styles.playlistItem}>
+    <div onClick={setCurrentTrack} className={styles.playlistItem}>
       <div className={classNames(styles.playlistTrack, styles.track)}>
         {isLoading ? (
           <Skeleton width={"50px"} height={"50px"} baseColor="grey" />
         ) : (
-          <TrackTitle title={title} id={id} />
+          <TrackTitle name={name} id={id} />
         )}
         {isLoading ? (
           <Skeleton width={"350px"} height={"20px"} baseColor="grey" />

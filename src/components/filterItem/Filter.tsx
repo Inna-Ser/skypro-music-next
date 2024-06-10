@@ -7,8 +7,6 @@ import { TrackItem, Tracks } from "@/tipes";
 
 type Props = {
   tracksList: TrackItem[];
-  author: string;
-  genre: string;
 };
 const FilterAuthor = ({ tracksList }: Props) => {
   const uniqueAuthors = Array.from(
@@ -26,10 +24,7 @@ const FilterAuthor = ({ tracksList }: Props) => {
   );
 };
 
-type FilterYearProps = {
-  year: string;
-};
-const FilterYear = ({ year }: FilterYearProps) => {
+const FilterYear = () => {
   return (
     <ul className={styles.filterListContaner}>
       {filterYears.map((filterYear, index) => (

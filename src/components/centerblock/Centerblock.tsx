@@ -48,18 +48,10 @@ type Props = {
   tracksList: TrackItem[];
   isLoading: boolean;
   setTracksList: (track: TrackItem[]) => void;
+  setCurrentTrack: (track: TrackItem) => void;
 };
-export const Centerblock = ({ isLoading }: Props) => {
-  const [tracksList, setTracksList] = useState<TrackItem[]>([]);
-  useEffect(() => {
-    getTracks()
-      .then((data) => {
-        setTracksList(data);
-      })
-      .catch((error) => {
-        new Error(error.message);
-      });
-  }, [setTracksList]);
+export const Centerblock = ({ tracksList, setCurrentTrack, setTracksList,isLoading }: Props) => {
+ 
 
   return (
     <div className={classNames(styles.mainCenterblock, styles.centerblock)}>
@@ -70,9 +62,9 @@ export const Centerblock = ({ isLoading }: Props) => {
         <ContentTitle />
         <PlayList
           isLoading={isLoading}
-          // setCurrentTrack={setCurrentTrack}
           tracksList={tracksList}
           setTracksList={setTracksList}
+          setCurrentTrack={setCurrentTrack}
         />
       </div>
     </div>

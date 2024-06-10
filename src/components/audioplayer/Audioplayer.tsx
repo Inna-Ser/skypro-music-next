@@ -14,25 +14,24 @@ import { TrackTime } from "./trackTime/TrackTime";
 import styles from "./Audioplayer.module.css";
 import { useEffect, useRef, useState } from "react";
 import { ProgressBar } from "./progressbar/Progressbar";
+import { TrackItem } from "@/tipes";
 
 type Props = {
-  currentTrack: {
-    name: string;
-    author: string;
-    track_file: string;
-  } | null;
+  currentTrack: TrackItem; 
+  track_file: TrackItem;
 };
-export const Audioplayer = ({currentTrack}: Props) => {
+export const Audioplayer = ({ currentTrack, track_file }: Props) => {
   const audioRef = useRef<null | HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    if (audioRef.current && currentTrack) {
+    if (audioRef.current && currentTrack.track_file) {
       audioRef.current.src = currentTrack.track_file;
       audioRef.current.play().catch((err) => console.log(err));
       setIsPlaying(true);
     }
   }, [currentTrack]);
+
 
   const togglePlay = () => {
     if (audioRef.current?.paused) {
@@ -54,7 +53,7 @@ export const Audioplayer = ({currentTrack}: Props) => {
         className={styles.audioControler}
         controls
         ref={audioRef}
-        // src={currentTrack.track_file}
+        src={currentTrack.track_file}
       />
       <div className={styles.bar}>
         <TrackTime audioRef={audioRef}></TrackTime>
@@ -67,6 +66,7 @@ export const Audioplayer = ({currentTrack}: Props) => {
             <div className={styles.barPlayer}>
               <div className={styles.playerControls}>
                 <Prev />
+                <audio ref={audioRef} src="example.mp3"></audio>
                 {isPlaying ? (
                   <Pause togglePause={togglePause} />
                 ) : (
@@ -79,9 +79,15 @@ export const Audioplayer = ({currentTrack}: Props) => {
               <TrackPlayImage />
               <div className={styles.playerTrackPlay}>
                 <div className={styles.trackPlayContain}>
-                  <TrackPlayAuthor name={currentTrack ? currentTrack.name : "No track selected"} />
+                  <TrackPlayAuthor
+                    name={
+                      currentTrack ? currentTrack.name : "No track selected"
+                    }
+                  />
                 </div>
-                <TrackPlayAlbum author={currentTrack ? currentTrack.author : "Unknown"} />
+                <TrackPlayAlbum
+                  author={currentTrack ? currentTrack.author : "Unknown"}
+                />
                 {/* <TrackPlayLike
                   toggleLike={toggleLike}
                   toggleDislike={"none"}

@@ -1,6 +1,6 @@
 export type Tracks = {
     isLoading?: boolean;
-    setCurrentTrack: (track: any) => void;
+    setCurrentTrack: (track: TrackItem) => void; // Обновлено: использует TrackItem вместо any
     tracks: Array<{
       id: number;
       name: string;
@@ -32,5 +32,6 @@ export  type TrackItem ={
   track_file: string;
   stared_user: User[];
   isPlaying: boolean;
-  setCurrentTrack: (track: any) => void;
+  currentTrack: [];
+  setCurrentTrack: () => void;
   }
