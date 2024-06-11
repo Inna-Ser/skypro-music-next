@@ -28,7 +28,7 @@ export const Audioplayer = ({
   currentTrack,
 }: Props) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  // const [isLoop, setIsLoop] = useState<TrackItem>();
+  const [currentVolume, setCurrentVolume] = useState<number>(0.5);
   const [isLoop, setIsLoop] = useState<boolean>(false);
 
   useEffect(() => {
@@ -54,12 +54,51 @@ export const Audioplayer = ({
   };
 
   const playRepeatTrack = () => {
-    if (audioRef.current?.loop) audioRef.current.loop = !isLoop;
-    setIsLoop((prev) => !prev);
-    console.log("playRepeatTrack is called");
-
+    if (audioRef.current) {
+      audioRef.current.loop = !audioRef.current.loop;
+      setIsLoop((prev) => !prev);
+      console.log("playRepeatTrack is called");
+    }
   };
-  console.log("isLoop:", isLoop);
+
+  const playNextTrack = () => {
+    alert("Еще не реализовано");
+    // const tracks = isShuffle ? shuffleTracks : initialTracks;
+    //         const currentTrackIndex = tracks.findIndex((track) => track.id === currentTrack?.id);
+    //         if (currentTrackIndex === tracks.length - 1) {
+    //             return;
+    //         } else {
+    //             const newIndex = (currentTrackIndex + 1 + tracks.length) % tracks.length
+    //             setCurrentTrack(tracks[newIndex]);            }
+  };
+
+  const playPrevTrack = () => {
+    alert("Еще не реализовано");
+
+    // if (current.currentTime > 5) {
+    //   current.currentTime = 0;
+    //   current.play();
+    // } else {
+    //   const tracks = isShuffle ? shuffleTracks : initialTracks;
+    //         const currentTrackIndex = tracks.findIndex((track) => track.id === currentTrack?.id);
+    //         if (currentTrackIndex === 0) {
+    //             return;
+    //         } else {
+    //             const newIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length
+    //             currentTrack = tracks[newIndex];
+    //         }; // переключаемся на предыдущий трек
+    // }
+    // // запускаем воспроизведение
+  };
+
+  const playShuffleTrack = () => {
+    alert("Еще не реализовано");
+  };
+  useEffect(() => {
+    if (audioRef && audioRef.current) {
+      audioRef.current.volume = currentVolume; // Устанавливаем начальное значение громкости
+    }
+  }, [audioRef, currentVolume]);
 
   return (
     <>
@@ -80,16 +119,16 @@ export const Audioplayer = ({
           <div className={styles.barPlayerBlock}>
             <div className={styles.barPlayer}>
               <div className={styles.playerControls}>
-                <Prev />
+                <Prev playPrevTrack={playPrevTrack} />
                 <audio ref={audioRef} src="example.mp3"></audio>
                 {isPlaying ? (
                   <Pause togglePause={togglePause} />
                 ) : (
                   <Play togglePlay={togglePlay} />
                 )}
-                <Next />
+                <Next playNextTrack={playNextTrack} />
                 <Repeat playRepeatTrack={playRepeatTrack} isLoop={isLoop} />
-                <Shuffle />
+                <Shuffle playShuffleTrack={playShuffleTrack} />
               </div>
               <TrackPlayImage />
               <div className={styles.playerTrackPlay}>
@@ -109,7 +148,10 @@ export const Audioplayer = ({
                 /> */}
               </div>
             </div>
-            <VolumeBlock />
+            <VolumeBlock
+              setCurrentVolume={setCurrentVolume}
+              currentVolume={currentVolume}
+            />
           </div>
         </div>
       </div>

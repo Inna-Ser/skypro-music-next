@@ -34,7 +34,7 @@
   
   .volumeProgressLine {
     width: 109px;
-    --progress-height: 2px;
+    --progress-height: 4px;
   --progress-color: #AD61FF;
 
   margin: 0;
