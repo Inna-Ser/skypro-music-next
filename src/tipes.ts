@@ -1,26 +1,26 @@
 export type Tracks = {
-    isLoading?: boolean;
-    setCurrentTrack: (track: TrackItem) => void; // Обновлено: использует TrackItem вместо any
-    tracks: Array<{
-      id: number;
-      name: string;
-      author: string;
-      album: string;
-      genre: string
-      duration_in_seconds: number;
-      isLiked: boolean;
-    }>;
-  };
+  isLoading?: boolean;
+  setCurrentTrack: (track: TrackItem) => void; // Обновлено: использует TrackItem вместо any
+  tracks: Array<{
+    id: number;
+    name: string;
+    author: string;
+    album: string;
+    genre: string;
+    duration_in_seconds: number;
+    isLiked: boolean;
+  }>;
+};
 
 export type User = {
-    id: number;
-    username: string;
-    first_name: string;
-    last_name: string;
-    email: string;
-}  
+  id: number;
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+};
 
-export  type TrackItem ={
+export type TrackItem = {
   id: number;
   name: string;
   author: string;
@@ -32,6 +32,7 @@ export  type TrackItem ={
   track_file: string;
   stared_user: User[];
   isPlaying: boolean;
-  currentTrack: [];
+  setIsPlaying: (isPlaying: boolean) => void;
+  currentTrack: TrackItem;
   setCurrentTrack: () => void;
-  }
+};

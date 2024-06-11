@@ -17,21 +17,16 @@ import { ProgressBar } from "./progressbar/Progressbar";
 import { TrackItem } from "@/tipes";
 
 type Props = {
-  currentTrack: TrackItem; 
-  track_file: TrackItem;
+  isPlaying: boolean;
+  setIsPlaying: (isPlaying: boolean) => void;
+  currentTrack: TrackItem | null; 
 };
-export const Audioplayer = ({ currentTrack, track_file }: Props) => {
-  const audioRef = useRef<null | HTMLAudioElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  useEffect(() => {
-    if (audioRef.current && currentTrack.track_file) {
-      audioRef.current.src = currentTrack.track_file;
-      audioRef.current.play().catch((err) => console.log(err));
-      setIsPlaying(true);
-    }
-  }, [currentTrack]);
-
+export const Audioplayer = ({
+  isPlaying,
+  setIsPlaying,
+  currentTrack,
+}: Props) => {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const togglePlay = () => {
     if (audioRef.current?.paused) {
