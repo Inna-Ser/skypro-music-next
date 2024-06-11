@@ -8,20 +8,12 @@ import { useEffect, useRef, useState } from "react";
 import { TrackItem, Tracks } from "@/tipes";
 import { getTracks } from "@/api/Api";
 
-
 export const MainComponent = () => {
-  const audioRef = useRef<null | HTMLAudioElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState<TrackItem>();
   const [currentTrack, setCurrentTrack] = useState<TrackItem>();
   const [tracksList, setTracksList] = useState<TrackItem[]>([]);
 
-  useEffect(() => {
-    if (audioRef.current && currentTrack?.track_file) {
-      audioRef.current.src = currentTrack.track_file;
-      audioRef.current.play().catch((err) => console.log(err));
-      setIsPlaying(true);
-    }
-  }, [currentTrack]);
+
 
   useEffect(() => {
     getTracks()
@@ -35,9 +27,17 @@ export const MainComponent = () => {
   return (
     <div className={styles.main}>
       <Navigator />
-      <Centerblock setTracksList={setTracksList} tracksList={tracksList} setCurrentTrack={setCurrentTrack} />
+      <Centerblock
+        setTracksList={setTracksList}
+        tracksList={tracksList}
+        setCurrentTrack={setCurrentTrack}
+      />
       <Sidebar />
-      <Audioplayer isPlaying={isPlaying} setIsPlaying={setIsPlaying} currentTrack={currentTrack} />
+      <Audioplayer
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}
+        currentTrack={currentTrack}
+      />
     </div>
   );
 };

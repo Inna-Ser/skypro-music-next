@@ -35,4 +35,6 @@ export type TrackItem = {
   setIsPlaying: (isPlaying: boolean) => void;
   currentTrack: TrackItem;
   setCurrentTrack: () => void;
+  isLoop: boolean;
+  isActiv: boolean;
 };

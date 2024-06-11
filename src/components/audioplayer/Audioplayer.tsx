@@ -4,6 +4,7 @@ import {
   Pause,
   Play,
   Prev,
+  Repeat,
   Shuffle,
   TrackPlayAlbum,
   TrackPlayAuthor,
@@ -19,7 +20,7 @@ import { TrackItem } from "@/tipes";
 type Props = {
   isPlaying: boolean;
   setIsPlaying: (isPlaying: boolean) => void;
-  currentTrack: TrackItem | null; 
+  currentTrack: TrackItem | null;
 };
 export const Audioplayer = ({
   isPlaying,
@@ -27,6 +28,16 @@ export const Audioplayer = ({
   currentTrack,
 }: Props) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  // const [isLoop, setIsLoop] = useState<TrackItem>();
+  const [isLoop, setIsLoop] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (audioRef.current && currentTrack?.track_file) {
+      audioRef.current.src = currentTrack.track_file;
+      audioRef.current.play().catch((err) => console.log(err));
+      setIsPlaying(true);
+    }
+  }, [currentTrack]);
 
   const togglePlay = () => {
     if (audioRef.current?.paused) {
@@ -42,13 +53,22 @@ export const Audioplayer = ({
     }
   };
 
+  const playRepeatTrack = () => {
+    if (audioRef.current?.loop) audioRef.current.loop = !isLoop;
+    setIsLoop((prev) => !prev);
+    console.log("playRepeatTrack is called");
+
+  };
+  console.log("isLoop:", isLoop);
+
   return (
     <>
       <audio
+        loop={isLoop}
+        ref={audioRef}
+        src={currentTrack?.track_file}
         className={styles.audioControler}
         controls
-        ref={audioRef}
-        src={currentTrack.track_file}
       />
       <div className={styles.bar}>
         <TrackTime audioRef={audioRef}></TrackTime>
@@ -68,7 +88,7 @@ export const Audioplayer = ({
                   <Play togglePlay={togglePlay} />
                 )}
                 <Next />
-                {/* <Repeat playRepeatTrack={"none"} isActive={isLoop} /> */}
+                <Repeat playRepeatTrack={playRepeatTrack} isLoop={isLoop} />
                 <Shuffle />
               </div>
               <TrackPlayImage />

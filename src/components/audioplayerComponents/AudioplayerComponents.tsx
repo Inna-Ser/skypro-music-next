@@ -1,11 +1,14 @@
 import classNames from "classnames";
 import styles from "./AudioplayerComponents.module.css";
+import { TrackItem } from "@/tipes";
 
 type Props = {
   author: string;
   name: string;
   togglePlay: () => void;
   togglePause: () => void;
+  playRepeatTrack: () => void;
+  isLoop: boolean;
 };
 export const Prev = () => {
   return (
@@ -59,10 +62,20 @@ export const Next = () => {
   );
 };
 
-export const Repeat = () => {
+export const Repeat = ({ playRepeatTrack, isLoop }: Props) => {
   return (
-    <div className={classNames(styles.playerBtnRepeat, styles._btnIcon)}>
-      <svg className={styles.playerBtnShuffleSvg}>
+    <div
+      className={classNames(styles.playerBtnRepeat, styles._btnIcon)}
+      onClick={playRepeatTrack}
+    >
+      <svg
+        className={
+          !isLoop
+            ? styles.playerBtnShuffleSvg
+            : classNames(styles.playerBtnShuffleSvg, styles.active)
+        }
+        alt="repeat"
+      >
         <use xlinkHref="img/icon/sprite.svg#icon-repeat"></use>
       </svg>
     </div>

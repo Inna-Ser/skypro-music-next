@@ -5,3 +5,13 @@ export const playShuffleTrack = (tracks) => {
   }
   return tracks;
 };
+
+// export const setPrev=() => {
+//   const currentTrackIndex = tracks.findIndex((track) => track.id === state.currentTrack.id);
+//   if (currentTrackIndex === 0) {
+//       return;
+//   } else {
+//       const newIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length
+//       currentTrack = tracks[newIndex];
+//   }
+// },
