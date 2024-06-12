@@ -8,7 +8,8 @@ import {
 import "react-loading-skeleton/dist/skeleton.css";
 import classNames from "classnames";
 import styles from "./Track.module.css";
-import { TrackItem } from "@/tipes";
+import 'react-loading-skeleton/dist/skeleton.css';
+
 
 type Props = {
   isLoading: boolean;

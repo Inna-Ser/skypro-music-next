@@ -3,7 +3,7 @@ import { useState } from "react";
 import { filterYears } from "../../utils/filterYears";
 import styles from "./Filter.module.css";
 import classNames from "classnames";
-import { TrackItem, Tracks } from "@/tipes";
+import { TrackItem } from "@/tipes";
 
 type Props = {
   tracksList: TrackItem[];

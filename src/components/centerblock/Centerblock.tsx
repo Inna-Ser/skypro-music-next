@@ -3,9 +3,7 @@ import { Filter } from "@components/filterItem/Filter";
 import styles from "./Centerblock.module.css";
 import { PlayList } from "@components/playList/PlayList";
 import classNames from "classnames";
-import { TrackItem, Tracks } from "@/tipes";
-import { useEffect, useState } from "react";
-import { getTracks } from "@/api/Api";
+import { TrackItem } from "@/tipes";
 
 const ContentTitle = () => {
   return (

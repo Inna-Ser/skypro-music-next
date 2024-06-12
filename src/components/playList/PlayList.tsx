@@ -2,15 +2,13 @@
 import classNames from "classnames";
 import { Track } from "./track/Track";
 import styles from "./PlayList.module.css";
-import { useEffect, useRef, useState } from "react";
-import { getTracks } from "@/api/Api";
-import { TrackItem, Tracks } from "@/tipes";
+import { TrackItem } from "@/tipes";
 
 type Props = {
   tracksList: TrackItem[];
   isLoading: boolean;
   setTracksList: (tracks: TrackItem[]) => void;
-  setCurrentTrack: (track: TrackItem) => void;
+  setCurrentTrack: (track: TrackItem | null) => void;
 };
 
 export const PlayList = ({ isLoading, setCurrentTrack, tracksList }: Props) => {

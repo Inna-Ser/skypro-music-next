@@ -4,24 +4,25 @@ import { Navigator } from "@components/navigator/Navigator";
 import { Sidebar } from "@components/sidebar/Sidebar";
 import { Audioplayer } from "@components/audioplayer/Audioplayer";
 import styles from "@components/mainComponent/MainComponent.module.css";
-import { useEffect, useRef, useState } from "react";
-import { TrackItem, Tracks } from "@/tipes";
+import { useEffect, useState } from "react";
+import { TrackItem } from "@/tipes";
 import { getTracks } from "@/api/Api";
 
 export const MainComponent = () => {
-  const [isPlaying, setIsPlaying] = useState<TrackItem>();
-  const [currentTrack, setCurrentTrack] = useState<TrackItem>();
+  const [isPlaying, setIsPlaying] = useState<boolean>();
+  const [currentTrack, setCurrentTrack] = useState<TrackItem | null>();
   const [tracksList, setTracksList] = useState<TrackItem[]>([]);
-
-
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     getTracks()
       .then((data) => {
         setTracksList(data);
+        setIsLoading(false);
       })
       .catch((error) => {
         new Error(error.message);
+        setIsLoading(false);
       });
   }, [setTracksList]);
   return (

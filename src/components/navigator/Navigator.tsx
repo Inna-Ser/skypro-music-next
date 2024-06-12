@@ -5,7 +5,6 @@ import styles from "./Navigator.module.css";
 import Image from "next/image";
 import { BurgerLine } from "./burgerLine/BurgerLine";
 import { Menu } from "./menu/Menu";
-import { menu } from "@/utils/menu";
 
 export const Navigator = () => {
   const [visible, setVisible] = useState(true);

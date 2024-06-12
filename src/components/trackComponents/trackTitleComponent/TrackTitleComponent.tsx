@@ -1,9 +1,9 @@
-import { Track, Tracks } from "@/tipes";
+import { TrackItem } from "@/tipes";
 import styles from "./TrackTitleComponent.module.css";
 import classNames from "classnames";
 
 
-export const TrackTitleImg = ({ id, isPlaying, setCurrentTrack }: Track) => {
+export const TrackTitleImg = ({ id, isPlaying, setCurrentTrack }: TrackItem) => {
 
   return (
     <div

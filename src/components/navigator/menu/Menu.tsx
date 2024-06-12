@@ -1,7 +1,6 @@
 "use client";
-import { useRouter } from "next/router";
 import styles from "./Menu.module.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import classNames from "classnames";
 import Image from "next/image";
 import { menu } from "@/utils/menu";

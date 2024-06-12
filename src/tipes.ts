@@ -1,17 +1,3 @@
-export type Tracks = {
-  isLoading?: boolean;
-  setCurrentTrack: (track: TrackItem) => void; // Обновлено: использует TrackItem вместо any
-  tracks: Array<{
-    id: number;
-    name: string;
-    author: string;
-    album: string;
-    genre: string;
-    duration_in_seconds: number;
-    isLiked: boolean;
-  }>;
-};
-
 export type User = {
   id: number;
   username: string;

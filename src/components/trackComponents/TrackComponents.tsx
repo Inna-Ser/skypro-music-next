@@ -3,8 +3,6 @@ import {
   TrackTitleText,
 } from "./trackTitleComponent/TrackTitleComponent";
 import styles from "./TrackComponents.module.css";
-import classNames from "classnames";
-import { TrackItem, Tracks } from "@/tipes";
 
 type Props = {
   isLoading: boolean;

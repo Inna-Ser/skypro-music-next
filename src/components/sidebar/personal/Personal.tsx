@@ -1,6 +1,5 @@
 "use client";
 import styles from "./Personal.module.css";
-import { useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { createContext, useState } from 'react';
