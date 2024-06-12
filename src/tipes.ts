@@ -17,10 +17,11 @@ export type TrackItem = {
   logo: string | null;
   track_file: string;
   stared_user: User[];
-  isPlaying: boolean;
+//   isPlaying: boolean;
   setIsPlaying: (isPlaying: boolean) => void;
   currentTrack: TrackItem;
   setCurrentTrack: () => void;
-  isLoop: boolean;
-  isActiv: boolean;
+//   isLoop: boolean;
+//   isActiv: boolean;
+//   isLiked: boolean;
 };
