@@ -18,58 +18,71 @@ import { ProgressBar } from "./progressbar/Progressbar";
 import { TrackItem } from "@/tipes";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { setIsShuffle, setNext } from "@/store/features/trackSlice";
-import { useSelector } from "react-redux";
 
 type Props = {
   setIsPlaying: (isPlaying: boolean) => void;
   currentTrack: TrackItem | null;
   isPlaying: boolean;
+  isShuffle: boolean;
 };
-export const Audioplayer = ({
-  isPlaying,
-  setIsPlaying,
-  currentTrack,
-}: Props) => {
+export const Audioplayer: React.FC<Props> = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [currentVolume, setCurrentVolume] = useState<number>(0.5);
   const [isLoop, setIsLoop] = useState<boolean>(false);
-  const isShuffle = useAppSelector((state) => state.tracks.isShuffle); 
   const [isActive, setIsActive] = useState<boolean>(false);
-
   const dispatch = useAppDispatch();
+
+  const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
+  const isPlaying = useAppSelector((state) => state.tracks.isPlaying);
+  const isShuffle = useAppSelector((state) => state.tracks.isShuffle);
 
   useEffect(() => {
     if (audioRef.current && currentTrack?.track_file) {
       audioRef.current.src = currentTrack.track_file;
       audioRef.current.play().catch((err) => console.log(err));
-      setIsPlaying(true);
+      dispatch(setIsPlaying(true)); // Используем dispatch для обновления состояния
     }
-  }, [currentTrack]);
+  }, [currentTrack, dispatch]);
+
+  useEffect(() => {
+    const handleEnded = () => dispatch(setNext());
+    const handleLoadedMetadata = () => {
+      if (isPlaying && audioRef.current) {
+        audioRef.current.play().catch((err) => console.log(err));
+      } else {
+        audioRef.current?.pause();
+      }
+    };
+    const currentRef = audioRef.current;
+
+    currentRef?.addEventListener("ended", handleEnded);
+    currentRef?.addEventListener("loadedmetadata", handleLoadedMetadata);
+
+    return () => {
+      currentRef?.removeEventListener("ended", handleEnded);
+      currentRef?.removeEventListener("loadedmetadata", handleLoadedMetadata);
+    };
+  }, [isPlaying, dispatch]);
+
+  const playNextTrack = () => {
+    dispatch(setNext());
+  };
 
   const togglePlay = () => {
     if (audioRef.current?.paused) {
       audioRef.current.play().catch((err) => console.log(err));
-      setIsPlaying(true);
+      dispatch(setIsPlaying(true)); // Используем dispatch для обновления состояния
+    } else {
+      audioRef.current?.pause();
+      dispatch(setIsPlaying(false)); // Используем dispatch для обновления состояния
     }
   };
-
-  const togglePause = () => {
-    if (audioRef.current?.play) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    }
-  };
-
   const playRepeatTrack = () => {
     if (audioRef.current) {
       audioRef.current.loop = !audioRef.current.loop;
       setIsLoop((prev) => !prev);
       console.log("playRepeatTrack is called");
     }
-  };
-
-  const playNextTrack = () => {
-    dispatch(setNext());
   };
 
   const playPrevTrack = () => {
@@ -106,16 +119,17 @@ export const Audioplayer = ({
             <div className={styles.barPlayer}>
               <div className={styles.playerControls}>
                 <Prev playPrevTrack={playPrevTrack} />
-                <audio ref={audioRef} src="example.mp3"></audio>
                 {isPlaying ? (
-                  <Pause togglePause={togglePause} />
+                  <Pause togglePause={togglePlay} />
                 ) : (
                   <Play togglePlay={togglePlay} />
                 )}
                 <Next playNextTrack={playNextTrack} />
                 <Repeat playRepeatTrack={playRepeatTrack} isLoop={isLoop} />
-                <Shuffle playShuffleTrack={playShuffleTrack}
-                  isActive={isActive} />
+                <Shuffle
+                  playShuffleTrack={playShuffleTrack}
+                  isActive={isActive}
+                />
               </div>
               <TrackPlayImage />
               <div className={styles.playerTrackPlay}>

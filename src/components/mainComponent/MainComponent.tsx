@@ -9,7 +9,6 @@ import { TrackItem } from "@/tipes";
 import { getTracks } from "@/api/Api";
 
 export const MainComponent = () => {
-  const [isPlaying, setIsPlaying] = useState<boolean>();
   const [currentTrack, setCurrentTrack] = useState<TrackItem | null>();
   const [tracksList, setTracksList] = useState<TrackItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -34,11 +33,7 @@ export const MainComponent = () => {
         setCurrentTrack={setCurrentTrack}
       />
       <Sidebar />
-      <Audioplayer
-        isPlaying={isPlaying}
-        setIsPlaying={setIsPlaying}
-        currentTrack={currentTrack}
-      />
+      <Audioplayer />
     </div>
   );
 };
