@@ -40,7 +40,7 @@ export const Audioplayer: React.FC<Props> = () => {
     if (audioRef.current && currentTrack?.track_file) {
       audioRef.current.src = currentTrack.track_file;
       audioRef.current.play().catch((err) => console.log(err));
-      dispatch(setIsPlaying(true)); // Используем dispatch для обновления состояния
+      dispatch(setIsPlaying(true)); 
     }
   }, [currentTrack, dispatch]);
 

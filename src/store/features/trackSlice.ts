@@ -46,7 +46,6 @@ const tracksSlice = createSlice({
       }
     },
     setPrev: (state) => {
-      // Исправлена проверка индекса и выбор предыдущего трека при перемешанном списке.
       const tracks = state.isShuffle
         ? state.shuffleTracks
         : state.initialTracks;
@@ -79,26 +78,7 @@ const tracksSlice = createSlice({
         }
       }
     },
-    // setIsLiked: (state, action: PayloadAction<boolean>) => {
-    //   state.isLiked = action.payload; // Добавлен тип PayloadAction<boolean>
-    //   if (state.currentTrack) {
-    //     state.currentTrack.isLiked = state.isLiked; // Обновляем состояние лайка у текущего трека
-    //     if (state.isLiked) {
-    //       // Если трек лайкнут, добавляем его в список понравившихся треков
-    //       state.likedTracks.push(state.currentTrack);
-    //     } else {
-    //       // Если трек не лайкнут, удаляем его из списка понравившихся треков
-    //       state.likedTracks = state.likedTracks.filter(
-    //         (track) => track.id !== state.currentTrack?.id
-    //       );
-    //     }
-    //     state.isDisliked = false; // Если трек лайкнут, он не может быть дизлайкнут
-    //   }
-    // },
-    // setIsDisliked: (state, action: PayloadAction<boolean>) => {
-    //   state.isDisliked = action.payload;
-    //   state.isLiked = false;
-    // },
+    
     setInitialTracks: (state, action: PayloadAction<TrackItem[]>) => {
       state.initialTracks = action.payload;
     },
