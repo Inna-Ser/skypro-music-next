@@ -17,14 +17,15 @@ import { useEffect, useRef, useState } from "react";
 import { ProgressBar } from "./progressbar/Progressbar";
 import { TrackItem } from "@/tipes";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { setIsShuffle, setNext } from "@/store/features/trackSlice";
+import { setIsPlaying, setIsShuffle, setNext } from "@/store/features/trackSlice";
+import { Props } from "next/script";
 
-type Props = {
-  setIsPlaying: (isPlaying: boolean) => void;
-  currentTrack: TrackItem | null;
-  isPlaying: boolean;
-  isShuffle: boolean;
-};
+// type Props = {
+//   setIsPlaying: (isPlaying: boolean) => void;
+//   currentTrack: TrackItem | null;
+//   isPlaying: boolean;
+//   isShuffle: boolean;
+// };
 export const Audioplayer: React.FC<Props> = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [currentVolume, setCurrentVolume] = useState<number>(0.5);
