@@ -1,42 +1,34 @@
 import { TrackItem } from "@/tipes";
 import styles from "./TrackTitleComponent.module.css";
 import classNames from "classnames";
+import { useAppSelector } from "@/store/store";
 
-
-export const TrackTitleImg = ({ id, isPlaying, setCurrentTrack }: TrackItem) => {
+export const TrackTitleImg = ({ id }: TrackItem) => {
+  const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
+  const isPlaying = useAppSelector((state) => state.tracks.isPlaying);
 
   return (
-    <div
-      className={
-        styles.trackTitleImage
-      }
-    >
-      {setCurrentTrack?.id === id ? (
+    <div className={styles.trackTitleImage}>
+      {currentTrack?.id === id ? (
         <div
           className={classNames(styles.currentMarker, {
             [styles.active]: isPlaying,
           })}
         ></div>
       ) : (
-        <svg className={styles.trackTitleSvg} >
-          <use
-            xlinkHref={
-              "img/icon/sprite.svg#icon-note-dark"
-            }
-          ></use>
+        <svg className={styles.trackTitleSvg}>
+          <use xlinkHref={"img/icon/sprite.svg#icon-note-dark"}></use>
         </svg>
       )}
     </div>
   );
 };
 
-export const TrackTitleText = (props: Props) => {
+export const TrackTitleText = ({ name }: TrackItem) => {
   return (
     <div className={styles.trackTitleText}>
-      <a
-        className={styles.trackTitleLink}
-      >
-        {props.title}
+      <a className={styles.trackTitleLink}>
+        {name}
         <span className={styles.trackTitleSpan}></span>
       </a>
     </div>

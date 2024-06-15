@@ -3,32 +3,25 @@ import {
   TrackTitleText,
 } from "./trackTitleComponent/TrackTitleComponent";
 import styles from "./TrackComponents.module.css";
+import { useAppSelector } from "@/store/store";
+import { TrackItem } from "@/tipes";
 
-type Props = {
-  isLoading: boolean;
-  name: string;
-  author: string;
-  album: string;
-  genre: string;
-  time: number;
-  id: number;
-  isPlaying: boolean;
-  setCurrentTrack: () => void;
-};
-export const TrackTitle = ({ id, isPlaying, setCurrentTrack, name }: Props) => {
+
+export const TrackTitle = ({ id, name }: TrackItem) => {
+  const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
+  const isPlaying = useAppSelector((state) => state.tracks.isPlaying);
+
   return (
     <div className={styles.trackTitle}>
       <TrackTitleImg
         id={id}
-        isPlaying={isPlaying}
-        setCurrentTrack={setCurrentTrack}
       />
       <TrackTitleText title={name} />
     </div>
   );
 };
 
-export const TrackAuthor = ({ author }: Props) => {
+export const TrackAuthor = ({ author }: TrackItem) => {
   return (
     <div className={styles.trackAuthor}>
       <div className={styles.trackAuthorLink}>{author}</div>
@@ -36,7 +29,7 @@ export const TrackAuthor = ({ author }: Props) => {
   );
 };
 
-export const TrackAlbum = ({ album }: Props) => {
+export const TrackAlbum = ({ album }: TrackItem) => {
   return (
     <div className={styles.trackAlbum}>
       <div className={styles.trackAlbumLink}>{album}</div>
@@ -44,13 +37,13 @@ export const TrackAlbum = ({ album }: Props) => {
   );
 };
 
-export const TrackTime = ({ time }: Props) => {
+export const TrackTime = ({ duration_in_seconds }: TrackItem) => {
   return (
     <div className={styles.trackTime}>
-      <svg className={styles.trackLikeSvg} alt="like">
+      <svg className={styles.trackLikeSvg} >
         <use xlinkHref="img/icon/sprite.svg#icon-like"></use>
       </svg>
-      <span className={styles.trackTimeText}>{time}</span>
+      <span className={styles.trackTimeText}>{duration_in_seconds}</span>
     </div>
   );
 };

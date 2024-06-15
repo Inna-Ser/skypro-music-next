@@ -51,7 +51,7 @@ export const Track = ({
         {isLoading ? (
           <Skeleton width={"320px"} height={"20px"} baseColor="grey" />
         ) : (
-          <TrackTime time={time} />
+          <TrackTime duration_in_seconds={time} />
         )}
       </div>
     </div>

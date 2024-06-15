@@ -8,10 +8,11 @@ import { setCurrentTrack, setInitialTracks } from "@/store/features/trackSlice";
 import { useEffect, useState } from "react";
 import { getTracks } from "@/api/Api";
 
-
 export const PlayList = () => {
   const [tracksList, setTracksList] = useState<TrackItem[]>([]);
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
+  const [addTodoError, setAddTodoError] = useState(null);
+
 
   const dispatch = useAppDispatch();
   // if (isLoading) {
@@ -22,15 +23,16 @@ export const PlayList = () => {
     getTracks()
       .then((data) => {
         setTracksList(data);
+        dispatch(setInitialTracks(data));
       })
       .catch((error) => {
         new Error(error.message);
       });
-  }, [setTracksList]);
+  }, [setTracksList, setInitialTracks]);
 
   return (
     <div className={classNames(styles.content__playlist, styles.playlist)}>
-      <p style={{ color: "purple" }}></p>
+      <p style={{ color: "purple" }}>{addTodoError}</p>
       {tracksList.map((track) => (
         <Track
           key={track.id}
