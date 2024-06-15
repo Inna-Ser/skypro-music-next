@@ -1,7 +1,9 @@
+"use client";
 import { TrackItem } from "@/tipes";
 import styles from "./TrackTitleComponent.module.css";
 import classNames from "classnames";
 import { useAppSelector } from "@/store/store";
+import { useState } from "react";
 
 export const TrackTitleImg = ({ id }: TrackItem) => {
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
@@ -9,7 +11,7 @@ export const TrackTitleImg = ({ id }: TrackItem) => {
 
   return (
     <div className={styles.trackTitleImage}>
-      {currentTrack?.id === id ? (
+      {currentTrack?.id === id? (
         <div
           className={classNames(styles.currentMarker, {
             [styles.active]: isPlaying,

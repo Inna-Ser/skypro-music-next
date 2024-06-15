@@ -16,7 +16,7 @@ export const TrackTitle = ({ id, name }: TrackItem) => {
       <TrackTitleImg
         id={id}
       />
-      <TrackTitleText title={name} />
+      <TrackTitleText name={name} />
     </div>
   );
 };

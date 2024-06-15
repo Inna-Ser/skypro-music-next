@@ -15,14 +15,9 @@ body {
   background-color: #181818;
 }
 
-.widthrapper
-{width: 100%;
-  min-height: 100%;
-  overflow: hidden;
-  background-color: #383838;}
-  
-.contaner
-  {max-width: 1920px;
+.contaner {
+    max-width: 1920px;
+    overflow: hidden;
   height: 100vh;
   margin: 0 auto;
   position: relative;

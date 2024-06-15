@@ -13,15 +13,17 @@ export const MainComponent = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tracksList, setTracksList] = useState<TrackItem[]>([]);
 
-  
   return (
     <div className={styles.main}>
       <Navigator />
-      <Centerblock
-        setTracksList={setTracksList}
-        tracksList={tracksList}
-        setCurrentTrack={setCurrentTrack}
-      />
+      <div className={styles.widthrapper}>
+        <Centerblock
+          setTracksList={setTracksList}
+          tracksList={tracksList}
+          setCurrentTrack={setCurrentTrack}
+        />
+      </div>
+
       <Sidebar />
       <Audioplayer />
     </div>

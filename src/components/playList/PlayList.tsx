@@ -31,11 +31,12 @@ export const PlayList = () => {
   }, [setTracksList, setInitialTracks]);
 
   return (
-    <div className={classNames(styles.content__playlist, styles.playlist)}>
+    <div className={classNames(styles.contentPlaylist, styles.playlist)}>
       <p style={{ color: "purple" }}>{addTodoError}</p>
       {tracksList.map((track) => (
         <Track
-          key={track.id}
+          // key={track.idInd}
+          id={track.id}
           name={track.name}
           author={track.author}
           album={track.album}

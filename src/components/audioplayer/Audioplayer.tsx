@@ -25,17 +25,12 @@ import {
   setPrev,
 } from "@/store/features/trackSlice";
 
-type Props = {
-  setIsPlaying: (isPlaying: boolean) => void;
-  currentTrack: TrackItem | null;
-  isPlaying: boolean;
-  isShuffle: boolean;
-};
-export const Audioplayer: React.FC<Props> = () => {
+export const Audioplayer = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [currentVolume, setCurrentVolume] = useState<number>(0.5);
   const [isLoop, setIsLoop] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(false);
+
   const dispatch = useAppDispatch();
 
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
@@ -96,14 +91,13 @@ export const Audioplayer: React.FC<Props> = () => {
     dispatch(setPrev());
   };
 
-  const toggleShuffle = () =>{
-    if(!isActive){
+  const toggleShuffle = () => {
+    if (!isActive) {
       dispatch(setIsShuffle(true));
     } else {
       dispatch(setIsShuffle(false));
     }
-  }
-
+  };
 
   useEffect(() => {
     if (audioRef && audioRef.current) {
@@ -138,10 +132,7 @@ export const Audioplayer: React.FC<Props> = () => {
                 )}
                 <Next playNextTrack={playNextTrack} />
                 <Repeat playRepeatTrack={playRepeatTrack} isLoop={isLoop} />
-                <Shuffle
-                  toggleShuffle={toggleShuffle}
-                  isActive={isShuffle}
-                />
+                <Shuffle toggleShuffle={toggleShuffle} isActive={isShuffle} />
               </div>
               <TrackPlayImage />
               <div className={styles.playerTrackPlay}>
