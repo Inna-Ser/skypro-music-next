@@ -48,9 +48,9 @@ type Props = {
   setTracksList: (track: TrackItem[]) => void;
   setCurrentTrack: (track: TrackItem) => void;
 };
-export const Centerblock = ({ tracksList, setCurrentTrack, setTracksList,isLoading }: Props) => {
- 
-
+export const Centerblock = ({
+  tracksList
+}: Props) => {
   return (
     <div className={classNames(styles.mainCenterblock, styles.centerblock)}>
       <Search />
@@ -58,12 +58,7 @@ export const Centerblock = ({ tracksList, setCurrentTrack, setTracksList,isLoadi
       <Filter tracksList={tracksList} />
       <div className={styles.centerblockContent}>
         <ContentTitle />
-        <PlayList
-          isLoading={isLoading}
-          tracksList={tracksList}
-          setTracksList={setTracksList}
-          setCurrentTrack={setCurrentTrack}
-        />
+        <PlayList />
       </div>
     </div>
   );

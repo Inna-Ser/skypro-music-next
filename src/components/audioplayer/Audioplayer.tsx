@@ -17,8 +17,13 @@ import { useEffect, useRef, useState } from "react";
 import { ProgressBar } from "./progressbar/Progressbar";
 import { TrackItem } from "@/tipes";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { setIsPlaying, setIsShuffle, setNext } from "@/store/features/trackSlice";
-import { Props } from "next/script";
+import {
+  setCurrentTrack,
+  setIsPlaying,
+  setIsShuffle,
+  setNext,
+  setPrev,
+} from "@/store/features/trackSlice";
 
 type Props = {
   setIsPlaying: (isPlaying: boolean) => void;
@@ -40,8 +45,9 @@ export const Audioplayer: React.FC<Props> = () => {
   useEffect(() => {
     if (audioRef.current && currentTrack?.track_file) {
       audioRef.current.src = currentTrack.track_file;
+      audioRef.current.load(); // Загружаем новый трек
       audioRef.current.play().catch((err) => console.log(err));
-      dispatch(setIsPlaying(true)); 
+      dispatch(setIsPlaying(true));
     }
   }, [currentTrack, dispatch]);
 
@@ -72,10 +78,10 @@ export const Audioplayer: React.FC<Props> = () => {
   const togglePlay = () => {
     if (audioRef.current?.paused) {
       audioRef.current.play().catch((err) => console.log(err));
-      dispatch(setIsPlaying(true)); // Используем dispatch для обновления состояния
+      dispatch(setIsPlaying(true));
     } else {
       audioRef.current?.pause();
-      dispatch(setIsPlaying(false)); // Используем dispatch для обновления состояния
+      dispatch(setIsPlaying(false));
     }
   };
   const playRepeatTrack = () => {
@@ -87,13 +93,18 @@ export const Audioplayer: React.FC<Props> = () => {
   };
 
   const playPrevTrack = () => {
-    alert("Еще не реализовано");
+    dispatch(setPrev());
   };
 
-  const playShuffleTrack = () => {
-    dispatch(setIsShuffle());
-    setIsActive(!isActive);
-  };
+  const toggleShuffle = () =>{
+    if(!isActive){
+      dispatch(setIsShuffle(true));
+    } else {
+      dispatch(setIsShuffle(false));
+    }
+  }
+
+
   useEffect(() => {
     if (audioRef && audioRef.current) {
       audioRef.current.volume = currentVolume; // Устанавливаем начальное значение громкости
@@ -128,8 +139,8 @@ export const Audioplayer: React.FC<Props> = () => {
                 <Next playNextTrack={playNextTrack} />
                 <Repeat playRepeatTrack={playRepeatTrack} isLoop={isLoop} />
                 <Shuffle
-                  playShuffleTrack={playShuffleTrack}
-                  isActive={isActive}
+                  toggleShuffle={toggleShuffle}
+                  isActive={isShuffle}
                 />
               </div>
               <TrackPlayImage />

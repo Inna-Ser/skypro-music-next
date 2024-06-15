@@ -12,12 +12,15 @@ type Props = {
   isShuffle: boolean;
   isActive: boolean;
   playNextTrack: () => void;
-  playPrevTrack: (tracks: TrackItem) => void;
-  playShuffleTrack: () => void;
+  playPrevTrack: () => void;
+  toggleShuffle: () => void;
 };
 export const Prev = ({ playPrevTrack }: Props) => {
+  const handleClick = () => {
+    playPrevTrack();
+  };
   return (
-    <div className={styles.playerBtnPrev} onClick={playPrevTrack}>
+    <div className={styles.playerBtnPrev} onClick={handleClick}>
       <svg className={styles.playerBtnPrevSvg}>
         <use xlinkHref="img/icon/sprite.svg#icon-prev"></use>
       </svg>
@@ -82,7 +85,6 @@ export const Repeat = ({ playRepeatTrack, isLoop }: Props) => {
             ? styles.playerBtnShuffleSvg
             : classNames(styles.playerBtnShuffleSvg, styles.active)
         }
-        alt="repeat"
       >
         <use xlinkHref="img/icon/sprite.svg#icon-repeat"></use>
       </svg>
@@ -90,15 +92,19 @@ export const Repeat = ({ playRepeatTrack, isLoop }: Props) => {
   );
 };
 
-export const Shuffle = ({ playShuffleTrack, isActive }: Props) => {
+export const Shuffle = ({ isActive, toggleShuffle }: Props) => {
   return (
     <div
       className={classNames(styles.playerBtnShuffle, styles._btnIcon)}
-      onClick={playShuffleTrack}
+      onClick={toggleShuffle}
     >
-      <svg className={!isActive
-              ? styles.playerBtnShuffleSvg
-              : classNames(styles.playerBtnShuffleSvg, styles.active)}>
+      <svg
+        className={
+          !isActive
+            ? styles.playerBtnShuffleSvg
+            : classNames(styles.playerBtnShuffleSvg, styles.active)
+        }
+      >
         <use xlinkHref="img/icon/sprite.svg#icon-shuffle"></use>
       </svg>
     </div>

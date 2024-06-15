@@ -10,20 +10,10 @@ import { getTracks } from "@/api/Api";
 
 export const MainComponent = () => {
   const [currentTrack, setCurrentTrack] = useState<TrackItem | null>();
-  const [tracksList, setTracksList] = useState<TrackItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [tracksList, setTracksList] = useState<TrackItem[]>([]);
 
-  useEffect(() => {
-    getTracks()
-      .then((data) => {
-        setTracksList(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        new Error(error.message);
-        setIsLoading(false);
-      });
-  }, [setTracksList]);
+  
   return (
     <div className={styles.main}>
       <Navigator />
