@@ -13,6 +13,7 @@ type TracksStateType = {
   currentTrackIndex: number | null;
   isLiked: boolean;
   isDisliked: boolean;
+  trackList: TrackItem[];
 };
 
 const initialState: TracksStateType = {
@@ -26,6 +27,7 @@ const initialState: TracksStateType = {
   currentTrackIndex: null,
   isLiked: false,
   isDisliked: false,
+  trackList: [],
 };
 const tracksSlice = createSlice({
   name: "tracks",
@@ -43,6 +45,8 @@ const tracksSlice = createSlice({
       if (state.isShuffle) {
         // Если включен режим перемешивания, перемешиваем список треков и сохраняем его в shuffleTracks
         state.shuffleTracks = playShuffleTrack([...state.initialTracks]);
+      } else {
+        state.shuffleTracks = [...state.initialTracks];
       }
     },
     setPrev: (state) => {
@@ -67,7 +71,8 @@ const tracksSlice = createSlice({
     },
     setInitialTracks: (state, action: PayloadAction<TrackItem[]>) => {
       state.initialTracks = action.payload;
-      state.playList = [...action.payload]; // Устанавливаем плейлист с треками
+      state.playList = [...action.payload];
+      state.trackList = [...action.payload];
     },
   },
 });

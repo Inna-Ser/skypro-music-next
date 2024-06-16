@@ -1,8 +1,13 @@
 // src/store/store.ts
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { authReducer } from "./features/authSlice";
-import { TypedUseSelectorHook, useDispatch, useSelector, useStore } from "react-redux";
-import { tracksReducer } from "./features/trackSlice";
+import { authReducer } from "./slices/features/authSlice";
+import {
+  TypedUseSelectorHook,
+  useDispatch,
+  useSelector,
+  useStore,
+} from "react-redux";
+import { tracksReducer } from "./slices/features/trackSlice";
 
 // Функция makeStore создает и возвращает хранилище Redux с помощью функции configureStore.
 export const makeStore = () => {

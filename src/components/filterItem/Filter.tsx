@@ -4,6 +4,7 @@ import { filterYears } from "../../utils/filterYears";
 import styles from "./Filter.module.css";
 import classNames from "classnames";
 import { TrackItem } from "@/tipes";
+import { useAppSelector } from "@/store/store";
 
 type Props = {
   tracksList: TrackItem[];
@@ -53,9 +54,10 @@ const FilterGenre = ({ tracksList }: Props) => {
     </div>
   );
 };
-export const Filter = ({ tracksList }: Props) => {
-  console.log(tracksList);
+
+export const Filter = () => {
   const [visible, setVisible] = useState<string | null>(null);
+  const tracksList = useAppSelector((state) => state.tracks.trackList);
   const toggleVisibility = (value: string | null) => {
     if (value === visible) {
       setVisible(null);

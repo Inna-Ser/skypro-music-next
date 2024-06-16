@@ -4,15 +4,16 @@ import { Track } from "./track/Track";
 import styles from "./PlayList.module.css";
 import { TrackItem } from "@/tipes";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { setCurrentTrack, setInitialTracks } from "@/store/features/trackSlice";
+import {
+  setCurrentTrack,
+  setInitialTracks,
+} from "@/store/slices/features/trackSlice";
 import { useEffect, useState } from "react";
 import { getTracks } from "@/api/Api";
 
 export const PlayList = () => {
   const [tracksList, setTracksList] = useState<TrackItem[]>([]);
-  const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
   const [addTodoError, setAddTodoError] = useState(null);
-
 
   const dispatch = useAppDispatch();
   // if (isLoading) {
@@ -35,7 +36,7 @@ export const PlayList = () => {
       <p style={{ color: "purple" }}>{addTodoError}</p>
       {tracksList.map((track) => (
         <Track
-          // key={track.idInd}
+          key={track.id}
           id={track.id}
           name={track.name}
           author={track.author}

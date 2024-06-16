@@ -3,20 +3,16 @@ import styles from "./VolumeBlock.module.css";
 import { useState } from "react";
 
 type Props = {
-  e: React.ChangeEvent<HTMLInputElement>;
-  onChange: () => void;
   audioRef: React.RefObject<HTMLAudioElement>;
   setCurrentVolume: (volume: number) => void;
   currentVolume: number;
 };
-export const VolumeBlock = ({ setCurrentVolume, currentVolume, audioRef }: Props) => {
+export const VolumeBlock = ({
+  setCurrentVolume,
+  currentVolume,
+  audioRef,
+}: Props) => {
   const [isMute, setIsMute] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   if (audioRef && audioRef.current) {
-  //     audioRef.current.volume = currentVolume; // Устанавливаем начальное значение громкости
-  //   }
-  // }, [audioRef, currentVolume]);
 
   const changeVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = e.target.valueAsNumber / 100;

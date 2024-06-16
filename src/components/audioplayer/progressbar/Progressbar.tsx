@@ -5,7 +5,7 @@ type Props = {
   audioRef: React.RefObject<HTMLAudioElement>;
   togglePlay: () => void;
 };
-export function ProgressBar({ audioRef, togglePlay }: Props) {
+export function ProgressBar({ audioRef }: Props) {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const progressbarRef = useRef<null | HTMLInputElement>(null);
@@ -15,7 +15,6 @@ export function ProgressBar({ audioRef, togglePlay }: Props) {
       const { value } = e.target;
       audioRef.current.currentTime = +value;
       setCurrentTime(+value);
-      togglePlay();
     }
   };
 

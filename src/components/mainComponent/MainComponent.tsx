@@ -4,13 +4,11 @@ import { Navigator } from "@components/navigator/Navigator";
 import { Sidebar } from "@components/sidebar/Sidebar";
 import { Audioplayer } from "@components/audioplayer/Audioplayer";
 import styles from "@components/mainComponent/MainComponent.module.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TrackItem } from "@/tipes";
-import { getTracks } from "@/api/Api";
 
 export const MainComponent = () => {
   const [currentTrack, setCurrentTrack] = useState<TrackItem | null>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tracksList, setTracksList] = useState<TrackItem[]>([]);
 
   return (
@@ -23,7 +21,6 @@ export const MainComponent = () => {
           setCurrentTrack={setCurrentTrack}
         />
       </div>
-
       <Sidebar />
       <Audioplayer />
     </div>

@@ -3,7 +3,6 @@ import { TrackItem } from "@/tipes";
 import styles from "./TrackTitleComponent.module.css";
 import classNames from "classnames";
 import { useAppSelector } from "@/store/store";
-import { useState } from "react";
 
 export const TrackTitleImg = ({ id }: TrackItem) => {
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);

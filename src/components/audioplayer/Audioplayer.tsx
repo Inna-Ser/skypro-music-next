@@ -15,15 +15,13 @@ import { TrackTime } from "./trackTime/TrackTime";
 import styles from "./Audioplayer.module.css";
 import { useEffect, useRef, useState } from "react";
 import { ProgressBar } from "./progressbar/Progressbar";
-import { TrackItem } from "@/tipes";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
-  setCurrentTrack,
   setIsPlaying,
   setIsShuffle,
   setNext,
   setPrev,
-} from "@/store/features/trackSlice";
+} from "@/store/slices/features/trackSlice";
 
 export const Audioplayer = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -56,10 +54,8 @@ export const Audioplayer = () => {
       }
     };
     const currentRef = audioRef.current;
-
     currentRef?.addEventListener("ended", handleEnded);
     currentRef?.addEventListener("loadedmetadata", handleLoadedMetadata);
-
     return () => {
       currentRef?.removeEventListener("ended", handleEnded);
       currentRef?.removeEventListener("loadedmetadata", handleLoadedMetadata);
@@ -79,6 +75,7 @@ export const Audioplayer = () => {
       dispatch(setIsPlaying(false));
     }
   };
+
   const playRepeatTrack = () => {
     if (audioRef.current) {
       audioRef.current.loop = !audioRef.current.loop;
@@ -92,11 +89,8 @@ export const Audioplayer = () => {
   };
 
   const toggleShuffle = () => {
-    if (!isActive) {
-      dispatch(setIsShuffle(true));
-    } else {
-      dispatch(setIsShuffle(false));
-    }
+    dispatch(setIsShuffle(!isActive));
+    setIsActive((prev) => !prev);
   };
 
   useEffect(() => {
