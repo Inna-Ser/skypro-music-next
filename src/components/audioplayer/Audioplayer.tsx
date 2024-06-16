@@ -85,7 +85,14 @@ export const Audioplayer = () => {
   };
 
   const playPrevTrack = () => {
-    dispatch(setPrev());
+    if (audioRef.current) {
+      if (audioRef.current.currentTime > 5) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play();
+      } else {
+        dispatch(setPrev()); // переключаемся на предыдущий трек
+      }
+    }
   };
 
   const toggleShuffle = () => {
