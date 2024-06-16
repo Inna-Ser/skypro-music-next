@@ -24,8 +24,7 @@
   }
   
   .centerblockContent {
-    overflow: hidden;
-
+    width: 100%;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -111,6 +110,7 @@
     -ms-flex-pack: justify;
     justify-content: space-between;
     margin-bottom: 24px;
+    margin-right: 30px;
   }
   
   .contentTitleCol {
@@ -145,6 +145,7 @@
   .col04 {
     width: 60px;
     text-align: end;
+    margin-right: 15px;
   }
   
   .playlistItem {

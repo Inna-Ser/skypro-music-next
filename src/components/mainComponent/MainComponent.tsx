@@ -6,23 +6,20 @@ import { Audioplayer } from "@components/audioplayer/Audioplayer";
 import styles from "@components/mainComponent/MainComponent.module.css";
 import { useState } from "react";
 import { TrackItem } from "@/tipes";
+import { useAppSelector } from "@/store/store";
 
 export const MainComponent = () => {
-  const [currentTrack, setCurrentTrack] = useState<TrackItem | null>();
+  const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
   const [tracksList, setTracksList] = useState<TrackItem[]>([]);
 
   return (
     <div className={styles.main}>
       <Navigator />
       <div className={styles.widthrapper}>
-        <Centerblock
-          setTracksList={setTracksList}
-          tracksList={tracksList}
-          setCurrentTrack={setCurrentTrack}
-        />
+        <Centerblock tracksList={tracksList} />
       </div>
       <Sidebar />
-      <Audioplayer />
+      {!currentTrack ? null : <Audioplayer />}{" "}
     </div>
   );
 };

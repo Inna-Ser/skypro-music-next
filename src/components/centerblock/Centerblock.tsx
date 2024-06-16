@@ -44,9 +44,6 @@ const Search = () => {
 
 type Props = {
   tracksList: TrackItem[];
-  isLoading: boolean;
-  setTracksList: (track: TrackItem[]) => void;
-  setCurrentTrack: (track: TrackItem) => void;
 };
 export const Centerblock = ({
   tracksList

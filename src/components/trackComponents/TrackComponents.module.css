@@ -71,4 +71,10 @@
   .active {
     stroke: #FFFFFF;
   }
-  
+
+  .trackTime {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    margin-left: 10px;
+  }
