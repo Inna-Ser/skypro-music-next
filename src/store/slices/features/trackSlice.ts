@@ -14,6 +14,13 @@ type TracksStateType = {
   isLiked: boolean;
   isDisliked: boolean;
   trackList: TrackItem[];
+  filterOptions: {
+    author: string[];
+    genre: string[];
+    order: string;
+    searchString: string;
+  };
+  filterTracks: TrackItem[];
 };
 
 const initialState: TracksStateType = {
@@ -28,6 +35,13 @@ const initialState: TracksStateType = {
   isLiked: false,
   isDisliked: false,
   trackList: [],
+  filterOptions: {
+    author: [],
+    genre: [],
+    order: "по умолчанию",
+    searchString: "",
+  },
+  filterTracks: [],
 };
 const tracksSlice = createSlice({
   name: "tracks",
@@ -50,29 +64,89 @@ const tracksSlice = createSlice({
       }
     },
     setPrev: (state) => {
-        const tracks = state.isShuffle ? state.shuffleTracks : state.initialTracks;
-        const currentTrackIndex = tracks.findIndex((track) => track.id === state.currentTrack?.id);
-        if (currentTrackIndex === 0) {
-            return;
-        } else {
-            const newIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length
-            state.currentTrack = tracks[newIndex];
-        }
+      const tracks = state.isShuffle
+        ? state.shuffleTracks
+        : state.initialTracks;
+      const currentTrackIndex = tracks.findIndex(
+        (track) => track.id === state.currentTrack?.id
+      );
+      if (currentTrackIndex === 0) {
+        return;
+      } else {
+        const newIndex =
+          (currentTrackIndex - 1 + tracks.length) % tracks.length;
+        state.currentTrack = tracks[newIndex];
+      }
     },
     setNext: (state) => {
-        const tracks = state.isShuffle ? state.shuffleTracks : state.initialTracks;
-        const currentTrackIndex = tracks.findIndex((track) => track.id === state.currentTrack?.id);
-        if (currentTrackIndex === tracks.length - 1) {
-            return;
-        } else {
-            const newIndex = (currentTrackIndex + 1 + tracks.length) % tracks.length
-            state.currentTrack = tracks[newIndex];
-        }
+      const tracks = state.isShuffle
+        ? state.shuffleTracks
+        : state.initialTracks;
+      const currentTrackIndex = tracks.findIndex(
+        (track) => track.id === state.currentTrack?.id
+      );
+      if (currentTrackIndex === tracks.length - 1) {
+        return;
+      } else {
+        const newIndex =
+          (currentTrackIndex + 1 + tracks.length) % tracks.length;
+        state.currentTrack = tracks[newIndex];
+      }
     },
     setInitialTracks: (state, action: PayloadAction<TrackItem[]>) => {
       state.initialTracks = action.payload;
       state.playList = [...action.payload];
       state.trackList = [...action.payload];
+    },
+    setFilter: (
+      state,
+      action: PayloadAction<{
+        author?: string[];
+        genre?: string[];
+        order?: string;
+        searchString?: string;
+      }>
+    ) => {
+      state.filterOptions = {
+        author: action.payload.author || state.filterOptions.author,
+        genre: action.payload.genre || state.filterOptions.genre,
+        order: action.payload.order || state.filterOptions.order,
+        searchString:
+          action.payload.searchString || state.filterOptions.searchString,
+      };
+      const filterTracks = [...state.playList].filter((track) => {
+        const hasSearchString = track.name
+          .toLowerCase()
+          .includes(state.filterOptions.searchString.toLowerCase());
+        const hasAuthor =
+          state.filterOptions.author.length > 0
+            ? state.filterOptions.author.includes(track.author)
+            : true;
+        const hasGenre =
+          state.filterOptions.genre.length > 0
+            ? state.filterOptions.genre.includes(track.genre)
+            : true;
+        return hasSearchString && hasAuthor && hasGenre;
+      });
+      switch (state.filterOptions.order) {
+        case "First new":
+          filterTracks.sort(
+            (a, b) =>
+              new Date(b.release_date).getTime() -
+              new Date(a.release_date).getTime()
+          );
+          break;
+        case "First old":
+          filterTracks.sort(
+            (a, b) =>
+              new Date(a.release_date).getTime() -
+              new Date(b.release_date).getTime()
+          );
+          break;
+        default:
+          break;
+          state.filterTracks = filterTracks;
+      }
     },
   },
 });
@@ -84,6 +158,7 @@ export const {
   setInitialTracks,
   setIsShuffle,
   setIsPlaying,
+  setFilter,
 } = tracksSlice.actions;
 
 export const tracksReducer = tracksSlice.reducer;

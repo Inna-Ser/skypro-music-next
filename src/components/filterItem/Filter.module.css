@@ -11,6 +11,8 @@
     flex-direction: column;
     gap: 10px;
     overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #928888 #181818;
   }
 
 .filterListItem {

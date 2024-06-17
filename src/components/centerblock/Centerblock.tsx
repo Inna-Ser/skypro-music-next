@@ -4,6 +4,8 @@ import styles from "./Centerblock.module.css";
 import { PlayList } from "@components/playList/PlayList";
 import classNames from "classnames";
 import { TrackItem } from "@/tipes";
+import { useAppDispatch } from "@/store/store";
+import { setFilter } from "@/store/slices/features/trackSlice";
 
 const ContentTitle = () => {
   return (
@@ -27,6 +29,14 @@ const ContentTitle = () => {
 };
 
 const Search = () => {
+  const dispatch = useAppDispatch();
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchString = event.target.value;
+    // Отправляем действие для обновления строки поиска в стейте
+    dispatch(setFilter({ searchString }));
+  };
+
   return (
     <div className={classNames(styles.centerblockSearch, styles.search)}>
       <svg className={styles.searchSvg}>
@@ -37,6 +47,7 @@ const Search = () => {
         type="search"
         placeholder="Поиск"
         name="search"
+        onChange={handleSearchChange}
       />
     </div>
   );

@@ -10,5 +10,9 @@
   }
   .playlist {
     overflow: auto;
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #928888 #181818; /* Firefox */
+    
   }
+
   

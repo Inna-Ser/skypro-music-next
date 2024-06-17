@@ -16,9 +16,6 @@ export const PlayList = () => {
   const [addTodoError, setAddTodoError] = useState(null);
 
   const dispatch = useAppDispatch();
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
 
   useEffect(() => {
     getTracks()

@@ -4,20 +4,32 @@ import { filterYears } from "../../utils/filterYears";
 import styles from "./Filter.module.css";
 import classNames from "classnames";
 import { TrackItem } from "@/tipes";
-import { useAppSelector } from "@/store/store";
+import { useAppDispatch, useAppSelector } from "@/store/store";
+import { setFilter } from "@/store/slices/features/trackSlice";
 
 type Props = {
   tracksList: TrackItem[];
 };
 const FilterAuthor = ({ tracksList }: Props) => {
+  const dispatch = useAppDispatch();
   const uniqueAuthors = Array.from(
     new Set(tracksList.map((track) => track.author))
   );
 
+  const handleAuthorChange = (autor: string) => {
+    dispatch(setFilter({ author: [autor] }));
+  };
+
   return (
     <ul className={styles.filterListContaner}>
       {uniqueAuthors.map((author, index) => (
-        <li className={styles.filterListItem} key={index}>
+        <li
+          className={styles.filterListItem}
+          key={index}
+          onClick={() => {
+            handleAuthorChange(author);
+          }}
+        >
           {author}
         </li>
       ))}
@@ -26,10 +38,21 @@ const FilterAuthor = ({ tracksList }: Props) => {
 };
 
 const FilterYear = () => {
+  const dispatch = useAppDispatch();
+
+  const handleYearChange = (year: string) => {
+    dispatch(setFilter({ order: year }));
+  };
   return (
     <ul className={styles.filterListContaner}>
       {filterYears.map((filterYear, index) => (
-        <li className={styles.filterListItem} key={index}>
+        <li
+          className={styles.filterListItem}
+          key={index}
+          onClick={() => {
+            handleYearChange(filterYear.year);
+          }}
+        >
           {filterYear.year}
         </li>
       ))}
@@ -38,15 +61,23 @@ const FilterYear = () => {
 };
 
 const FilterGenre = ({ tracksList }: Props) => {
+  const dispatch = useAppDispatch();
   const uniqueGenre = Array.from(
     new Set(tracksList.map((track) => track.genre))
   );
+  const handleGenreChange = (genre: string) => {
+    dispatch(setFilter({ genre: [genre] }));
+  };
   return (
     <div className={styles.filterListGenre}>
       <ul className={styles.filterListContaner}>
         Expand Down
         {uniqueGenre.map((genre, index) => (
-          <li className={styles.filterListItem} key={index}>
+          <li
+            className={styles.filterListItem}
+            key={index}
+            onClick={() => handleGenreChange(genre)}
+          >
             {genre}
           </li>
         ))}
