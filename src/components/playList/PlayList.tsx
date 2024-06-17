@@ -7,31 +7,26 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
   setCurrentTrack,
   setInitialTracks,
+  setPlayList,
 } from "@/store/slices/features/trackSlice";
 import { useEffect, useState } from "react";
 import { getTracks } from "@/api/Api";
 
 export const PlayList = () => {
-  const [tracksList, setTracksList] = useState<TrackItem[]>([]);
   const [addTodoError, setAddTodoError] = useState(null);
+  const filteredTracks = useAppSelector((state) => state.tracks.filterTracks);
+  const trackList = useAppSelector((state) => state.tracks.trackList);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getTracks()
-      .then((data) => {
-        setTracksList(data);
-        dispatch(setInitialTracks(data));
-      })
-      .catch((error) => {
-        new Error(error.message);
-      });
-  }, [setTracksList, setInitialTracks]);
+    dispatch(setPlayList({ tracks: filteredTracks }));
+  }, [dispatch, filteredTracks]);
 
   return (
     <div className={classNames(styles.contentPlaylist, styles.playlist)}>
       <p style={{ color: "purple" }}>{addTodoError}</p>
-      {tracksList.map((track) => (
+      {filteredTracks.map((track) => (
         <Track
           key={track.id}
           id={track.id}

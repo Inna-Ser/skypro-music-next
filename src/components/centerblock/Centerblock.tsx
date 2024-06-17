@@ -5,7 +5,9 @@ import { PlayList } from "@components/playList/PlayList";
 import classNames from "classnames";
 import { TrackItem } from "@/tipes";
 import { useAppDispatch } from "@/store/store";
-import { setFilter } from "@/store/slices/features/trackSlice";
+import { setFilter, setInitialTracks } from "@/store/slices/features/trackSlice";
+import { useEffect, useState } from "react";
+import { getTracks } from "@/api/Api";
 
 const ContentTitle = () => {
   return (
@@ -53,12 +55,24 @@ const Search = () => {
   );
 };
 
-type Props = {
-  tracksList: TrackItem[];
-};
-export const Centerblock = ({
-  tracksList
-}: Props) => {
+// type Props = {
+//   tracksList: TrackItem[];
+// };
+export const Centerblock = () => {
+  const [tracksList, setTracksList] = useState<TrackItem[]>([]);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    getTracks()
+      .then((data) => {
+        setTracksList(data);
+        dispatch(setInitialTracks(data));
+      })
+      .catch((error) => {
+        new Error(error.message);
+      });
+  }, [setTracksList, setInitialTracks]);
+
   return (
     <div className={classNames(styles.mainCenterblock, styles.centerblock)}>
       <Search />

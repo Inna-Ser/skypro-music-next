@@ -98,6 +98,10 @@ const tracksSlice = createSlice({
       state.playList = [...action.payload];
       state.trackList = [...action.payload];
     },
+    setPlayList: (state, action: PayloadAction<{tracks:TrackItem[]}>) => {
+      state.playList = action.payload.tracks;
+      state.filterTracks = action.payload.tracks;
+    },
     setFilter: (
       state,
       action: PayloadAction<{
@@ -107,6 +111,7 @@ const tracksSlice = createSlice({
         searchString?: string;
       }>
     ) => {
+      const { author, genre, order, searchString } = action.payload;
       state.filterOptions = {
         author: action.payload.author || state.filterOptions.author,
         genre: action.payload.genre || state.filterOptions.genre,
@@ -145,8 +150,9 @@ const tracksSlice = createSlice({
           break;
         default:
           break;
-          state.filterTracks = filterTracks;
+          
       }
+      state.filterTracks = filterTracks;
     },
   },
 });
@@ -159,6 +165,7 @@ export const {
   setIsShuffle,
   setIsPlaying,
   setFilter,
+  setPlayList,
 } = tracksSlice.actions;
 
 export const tracksReducer = tracksSlice.reducer;

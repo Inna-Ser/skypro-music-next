@@ -9,16 +9,17 @@ import { setFilter } from "@/store/slices/features/trackSlice";
 
 type Props = {
   tracksList: TrackItem[];
+  memoize: <T extends (...args: any[]) => any>(fn: T) => T;
 };
-const FilterAuthor = ({ tracksList }: Props) => {
+const FilterAuthor = ({ memoize, tracksList }: Props) => {
   const dispatch = useAppDispatch();
   const uniqueAuthors = Array.from(
     new Set(tracksList.map((track) => track.author))
   );
 
-  const handleAuthorChange = (autor: string) => {
-    dispatch(setFilter({ author: [autor] }));
-  };
+  const handleAuthorChange = memoize((author: string) => {
+    dispatch(setFilter({ author: [author] }));
+  });
 
   return (
     <ul className={styles.filterListContaner}>
@@ -89,6 +90,28 @@ const FilterGenre = ({ tracksList }: Props) => {
 export const Filter = () => {
   const [visible, setVisible] = useState<string | null>(null);
   const tracksList = useAppSelector((state) => state.tracks.trackList);
+
+  function memoize(fn) {
+    // Создаем объект `cache`, который будет использоваться для хранения результатов выполнения функции `fn`.
+    const cache = {};
+
+    // Возвращаем новую функцию, которая будет принимать произвольное количество аргументов.
+    return function (...args) {
+      // Преобразуем аргументы функции в строку, чтобы использовать их в качестве ключа в объекте кэша.
+      const key = args.toString();
+
+      // Проверяем, существует ли уже результат выполнения функции с такими же аргументами в кэше.
+      if (key in cache) return cache[key];
+      else {
+        // Если в кэше нет результатов для данного набора аргументов, вызываем исходную функцию `fn` с этими аргументами.
+        const result = fn.apply(this, args);
+        // Сохраняем результат выполнения функции в кэше для последующего использования.
+        cache[key] = result;
+        // Возвращаем результат выполнения функции.
+        return result;
+      }
+    };
+  }
   const toggleVisibility = (value: string | null) => {
     if (value === visible) {
       setVisible(null);
@@ -110,7 +133,9 @@ export const Filter = () => {
         >
           исполнителю
         </div>
-        {visible === "author" && <FilterAuthor tracksList={tracksList} />}
+        {visible === "author" && (
+          <FilterAuthor tracksList={tracksList} memoize={memoize} />
+        )}
       </div>
       <div className={styles.filterWrapper}>
         <div
