@@ -6,22 +6,23 @@ import { TrackItem } from "@/tipes";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
   setCurrentTrack,
+  setFilter,
   setInitialTracks,
   setPlayList,
 } from "@/store/slices/features/trackSlice";
 import { useEffect, useState } from "react";
 import { getTracks } from "@/api/Api";
 
-export const PlayList = () => {
-  const [addTodoError, setAddTodoError] = useState(null);
-  const filteredTracks = useAppSelector((state) => state.tracks.filterTracks);
+export const PlayList: React.FC = () => {
+  const [addTodoError, setAddTodoError] = useState<string | null>(null);
+  const filteredTracks = useAppSelector((state) => state.tracks.filterPlaylist);
   const trackList = useAppSelector((state) => state.tracks.trackList);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setPlayList({ tracks: filteredTracks }));
-  }, [dispatch, filteredTracks]);
+    dispatch(setPlayList({ tracks: trackList }));
+  }, [dispatch, trackList]);
 
   return (
     <div className={classNames(styles.contentPlaylist, styles.playlist)}>

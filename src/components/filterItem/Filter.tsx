@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { filterYears } from "../../utils/filterYears";
 import styles from "./Filter.module.css";
 import classNames from "classnames";
@@ -17,9 +17,9 @@ const FilterAuthor = ({ memoize, tracksList }: Props) => {
     new Set(tracksList.map((track) => track.author))
   );
 
-  const handleAuthorChange = memoize((author: string) => {
+  const handleAuthorChange = useCallback(memoize((author: string) => {
     dispatch(setFilter({ author: [author] }));
-  });
+  }), [dispatch, memoize]);
 
   return (
     <ul className={styles.filterListContaner}>

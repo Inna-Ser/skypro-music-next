@@ -77,7 +77,7 @@ export const Centerblock = () => {
     <div className={classNames(styles.mainCenterblock, styles.centerblock)}>
       <Search />
       <h2 className={styles.centerblockH2}>Треки</h2>
-      <Filter tracksList={tracksList} />
+      <Filter />
       <div className={styles.centerblockContent}>
         <ContentTitle />
         <PlayList />

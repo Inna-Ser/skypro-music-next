@@ -19,8 +19,9 @@ type TracksStateType = {
     genre: string[];
     order: string;
     searchString: string;
+    tracks?: TrackItem[];
   };
-  filterTracks: TrackItem[];
+  filterPlaylist: TrackItem[];
 };
 
 const initialState: TracksStateType = {
@@ -40,8 +41,10 @@ const initialState: TracksStateType = {
     genre: [],
     order: "по умолчанию",
     searchString: "",
+  tracks: [],
+
   },
-  filterTracks: [],
+  filterPlaylist: [],
 };
 const tracksSlice = createSlice({
   name: "tracks",
@@ -100,7 +103,7 @@ const tracksSlice = createSlice({
     },
     setPlayList: (state, action: PayloadAction<{tracks:TrackItem[]}>) => {
       state.playList = action.payload.tracks;
-      state.filterTracks = action.payload.tracks;
+      state.filterPlaylist = action.payload.tracks;
     },
     setFilter: (
       state,
@@ -109,9 +112,9 @@ const tracksSlice = createSlice({
         genre?: string[];
         order?: string;
         searchString?: string;
+        tracks: TrackItem[];
       }>
     ) => {
-      const { author, genre, order, searchString } = action.payload;
       state.filterOptions = {
         author: action.payload.author || state.filterOptions.author,
         genre: action.payload.genre || state.filterOptions.genre,
@@ -119,20 +122,24 @@ const tracksSlice = createSlice({
         searchString:
           action.payload.searchString || state.filterOptions.searchString,
       };
-      const filterTracks = [...state.playList].filter((track) => {
+    
+      // Фильтрация треков
+      const filterTracks = action.payload.tracks.filter((track) => {
         const hasSearchString = track.name
           .toLowerCase()
           .includes(state.filterOptions.searchString.toLowerCase());
         const hasAuthor =
-          state.filterOptions.author.length > 0
+          state.filterOptions.author?.length > 0
             ? state.filterOptions.author.includes(track.author)
             : true;
         const hasGenre =
-          state.filterOptions.genre.length > 0
+          state.filterOptions.genre?.length > 0
             ? state.filterOptions.genre.includes(track.genre)
             : true;
         return hasSearchString && hasAuthor && hasGenre;
       });
+    
+      // Сортировка треков в соответствии с выбранным порядком
       switch (state.filterOptions.order) {
         case "First new":
           filterTracks.sort(
@@ -150,9 +157,8 @@ const tracksSlice = createSlice({
           break;
         default:
           break;
-          
       }
-      state.filterTracks = filterTracks;
+      state.filterPlaylist = filterTracks;
     },
   },
 });
