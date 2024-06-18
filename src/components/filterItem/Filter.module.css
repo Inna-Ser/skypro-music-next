@@ -88,3 +88,8 @@
   border-color: #b672ff;
   color: #b672ff;
 }
+
+.resetAuthor {
+  text-decoration: underline;
+  cursor: pointer;
+}

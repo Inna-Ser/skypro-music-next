@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { filterYears } from "../../utils/filterYears";
 import styles from "./Filter.module.css";
 import classNames from "classnames";
@@ -13,16 +13,29 @@ type Props = {
 };
 const FilterAuthor = ({ memoize, tracksList }: Props) => {
   const dispatch = useAppDispatch();
-  const uniqueAuthors = Array.from(
-    new Set(tracksList.map((track) => track.author))
+
+  const uniqueAuthors = useMemo(() => {
+    return Array.from(new Set(tracksList.map((track) => track.author)));
+  }, [tracksList]);
+
+  const handleAuthorChange = memoize(
+    useCallback(
+      (author: string) => {
+        dispatch(setFilter({ author: [author], tracks: tracksList })); // Передаем author как массив строк и tracksList
+      },
+      [dispatch, tracksList]
+    )
   );
 
-  const handleAuthorChange = useCallback(memoize((author: string) => {
-    dispatch(setFilter({ author: [author] }));
-  }), [dispatch, memoize]);
+  const toggleReset = () => {
+    dispatch(setFilter({ author: [], tracks: tracksList })); // Сбрасываем фильтр по автору
+  };
 
   return (
     <ul className={styles.filterListContaner}>
+      <p className={styles.resetAuthor} onClick={toggleReset}>
+        Filter reset
+      </p>
       {uniqueAuthors.map((author, index) => (
         <li
           className={styles.filterListItem}
@@ -38,6 +51,10 @@ const FilterAuthor = ({ memoize, tracksList }: Props) => {
   );
 };
 
+type Props = {
+  tracksList: TrackItem[];
+  memoize: <T extends (...args: any[]) => any>(fn: T) => T;
+};
 const FilterYear = () => {
   const dispatch = useAppDispatch();
 
@@ -61,18 +78,36 @@ const FilterYear = () => {
   );
 };
 
-const FilterGenre = ({ tracksList }: Props) => {
+type Props = {
+  tracksList: TrackItem[];
+  memoize: <T extends (...args: any[]) => any>(fn: T) => T;
+};
+const FilterGenre = ({ memoize, tracksList }: Props) => {
   const dispatch = useAppDispatch();
-  const uniqueGenre = Array.from(
-    new Set(tracksList.map((track) => track.genre))
+
+  const uniqueGenre = useMemo(() => {
+    return Array.from(new Set(tracksList.map((track) => track.genre)));
+  }, [tracksList]);
+
+  const handleGenreChange = memoize(
+    useCallback(
+      (genre: string) => {
+        dispatch(setFilter({ genre: [genre], tracks: tracksList }));
+      },
+      [dispatch, tracksList]
+    )
   );
-  const handleGenreChange = (genre: string) => {
-    dispatch(setFilter({ genre: [genre] }));
+
+  const toggleReset = () => {
+    dispatch(setFilter({ genre: [], tracks: tracksList })); // Сбрасываем фильтр по жанру
   };
+
   return (
     <div className={styles.filterListGenre}>
       <ul className={styles.filterListContaner}>
-        Expand Down
+        <p className={styles.resetAuthor} onClick={toggleReset}>
+          Filter reset
+        </p>{" "}
         {uniqueGenre.map((genre, index) => (
           <li
             className={styles.filterListItem}
@@ -92,22 +127,15 @@ export const Filter = () => {
   const tracksList = useAppSelector((state) => state.tracks.trackList);
 
   function memoize(fn) {
-    // Создаем объект `cache`, который будет использоваться для хранения результатов выполнения функции `fn`.
     const cache = {};
 
-    // Возвращаем новую функцию, которая будет принимать произвольное количество аргументов.
     return function (...args) {
-      // Преобразуем аргументы функции в строку, чтобы использовать их в качестве ключа в объекте кэша.
       const key = args.toString();
 
-      // Проверяем, существует ли уже результат выполнения функции с такими же аргументами в кэше.
       if (key in cache) return cache[key];
       else {
-        // Если в кэше нет результатов для данного набора аргументов, вызываем исходную функцию `fn` с этими аргументами.
         const result = fn.apply(this, args);
-        // Сохраняем результат выполнения функции в кэше для последующего использования.
         cache[key] = result;
-        // Возвращаем результат выполнения функции.
         return result;
       }
     };
@@ -119,6 +147,7 @@ export const Filter = () => {
       setVisible(value);
     }
   };
+
   return (
     <div className={styles.centerblockFilter}>
       <div className={styles.filterTitle}>Искать по:</div>
@@ -161,7 +190,9 @@ export const Filter = () => {
         >
           жанру
         </div>
-        {visible === "genre" && <FilterGenre tracksList={tracksList} />}
+        {visible === "genre" && (
+          <FilterGenre tracksList={tracksList} memoize={memoize} />
+        )}
       </div>
     </div>
   );
