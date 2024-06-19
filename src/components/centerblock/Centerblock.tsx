@@ -9,7 +9,7 @@ import {
   setFilter,
   setInitialTracks,
 } from "@/store/slices/features/trackSlice";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getTracks } from "@/api/Api";
 
 const ContentTitle = () => {
@@ -37,6 +37,7 @@ const Search = () => {
   const dispatch = useAppDispatch();
   const [searchString, setSearchString] = useState<string>("");
   const tracksList = useAppSelector((state) => state.tracks.trackList); // Извлекаем массив треков из состояния
+  const initialTracks = useAppSelector((state) => state.tracks.initialTracks);
 
   const memoize = (fn: Function) => {
     const cache: Record<string, any> = {};
@@ -51,27 +52,25 @@ const Search = () => {
     };
   };
 
-  const handleSearchChange = useCallback(
-    memoize((event: React.ChangeEvent<HTMLInputElement>) => {
-      const value = event.target.value.trim(); 
-      setSearchString(value);
-      if (value !== "") {
-        dispatch(setFilter({ searchString: value, tracks: tracksList })); 
-      } else {
-        dispatch(setFilter({ searchString: "", tracks: tracksList })); // Сбрасываем значение строки поиска в хранилище
-      }
-    }),
-    [dispatch, tracksList]
-  );
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value.trim();
+    setSearchString(value);
+    if (value !== "") {
+      dispatch(setFilter({ searchString: value, tracks: tracksList }));
+    } else {
+      dispatch(setFilter({ searchString: "", tracks: tracksList })); // Сбрасываем значение строки поиска в хранилище
+    }
+  };
 
-  const handleClear = memoize(() => {
-    setSearchString(""); 
-    dispatch(setFilter({ searchString: "", tracks: tracksList })); // Сбрасываем значение строки поиска в хранилище
-  });
+  const handleClear = () => {
+    console.log(tracksList)
+    dispatch(setFilter({ tracks: tracksList }));
+    setSearchString(""); // Сброс значения строки поиска в компоненте Search
+  };
 
   return (
     <div className={styles.centerblockSearch}>
-      <div className={styles.searchIcon} onClick={handleSearchChange}>
+      <div className={styles.searchIcon}>
         <svg className={styles.searchSvg}>
           <use xlinkHref={"img/icon/sprite.svg#icon-search-dark"}></use>
         </svg>

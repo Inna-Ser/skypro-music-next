@@ -2,16 +2,12 @@
 import classNames from "classnames";
 import { Track } from "./track/Track";
 import styles from "./PlayList.module.css";
-import { TrackItem } from "@/tipes";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
   setCurrentTrack,
-  setFilter,
-  setInitialTracks,
   setPlayList,
 } from "@/store/slices/features/trackSlice";
 import { useEffect, useState } from "react";
-import { getTracks } from "@/api/Api";
 
 export const PlayList: React.FC = () => {
   const [addTodoError, setAddTodoError] = useState<string | null>(null);

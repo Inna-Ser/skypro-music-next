@@ -52,15 +52,20 @@ const FilterAuthor = ({ memoize, tracksList }: Props) => {
 };
 
 type Props = {
-  tracksList: TrackItem[];
   memoize: <T extends (...args: any[]) => any>(fn: T) => T;
 };
-const FilterYear = () => {
+const FilterYear = ({ memoize }: Props) => {
   const dispatch = useAppDispatch();
 
-  const handleYearChange = (year: string) => {
-    dispatch(setFilter({ order: year }));
-  };
+  const handleYearChange = memoize(
+    useCallback(
+      (year: string) => {
+        dispatch(setFilter({ order: year }));
+      },
+      [dispatch]
+    )
+  );
+
   return (
     <ul className={styles.filterListContaner}>
       {filterYears.map((filterYear, index) => (
@@ -177,7 +182,7 @@ export const Filter = () => {
         >
           году выпуска
         </div>
-        {visible === "years" && <FilterYear />}
+        {visible === "years" && <FilterYear memoize={memoize} />}
       </div>
       <div className={styles.filterWrapper}>
         <div
