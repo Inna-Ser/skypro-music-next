@@ -5,13 +5,15 @@ import styles from "./Filter.module.css";
 import classNames from "classnames";
 import { TrackItem } from "@/tipes";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { setFilter } from "@/store/slices/features/trackSlice";
+import { setFilter, setIsFiltering } from "@/store/slices/features/trackSlice";
+import Image from "next/image";
 
 type Props = {
   tracksList: TrackItem[];
   memoize: <T extends (...args: any[]) => any>(fn: T) => T;
+  closeDropdown: () => void;
 };
-const FilterAuthor = ({ memoize, tracksList }: Props) => {
+const FilterAuthor = ({ closeDropdown, memoize, tracksList }: Props) => {
   const dispatch = useAppDispatch();
 
   const uniqueAuthors = useMemo(() => {
@@ -22,13 +24,18 @@ const FilterAuthor = ({ memoize, tracksList }: Props) => {
     useCallback(
       (author: string) => {
         dispatch(setFilter({ author: [author], tracks: tracksList })); // Передаем author как массив строк и tracksList
+        dispatch(setIsFiltering(true));
+        closeDropdown();
+        null;
       },
-      [dispatch, tracksList]
+      [dispatch, tracksList, closeDropdown]
     )
   );
 
   const toggleReset = () => {
     dispatch(setFilter({ author: [], tracks: tracksList })); // Сбрасываем фильтр по автору
+    dispatch(setIsFiltering(false));
+    closeDropdown();
   };
 
   return (
@@ -86,8 +93,9 @@ const FilterYear = ({ memoize }: Props) => {
 type Props = {
   tracksList: TrackItem[];
   memoize: <T extends (...args: any[]) => any>(fn: T) => T;
+  closeDropdown: () => void;
 };
-const FilterGenre = ({ memoize, tracksList }: Props) => {
+const FilterGenre = ({ closeDropdown, memoize, tracksList }: Props) => {
   const dispatch = useAppDispatch();
 
   const uniqueGenre = useMemo(() => {
@@ -98,6 +106,8 @@ const FilterGenre = ({ memoize, tracksList }: Props) => {
     useCallback(
       (genre: string) => {
         dispatch(setFilter({ genre: [genre], tracks: tracksList }));
+        dispatch(setIsFiltering(true));
+        closeDropdown();
       },
       [dispatch, tracksList]
     )
@@ -105,6 +115,8 @@ const FilterGenre = ({ memoize, tracksList }: Props) => {
 
   const toggleReset = () => {
     dispatch(setFilter({ genre: [], tracks: tracksList })); // Сбрасываем фильтр по жанру
+    dispatch(setIsFiltering(false));
+    closeDropdown();
   };
 
   return (
@@ -130,6 +142,10 @@ const FilterGenre = ({ memoize, tracksList }: Props) => {
 export const Filter = () => {
   const [visible, setVisible] = useState<string | null>(null);
   const tracksList = useAppSelector((state) => state.tracks.trackList);
+  const isFiltering = useAppSelector((state) => state.tracks.isFiltering);
+  const filteredTrackCount = useAppSelector(
+    (state) => state.tracks.filterPlaylist.length
+  );
 
   function memoize(fn) {
     const cache = {};
@@ -153,14 +169,21 @@ export const Filter = () => {
     }
   };
 
+  const closeDropdown = () => {
+    setVisible(null);
+  };
+
   return (
     <div className={styles.centerblockFilter}>
       <div className={styles.filterTitle}>Искать по:</div>
       <div className={styles.filterWrapper}>
+        {isFiltering && ( // Отображение currentMarker только если isFiltering === true
+          <div className={styles.currentMarker}>{filteredTrackCount}</div>
+        )}
         <div
           className={
             visible === "author"
-              ? classNames(styles.filterButton, styles.active)
+              ? `${styles.filterButton} ${styles.active}`
               : styles.filterButton
           }
           onClick={() => toggleVisibility("author")}
@@ -168,7 +191,11 @@ export const Filter = () => {
           исполнителю
         </div>
         {visible === "author" && (
-          <FilterAuthor tracksList={tracksList} memoize={memoize} />
+          <FilterAuthor
+            tracksList={tracksList}
+            memoize={memoize}
+            closeDropdown={closeDropdown}
+          />
         )}
       </div>
       <div className={styles.filterWrapper}>
@@ -185,6 +212,9 @@ export const Filter = () => {
         {visible === "years" && <FilterYear memoize={memoize} />}
       </div>
       <div className={styles.filterWrapper}>
+        {isFiltering && (
+          <div className={styles.currentMarker}>{filteredTrackCount}</div>
+        )}
         <div
           className={
             visible === "genre"
@@ -196,7 +226,11 @@ export const Filter = () => {
           жанру
         </div>
         {visible === "genre" && (
-          <FilterGenre tracksList={tracksList} memoize={memoize} />
+          <FilterGenre
+            tracksList={tracksList}
+            memoize={memoize}
+            closeDropdown={closeDropdown}
+          />
         )}
       </div>
     </div>

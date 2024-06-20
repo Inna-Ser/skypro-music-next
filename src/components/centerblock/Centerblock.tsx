@@ -37,25 +37,13 @@ const Search = () => {
   const dispatch = useAppDispatch();
   const [searchString, setSearchString] = useState<string>("");
   const tracksList = useAppSelector((state) => state.tracks.trackList); // Извлекаем массив треков из состояния
-  const initialTracks = useAppSelector((state) => state.tracks.initialTracks);
-
-  const memoize = (fn: Function) => {
-    const cache: Record<string, any> = {};
-    return function (...args: any[]) {
-      const key = args.toString();
-      if (key in cache) return cache[key];
-      else {
-        const result = fn(...args);
-        cache[key] = result;
-        return result;
-      }
-    };
-  };
+  const [isFiltering, setIsFiltering] = useState<boolean>(false);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.trim();
     setSearchString(value);
     if (value !== "") {
+      setIsFiltering(true)
       dispatch(setFilter({ searchString: value, tracks: tracksList }));
     } else {
       dispatch(setFilter({ searchString: "", tracks: tracksList })); // Сбрасываем значение строки поиска в хранилище
@@ -63,8 +51,10 @@ const Search = () => {
   };
 
   const handleClear = () => {
-    console.log(tracksList)
+    console.log(tracksList);
+    setIsFiltering(false);
     dispatch(setFilter({ tracks: tracksList }));
+    dispatch(setInitialTracks(tracksList));
     setSearchString(""); // Сброс значения строки поиска в компоненте Search
   };
 
@@ -75,21 +65,26 @@ const Search = () => {
           <use xlinkHref={"img/icon/sprite.svg#icon-search-dark"}></use>
         </svg>
       </div>
-      <input
-        className={styles.searchText}
-        type="search"
-        placeholder="Поиск"
-        name="search"
-        value={searchString}
-        onChange={handleSearchChange}
-      />
-      {searchString !== "" && (
-        <div className={styles.clearIcon} onClick={handleClear}>
-          <svg className={styles.clearSvg}>
-            <use xlinkHref={"img/icon/sprite.svg#icon-close"}></use>
-          </svg>
-        </div>
-      )}
+      <div className={styles.searchContaner}>
+        <input
+          className={styles.searchText}
+          type="search"
+          placeholder="Поиск"
+          name="search"
+          value={searchString}
+          onChange={handleSearchChange}
+        />
+
+        {isFiltering === true && (
+          <div className={styles.clearIcon} onClick={handleClear}>
+            {/* <svg className={styles.clearSvg}> */}
+              <use xlinkHref={"img/icon/sprite.svg#icon-close"}>
+                сбросить результаты поиска
+              </use>
+            {/* </svg> */}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

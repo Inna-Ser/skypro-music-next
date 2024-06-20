@@ -39,7 +39,9 @@
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    margin-bottom: 51px;}
+    margin-bottom: 51px;
+    gap: 10px;
+}
 
 .filterTitle {
     font-style: normal;
@@ -52,6 +54,7 @@
     position: relative;}
 
 .filterButton {
+  position: relative;
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -92,4 +95,23 @@
 .resetAuthor {
   text-decoration: underline;
   cursor: pointer;
+}
+
+.currentMarker {
+  position: absolute;
+  top: -20%;
+  left: 90%;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  color: #FFFFFF;
+  background-color: #b672ff;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.active {
+  animation: mymove 0.8s ease-in infinite;
 }
