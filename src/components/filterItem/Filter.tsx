@@ -5,7 +5,7 @@ import styles from "./Filter.module.css";
 import classNames from "classnames";
 import { TrackItem } from "@/tipes";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { setFilter, setIsFiltering } from "@/store/slices/features/trackSlice";
+import { setFilter, setIsFiltering, setIsFilteringAuthor, setIsFilteringGenre } from "@/store/slices/features/trackSlice";
 import Image from "next/image";
 
 type Props = {
@@ -24,7 +24,7 @@ const FilterAuthor = ({ closeDropdown, memoize, tracksList }: Props) => {
     useCallback(
       (author: string) => {
         dispatch(setFilter({ author: [author], tracks: tracksList })); // Передаем author как массив строк и tracksList
-        dispatch(setIsFiltering(true));
+        dispatch(setIsFilteringAuthor(true));
         closeDropdown();
         null;
       },
@@ -34,7 +34,7 @@ const FilterAuthor = ({ closeDropdown, memoize, tracksList }: Props) => {
 
   const toggleReset = () => {
     dispatch(setFilter({ author: [], tracks: tracksList })); // Сбрасываем фильтр по автору
-    dispatch(setIsFiltering(false));
+    dispatch(setIsFilteringAuthor(false));
     closeDropdown();
   };
 
@@ -106,7 +106,7 @@ const FilterGenre = ({ closeDropdown, memoize, tracksList }: Props) => {
     useCallback(
       (genre: string) => {
         dispatch(setFilter({ genre: [genre], tracks: tracksList }));
-        dispatch(setIsFiltering(true));
+        dispatch(setIsFilteringGenre(true));
         closeDropdown();
       },
       [dispatch, tracksList]
@@ -115,7 +115,7 @@ const FilterGenre = ({ closeDropdown, memoize, tracksList }: Props) => {
 
   const toggleReset = () => {
     dispatch(setFilter({ genre: [], tracks: tracksList })); // Сбрасываем фильтр по жанру
-    dispatch(setIsFiltering(false));
+    dispatch(setIsFilteringGenre(false));
     closeDropdown();
   };
 
@@ -142,7 +142,8 @@ const FilterGenre = ({ closeDropdown, memoize, tracksList }: Props) => {
 export const Filter = () => {
   const [visible, setVisible] = useState<string | null>(null);
   const tracksList = useAppSelector((state) => state.tracks.trackList);
-  const isFiltering = useAppSelector((state) => state.tracks.isFiltering);
+  const setIsFilteringAuthor = useAppSelector((state) => state.tracks.isFilteringAuthor);
+  const setIsFilteringGenre = useAppSelector((state) => state.tracks.isFilteringGenre);
   const filteredTrackCount = useAppSelector(
     (state) => state.tracks.filterPlaylist.length
   );
@@ -177,7 +178,7 @@ export const Filter = () => {
     <div className={styles.centerblockFilter}>
       <div className={styles.filterTitle}>Искать по:</div>
       <div className={styles.filterWrapper}>
-        {isFiltering && ( // Отображение currentMarker только если isFiltering === true
+        {setIsFilteringAuthor && ( // Отображение currentMarker только если isFiltering === true
           <div className={styles.currentMarker}>{filteredTrackCount}</div>
         )}
         <div
@@ -212,7 +213,7 @@ export const Filter = () => {
         {visible === "years" && <FilterYear memoize={memoize} />}
       </div>
       <div className={styles.filterWrapper}>
-        {isFiltering && (
+        {setIsFilteringGenre && (
           <div className={styles.currentMarker}>{filteredTrackCount}</div>
         )}
         <div

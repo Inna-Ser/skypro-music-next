@@ -16,13 +16,13 @@ var FilterAuthor = function (_a) {
     }, [tracksList]);
     var handleAuthorChange = memoize(react_1.useCallback(function (author) {
         dispatch(trackSlice_1.setFilter({ author: [author], tracks: tracksList })); // Передаем author как массив строк и tracksList
-        dispatch(trackSlice_1.setIsFiltering(true));
+        dispatch(trackSlice_1.setIsFilteringAuthor(true));
         closeDropdown();
         null;
     }, [dispatch, tracksList, closeDropdown]));
     var toggleReset = function () {
         dispatch(trackSlice_1.setFilter({ author: [], tracks: tracksList })); // Сбрасываем фильтр по автору
-        dispatch(trackSlice_1.setIsFiltering(false));
+        dispatch(trackSlice_1.setIsFilteringAuthor(false));
         closeDropdown();
     };
     return (React.createElement("ul", { className: Filter_module_css_1["default"].filterListContaner },
@@ -49,12 +49,12 @@ var FilterGenre = function (_a) {
     }, [tracksList]);
     var handleGenreChange = memoize(react_1.useCallback(function (genre) {
         dispatch(trackSlice_1.setFilter({ genre: [genre], tracks: tracksList }));
-        dispatch(trackSlice_1.setIsFiltering(true));
+        dispatch(trackSlice_1.setIsFilteringGenre(true));
         closeDropdown();
     }, [dispatch, tracksList]));
     var toggleReset = function () {
         dispatch(trackSlice_1.setFilter({ genre: [], tracks: tracksList })); // Сбрасываем фильтр по жанру
-        dispatch(trackSlice_1.setIsFiltering(false));
+        dispatch(trackSlice_1.setIsFilteringGenre(false));
         closeDropdown();
     };
     return (React.createElement("div", { className: Filter_module_css_1["default"].filterListGenre },
@@ -66,7 +66,8 @@ var FilterGenre = function (_a) {
 exports.Filter = function () {
     var _a = react_1.useState(null), visible = _a[0], setVisible = _a[1];
     var tracksList = store_1.useAppSelector(function (state) { return state.tracks.trackList; });
-    var isFiltering = store_1.useAppSelector(function (state) { return state.tracks.isFiltering; });
+    var setIsFilteringAuthor = store_1.useAppSelector(function (state) { return state.tracks.isFilteringAuthor; });
+    var setIsFilteringGenre = store_1.useAppSelector(function (state) { return state.tracks.isFilteringGenre; });
     var filteredTrackCount = store_1.useAppSelector(function (state) { return state.tracks.filterPlaylist.length; });
     function memoize(fn) {
         var cache = {};
@@ -99,7 +100,7 @@ exports.Filter = function () {
     return (React.createElement("div", { className: Filter_module_css_1["default"].centerblockFilter },
         React.createElement("div", { className: Filter_module_css_1["default"].filterTitle }, "\u0418\u0441\u043A\u0430\u0442\u044C \u043F\u043E:"),
         React.createElement("div", { className: Filter_module_css_1["default"].filterWrapper },
-            isFiltering && ( // Отображение currentMarker только если isFiltering === true
+            setIsFilteringAuthor && ( // Отображение currentMarker только если isFiltering === true
             React.createElement("div", { className: Filter_module_css_1["default"].currentMarker }, filteredTrackCount)),
             React.createElement("div", { className: visible === "author"
                     ? Filter_module_css_1["default"].filterButton + " " + Filter_module_css_1["default"].active
@@ -111,7 +112,7 @@ exports.Filter = function () {
                     : Filter_module_css_1["default"].filterButton, onClick: function () { return toggleVisibility("years"); } }, "\u0433\u043E\u0434\u0443 \u0432\u044B\u043F\u0443\u0441\u043A\u0430"),
             visible === "years" && React.createElement(FilterYear, { memoize: memoize })),
         React.createElement("div", { className: Filter_module_css_1["default"].filterWrapper },
-            isFiltering && (React.createElement("div", { className: Filter_module_css_1["default"].currentMarker }, filteredTrackCount)),
+            setIsFilteringGenre && (React.createElement("div", { className: Filter_module_css_1["default"].currentMarker }, filteredTrackCount)),
             React.createElement("div", { className: visible === "genre"
                     ? classnames_1["default"](Filter_module_css_1["default"].filterButton, Filter_module_css_1["default"].active)
                     : Filter_module_css_1["default"].filterButton, onClick: function () { return toggleVisibility("genre"); } }, "\u0436\u0430\u043D\u0440\u0443"),

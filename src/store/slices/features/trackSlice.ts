@@ -22,7 +22,8 @@ type TracksStateType = {
     tracks?: TrackItem[];
   };
   filterPlaylist: TrackItem[];
-  isFiltering: boolean;
+  isFilteringAuthor: boolean;
+  isFilteringGenre: boolean;
   filteredByAuthorCount: number;
   filteredByGenreCount: number;
 };
@@ -47,7 +48,8 @@ const initialState: TracksStateType = {
     tracks: [],
   },
   filterPlaylist: [],
-  isFiltering: false,
+  isFilteringAuthor: false,
+  isFilteringGenre: false,
   filteredByAuthorCount: 0,
   filteredByGenreCount: 0,
 };
@@ -71,8 +73,11 @@ const tracksSlice = createSlice({
         state.shuffleTracks = [...state.initialTracks];
       }
     },
-    setIsFiltering: (state, action: PayloadAction<boolean>) => {
-      state.isFiltering = action.payload;
+    setIsFilteringAuthor: (state, action: PayloadAction<boolean>) => {
+      state.isFilteringAuthor = action.payload;
+    },
+    setIsFilteringGenre: (state, action: PayloadAction<boolean>) => {
+      state.isFilteringAuthor = action.payload;
     },
     setPrev: (state) => {
       const tracks = state.isShuffle
@@ -185,7 +190,8 @@ export const {
   setIsPlaying,
   setFilter,
   setPlayList,
-  setIsFiltering,
+  setIsFilteringAuthor,
+  setIsFilteringGenre,
 } = tracksSlice.actions;
 
 export const tracksReducer = tracksSlice.reducer;

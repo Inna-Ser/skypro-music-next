@@ -19,7 +19,7 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
 };
 var _a;
 exports.__esModule = true;
-exports.tracksReducer = exports.setIsFiltering = exports.setPlayList = exports.setFilter = exports.setIsPlaying = exports.setIsShuffle = exports.setInitialTracks = exports.setNext = exports.setPrev = exports.setCurrentTrack = void 0;
+exports.tracksReducer = exports.setIsFilteringGenre = exports.setIsFilteringAuthor = exports.setPlayList = exports.setFilter = exports.setIsPlaying = exports.setIsShuffle = exports.setInitialTracks = exports.setNext = exports.setPrev = exports.setCurrentTrack = void 0;
 var helper_1 = require("@/utils/helper");
 var toolkit_1 = require("@reduxjs/toolkit");
 var initialState = {
@@ -42,7 +42,8 @@ var initialState = {
         tracks: []
     },
     filterPlaylist: [],
-    isFiltering: false,
+    isFilteringAuthor: false,
+    isFilteringGenre: false,
     filteredByAuthorCount: 0,
     filteredByGenreCount: 0
 };
@@ -67,8 +68,11 @@ var tracksSlice = toolkit_1.createSlice({
                 state.shuffleTracks = __spreadArrays(state.initialTracks);
             }
         },
-        setIsFiltering: function (state, action) {
-            state.isFiltering = action.payload;
+        setIsFilteringAuthor: function (state, action) {
+            state.isFilteringAuthor = action.payload;
+        },
+        setIsFilteringGenre: function (state, action) {
+            state.isFilteringAuthor = action.payload;
         },
         setPrev: function (state) {
             var tracks = state.isShuffle
@@ -145,5 +149,5 @@ var tracksSlice = toolkit_1.createSlice({
         }
     }
 });
-exports.setCurrentTrack = (_a = tracksSlice.actions, _a.setCurrentTrack), exports.setPrev = _a.setPrev, exports.setNext = _a.setNext, exports.setInitialTracks = _a.setInitialTracks, exports.setIsShuffle = _a.setIsShuffle, exports.setIsPlaying = _a.setIsPlaying, exports.setFilter = _a.setFilter, exports.setPlayList = _a.setPlayList, exports.setIsFiltering = _a.setIsFiltering;
+exports.setCurrentTrack = (_a = tracksSlice.actions, _a.setCurrentTrack), exports.setPrev = _a.setPrev, exports.setNext = _a.setNext, exports.setInitialTracks = _a.setInitialTracks, exports.setIsShuffle = _a.setIsShuffle, exports.setIsPlaying = _a.setIsPlaying, exports.setFilter = _a.setFilter, exports.setPlayList = _a.setPlayList, exports.setIsFilteringAuthor = _a.setIsFilteringAuthor, exports.setIsFilteringGenre = _a.setIsFilteringGenre;
 exports.tracksReducer = tracksSlice.reducer;
