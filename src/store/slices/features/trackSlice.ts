@@ -17,15 +17,16 @@ type TracksStateType = {
   filterOptions: {
     author: string[];
     genre: string[];
-    order: string;
+    order: "First New" | "First Old" | "по умолчанию"; 
     searchString: string;
     tracks?: TrackItem[];
   };
   filterPlaylist: TrackItem[];
   isFilteringAuthor: boolean;
   isFilteringGenre: boolean;
-  filteredByAuthorCount: number;
-  filteredByGenreCount: number;
+  isSortedTracks: boolean;
+  filterPlaylistByAuthor: TrackItem[];
+  filterPlaylistByGenre: TrackItem[];
 };
 
 const initialState: TracksStateType = {
@@ -50,8 +51,9 @@ const initialState: TracksStateType = {
   filterPlaylist: [],
   isFilteringAuthor: false,
   isFilteringGenre: false,
-  filteredByAuthorCount: 0,
-  filteredByGenreCount: 0,
+  isSortedTracks: false,
+  filterPlaylistByAuthor: [],
+  filterPlaylistByGenre: [],
 };
 const tracksSlice = createSlice({
   name: "tracks",
@@ -67,22 +69,24 @@ const tracksSlice = createSlice({
     setIsShuffle: (state, action: PayloadAction<boolean>) => {
       state.isShuffle = action.payload;
       if (state.isShuffle) {
-        // Если включен режим перемешивания, перемешиваем список треков и сохраняем его в shuffleTracks
-        state.shuffleTracks = playShuffleTrack([...state.initialTracks]);
+        state.shuffleTracks = playShuffleTrack([...state.filterPlaylist]);
       } else {
-        state.shuffleTracks = [...state.initialTracks];
+        state.shuffleTracks = [...state.filterPlaylist];
       }
     },
     setIsFilteringAuthor: (state, action: PayloadAction<boolean>) => {
       state.isFilteringAuthor = action.payload;
     },
     setIsFilteringGenre: (state, action: PayloadAction<boolean>) => {
-      state.isFilteringAuthor = action.payload;
+      state.isFilteringGenre = action.payload;
+    },
+    setIsSortByYears: (state, action: PayloadAction<boolean>) => {
+      state.isSortedTracks = action.payload;
     },
     setPrev: (state) => {
       const tracks = state.isShuffle
         ? state.shuffleTracks
-        : state.initialTracks;
+        : state.filterPlaylist;
       const currentTrackIndex = tracks.findIndex(
         (track) => track.id === state.currentTrack?.id
       );
@@ -97,7 +101,7 @@ const tracksSlice = createSlice({
     setNext: (state) => {
       const tracks = state.isShuffle
         ? state.shuffleTracks
-        : state.initialTracks;
+        : state.filterPlaylist;
       const currentTrackIndex = tracks.findIndex(
         (track) => track.id === state.currentTrack?.id
       );
@@ -123,63 +127,81 @@ const tracksSlice = createSlice({
       action: PayloadAction<{
         author?: string[];
         genre?: string[];
-        order?: string;
+        order?: "First New" | "First Old" | "по умолчанию"; // Уточнение типов
         searchString?: string;
         tracks: TrackItem[];
       }>
     ) => {
       state.filterOptions = {
-        ...state.filterOptions, // расширяем текущие опции фильтра
+        ...state.filterOptions,
         author: action.payload.author || state.filterOptions.author,
         genre: action.payload.genre || state.filterOptions.genre,
         order: action.payload.order || state.filterOptions.order,
-        searchString:
-          action.payload.searchString || state.filterOptions.searchString,
-        tracks: action.payload.tracks, // устанавливаем новый список треков
+        searchString: action.payload.searchString || state.filterOptions.searchString,
+        tracks: action.payload.tracks,
       };
 
       // Фильтрация треков
       if (action.payload.tracks) {
-        // проверяем наличие tracks в payload
-        const filterTracks = action.payload.tracks.filter((track) => {
-          const hasSearchString = track.name
-            .toLowerCase()
-            .includes(state.filterOptions.searchString.toLowerCase());
-          const hasAuthor =
-            state.filterOptions.author?.length > 0
-              ? state.filterOptions.author.includes(track.author)
-              : true;
-          const hasGenre =
-            state.filterOptions.genre?.length > 0
-              ? state.filterOptions.genre.includes(track.genre)
-              : true;
-          return hasSearchString && hasAuthor && hasGenre;
-        });
+        let filteredTracks = action.payload.tracks;
 
-        // Сортировка треков в соответствии с выбранным порядком
-        switch (state.filterOptions.order) {
-          case "First new":
-            filterTracks.sort(
-              (a, b) =>
-                new Date(b.release_date).getTime() -
-                new Date(a.release_date).getTime()
-            );
-            break;
-          case "First old":
-            filterTracks.sort(
-              (a, b) =>
-                new Date(a.release_date).getTime() -
-                new Date(b.release_date).getTime()
-            );
-            break;
-          default:
-            break;
+        // Фильтрация по автору
+        if (state.isFilteringAuthor) {
+          filteredTracks = filteredTracks.filter((track) => {
+            const hasSearchString = track.name.toLowerCase().includes(state.filterOptions.searchString.toLowerCase());
+            const hasAuthor = state.filterOptions.author?.length > 0 ? state.filterOptions.author.includes(track.author) : true;
+            return hasSearchString && hasAuthor;
+          });
+
+          // Сортировка по годам в соответствии с выбранным порядком
+          const sortTracks = (tracks) => {
+            switch (state.filterOptions.order) {
+              case "First New":
+                console.log(tracks.release_date)
+                tracks.sort((a, b) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime());
+                break;
+              case "First Old":
+                tracks.sort((a, b) => new Date(a.release_date).getTime() - new Date(b.release_date).getTime());
+                break;
+              default:
+                break;
+            }
+            return tracks;
+          };
+          state.filterPlaylistByAuthor = sortTracks([...filteredTracks]);
         }
-        state.filterPlaylist = filterTracks;
+
+        // Фильтрация по жанру
+        if (state.isFilteringGenre) {
+          filteredTracks = filteredTracks.filter((track) => {
+            const hasSearchString = track.name.toLowerCase().includes(state.filterOptions.searchString.toLowerCase());
+            const hasGenre = state.filterOptions.genre?.length > 0 ? state.filterOptions.genre.includes(track.genre) : true;
+            return hasSearchString && hasGenre;
+          });
+
+          // Сортировка по годам в соответствии с выбранным порядком
+          const sortTracks = (tracks) => {
+            switch (state.filterOptions.order) {
+              case "First New":
+                tracks.sort((a, b) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime());
+                break;
+              case "First Old":
+                tracks.sort((a, b) => new Date(a.release_date).getTime() - new Date(b.release_date).getTime());
+                break;
+              default:
+                break;
+            }
+            return tracks;
+          };
+          state.filterPlaylistByGenre = sortTracks([...filteredTracks]);
+        }
+
+        state.filterPlaylist = filteredTracks;
       }
     },
   },
 });
+
 
 export const {
   setCurrentTrack,
@@ -192,6 +214,7 @@ export const {
   setPlayList,
   setIsFilteringAuthor,
   setIsFilteringGenre,
+  setIsSortByYears,
 } = tracksSlice.actions;
 
 export const tracksReducer = tracksSlice.reducer;

@@ -19,7 +19,7 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
 };
 var _a;
 exports.__esModule = true;
-exports.tracksReducer = exports.setIsFilteringGenre = exports.setIsFilteringAuthor = exports.setPlayList = exports.setFilter = exports.setIsPlaying = exports.setIsShuffle = exports.setInitialTracks = exports.setNext = exports.setPrev = exports.setCurrentTrack = void 0;
+exports.tracksReducer = exports.setIsSortByYears = exports.setIsFilteringGenre = exports.setIsFilteringAuthor = exports.setPlayList = exports.setFilter = exports.setIsPlaying = exports.setIsShuffle = exports.setInitialTracks = exports.setNext = exports.setPrev = exports.setCurrentTrack = void 0;
 var helper_1 = require("@/utils/helper");
 var toolkit_1 = require("@reduxjs/toolkit");
 var initialState = {
@@ -44,8 +44,9 @@ var initialState = {
     filterPlaylist: [],
     isFilteringAuthor: false,
     isFilteringGenre: false,
-    filteredByAuthorCount: 0,
-    filteredByGenreCount: 0
+    isSortedTracks: false,
+    filterPlaylistByAuthor: [],
+    filterPlaylistByGenre: []
 };
 var tracksSlice = toolkit_1.createSlice({
     name: "tracks",
@@ -61,23 +62,25 @@ var tracksSlice = toolkit_1.createSlice({
         setIsShuffle: function (state, action) {
             state.isShuffle = action.payload;
             if (state.isShuffle) {
-                // Если включен режим перемешивания, перемешиваем список треков и сохраняем его в shuffleTracks
-                state.shuffleTracks = helper_1.playShuffleTrack(__spreadArrays(state.initialTracks));
+                state.shuffleTracks = helper_1.playShuffleTrack(__spreadArrays(state.filterPlaylist));
             }
             else {
-                state.shuffleTracks = __spreadArrays(state.initialTracks);
+                state.shuffleTracks = __spreadArrays(state.filterPlaylist);
             }
         },
         setIsFilteringAuthor: function (state, action) {
             state.isFilteringAuthor = action.payload;
         },
         setIsFilteringGenre: function (state, action) {
-            state.isFilteringAuthor = action.payload;
+            state.isFilteringGenre = action.payload;
+        },
+        setIsSortByYears: function (state, action) {
+            state.isSortedTracks = action.payload;
         },
         setPrev: function (state) {
             var tracks = state.isShuffle
                 ? state.shuffleTracks
-                : state.initialTracks;
+                : state.filterPlaylist;
             var currentTrackIndex = tracks.findIndex(function (track) { var _a; return track.id === ((_a = state.currentTrack) === null || _a === void 0 ? void 0 : _a.id); });
             if (currentTrackIndex === 0) {
                 return;
@@ -90,7 +93,7 @@ var tracksSlice = toolkit_1.createSlice({
         setNext: function (state) {
             var tracks = state.isShuffle
                 ? state.shuffleTracks
-                : state.initialTracks;
+                : state.filterPlaylist;
             var currentTrackIndex = tracks.findIndex(function (track) { var _a; return track.id === ((_a = state.currentTrack) === null || _a === void 0 ? void 0 : _a.id); });
             if (currentTrackIndex === tracks.length - 1) {
                 return;
@@ -113,41 +116,60 @@ var tracksSlice = toolkit_1.createSlice({
             state.filterOptions = __assign(__assign({}, state.filterOptions), { author: action.payload.author || state.filterOptions.author, genre: action.payload.genre || state.filterOptions.genre, order: action.payload.order || state.filterOptions.order, searchString: action.payload.searchString || state.filterOptions.searchString, tracks: action.payload.tracks });
             // Фильтрация треков
             if (action.payload.tracks) {
-                // проверяем наличие tracks в payload
-                var filterTracks = action.payload.tracks.filter(function (track) {
-                    var _a, _b;
-                    var hasSearchString = track.name
-                        .toLowerCase()
-                        .includes(state.filterOptions.searchString.toLowerCase());
-                    var hasAuthor = ((_a = state.filterOptions.author) === null || _a === void 0 ? void 0 : _a.length) > 0
-                        ? state.filterOptions.author.includes(track.author)
-                        : true;
-                    var hasGenre = ((_b = state.filterOptions.genre) === null || _b === void 0 ? void 0 : _b.length) > 0
-                        ? state.filterOptions.genre.includes(track.genre)
-                        : true;
-                    return hasSearchString && hasAuthor && hasGenre;
-                });
-                // Сортировка треков в соответствии с выбранным порядком
-                switch (state.filterOptions.order) {
-                    case "First new":
-                        filterTracks.sort(function (a, b) {
-                            return new Date(b.release_date).getTime() -
-                                new Date(a.release_date).getTime();
-                        });
-                        break;
-                    case "First old":
-                        filterTracks.sort(function (a, b) {
-                            return new Date(a.release_date).getTime() -
-                                new Date(b.release_date).getTime();
-                        });
-                        break;
-                    default:
-                        break;
+                var filteredTracks = action.payload.tracks;
+                // Фильтрация по автору
+                if (state.isFilteringAuthor) {
+                    filteredTracks = filteredTracks.filter(function (track) {
+                        var _a;
+                        var hasSearchString = track.name.toLowerCase().includes(state.filterOptions.searchString.toLowerCase());
+                        var hasAuthor = ((_a = state.filterOptions.author) === null || _a === void 0 ? void 0 : _a.length) > 0 ? state.filterOptions.author.includes(track.author) : true;
+                        return hasSearchString && hasAuthor;
+                    });
+                    // Сортировка по годам в соответствии с выбранным порядком
+                    var sortTracks = function (tracks) {
+                        switch (state.filterOptions.order) {
+                            case "First New":
+                                console.log(tracks.release_date);
+                                tracks.sort(function (a, b) { return new Date(b.release_date).getTime() - new Date(a.release_date).getTime(); });
+                                break;
+                            case "First Old":
+                                tracks.sort(function (a, b) { return new Date(a.release_date).getTime() - new Date(b.release_date).getTime(); });
+                                break;
+                            default:
+                                break;
+                        }
+                        return tracks;
+                    };
+                    state.filterPlaylistByAuthor = sortTracks(__spreadArrays(filteredTracks));
                 }
-                state.filterPlaylist = filterTracks;
+                // Фильтрация по жанру
+                if (state.isFilteringGenre) {
+                    filteredTracks = filteredTracks.filter(function (track) {
+                        var _a;
+                        var hasSearchString = track.name.toLowerCase().includes(state.filterOptions.searchString.toLowerCase());
+                        var hasGenre = ((_a = state.filterOptions.genre) === null || _a === void 0 ? void 0 : _a.length) > 0 ? state.filterOptions.genre.includes(track.genre) : true;
+                        return hasSearchString && hasGenre;
+                    });
+                    // Сортировка по годам в соответствии с выбранным порядком
+                    var sortTracks = function (tracks) {
+                        switch (state.filterOptions.order) {
+                            case "First New":
+                                tracks.sort(function (a, b) { return new Date(b.release_date).getTime() - new Date(a.release_date).getTime(); });
+                                break;
+                            case "First Old":
+                                tracks.sort(function (a, b) { return new Date(a.release_date).getTime() - new Date(b.release_date).getTime(); });
+                                break;
+                            default:
+                                break;
+                        }
+                        return tracks;
+                    };
+                    state.filterPlaylistByGenre = sortTracks(__spreadArrays(filteredTracks));
+                }
+                state.filterPlaylist = filteredTracks;
             }
         }
     }
 });
-exports.setCurrentTrack = (_a = tracksSlice.actions, _a.setCurrentTrack), exports.setPrev = _a.setPrev, exports.setNext = _a.setNext, exports.setInitialTracks = _a.setInitialTracks, exports.setIsShuffle = _a.setIsShuffle, exports.setIsPlaying = _a.setIsPlaying, exports.setFilter = _a.setFilter, exports.setPlayList = _a.setPlayList, exports.setIsFilteringAuthor = _a.setIsFilteringAuthor, exports.setIsFilteringGenre = _a.setIsFilteringGenre;
+exports.setCurrentTrack = (_a = tracksSlice.actions, _a.setCurrentTrack), exports.setPrev = _a.setPrev, exports.setNext = _a.setNext, exports.setInitialTracks = _a.setInitialTracks, exports.setIsShuffle = _a.setIsShuffle, exports.setIsPlaying = _a.setIsPlaying, exports.setFilter = _a.setFilter, exports.setPlayList = _a.setPlayList, exports.setIsFilteringAuthor = _a.setIsFilteringAuthor, exports.setIsFilteringGenre = _a.setIsFilteringGenre, exports.setIsSortByYears = _a.setIsSortByYears;
 exports.tracksReducer = tracksSlice.reducer;
