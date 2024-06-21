@@ -110,16 +110,13 @@ const FilterGenre = ({ closeDropdown, memoize, tracksList }: Props) => {
     return Array.from(new Set(tracksList.map((track) => track.genre)));
   }, [tracksList]);
 
-  const handleGenreChange = memoize(
-    useCallback(
-      (genre: string) => {
-        dispatch(setIsFilteringGenre(true));
-        dispatch(setFilter({ genre: [genre], tracks: tracksList }));
-        closeDropdown();
-        null;
-      },
-      [dispatch, tracksList, closeDropdown]
-    )
+  const handleGenreChange = useCallback(
+    (genre: string) => {
+      dispatch(setIsFilteringGenre(true));
+      dispatch(setFilter({ genre: [genre], tracks: tracksList }));
+      closeDropdown();
+    },
+    [dispatch, tracksList, closeDropdown]
   );
 
   const toggleReset = () => {

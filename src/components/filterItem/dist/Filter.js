@@ -50,7 +50,7 @@ var FilterGenre = function (_a) {
     }, [tracksList]);
     var handleGenreChange = memoize(react_1.useCallback(function (genre) {
         dispatch(trackSlice_1.setIsFilteringGenre(true));
-        dispatch(trackSlice_1.setFilter({ genre: [genre], tracks: tracksList }));
+        dispatch(trackSlice_1.setFilter({}));
         closeDropdown();
         null;
     }, [dispatch, tracksList, closeDropdown]));

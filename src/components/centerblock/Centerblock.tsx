@@ -42,16 +42,17 @@ const Search = () => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.trim();
     setSearchString(value);
-    if (value !== "") {
-      setIsFiltering(true)
+    if (value !== '') {
+      setIsFiltering(true);
       dispatch(setFilter({ searchString: value, tracks: tracksList }));
     } else {
-      dispatch(setFilter({ searchString: "", tracks: tracksList })); // Сбрасываем значение строки поиска в хранилище
+      setIsFiltering(false);
+      dispatch(setFilter({ searchString: '', tracks: tracksList }));
+      dispatch(setInitialTracks(tracksList)); // Восстанавливаем начальные треки, если строка поиска пустая
     }
   };
 
   const handleClear = () => {
-    console.log(tracksList);
     setIsFiltering(false);
     dispatch(setFilter({ tracks: tracksList }));
     dispatch(setInitialTracks(tracksList));

@@ -152,48 +152,41 @@ const tracksSlice = createSlice({
             const hasAuthor = state.filterOptions.author?.length > 0 ? state.filterOptions.author.includes(track.author) : true;
             return hasSearchString && hasAuthor;
           });
-
-          // Сортировка по годам в соответствии с выбранным порядком
-          const sortTracks = (tracks) => {
-            switch (state.filterOptions.order) {
-              case "First New":
-                console.log(tracks.release_date)
-                tracks.sort((a, b) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime());
-                break;
-              case "First Old":
-                tracks.sort((a, b) => new Date(a.release_date).getTime() - new Date(b.release_date).getTime());
-                break;
-              default:
-                break;
-            }
-            return tracks;
-          };
-          state.filterPlaylistByAuthor = sortTracks([...filteredTracks]);
+  
+          // Sort by years based on selected order
+          if (state.isSortedTracks) {
+            filteredTracks.sort((a, b) => {
+              if (state.filterOptions.order === "First New") {
+                return new Date(b.release_date).getTime() - new Date(a.release_date).getTime();
+              } else if (state.filterOptions.order === "First Old") {
+                return new Date(a.release_date).getTime() - new Date(b.release_date).getTime();
+              }
+              return 0;
+            });
+          }
+          state.filterPlaylistByAuthor = filteredTracks;
         }
-
-        // Фильтрация по жанру
+  
+        // Filter by genre
         if (state.isFilteringGenre) {
           filteredTracks = filteredTracks.filter((track) => {
             const hasSearchString = track.name.toLowerCase().includes(state.filterOptions.searchString.toLowerCase());
             const hasGenre = state.filterOptions.genre?.length > 0 ? state.filterOptions.genre.includes(track.genre) : true;
             return hasSearchString && hasGenre;
           });
-
-          // Сортировка по годам в соответствии с выбранным порядком
-          const sortTracks = (tracks) => {
-            switch (state.filterOptions.order) {
-              case "First New":
-                tracks.sort((a, b) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime());
-                break;
-              case "First Old":
-                tracks.sort((a, b) => new Date(a.release_date).getTime() - new Date(b.release_date).getTime());
-                break;
-              default:
-                break;
-            }
-            return tracks;
-          };
-          state.filterPlaylistByGenre = sortTracks([...filteredTracks]);
+  
+          // Sort by years based on selected order
+          if (state.isSortedTracks) {
+            filteredTracks.sort((a, b) => {
+              if (state.filterOptions.order === "First New") {
+                return new Date(b.release_date).getTime() - new Date(a.release_date).getTime();
+              } else if (state.filterOptions.order === "First Old") {
+                return new Date(a.release_date).getTime() - new Date(b.release_date).getTime();
+              }
+              return 0;
+            });
+          }
+          state.filterPlaylistByGenre = filteredTracks;
         }
 
         state.filterPlaylist = filteredTracks;
