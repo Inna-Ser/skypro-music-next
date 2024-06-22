@@ -145,6 +145,13 @@ const tracksSlice = createSlice({
       if (action.payload.tracks) {
         let filteredTracks = action.payload.tracks;
 
+        if (state.initialTracks) {
+          const searchedTracks = state.initialTracks.filter((track) => {
+            return track.name.toLowerCase().includes(state.filterOptions.searchString.toLowerCase());
+          });
+          state.filterOptions.tracks = searchedTracks;
+        }
+        
         // Фильтрация по автору
         if (state.isFilteringAuthor) {
           filteredTracks = filteredTracks.filter((track) => {
@@ -152,8 +159,8 @@ const tracksSlice = createSlice({
             const hasAuthor = state.filterOptions.author?.length > 0 ? state.filterOptions.author.includes(track.author) : true;
             return hasSearchString && hasAuthor;
           });
-  
-          // Sort by years based on selected order
+ 
+// Sort by years based on selected order
           if (state.isSortedTracks) {
             filteredTracks.sort((a, b) => {
               if (state.filterOptions.order === "First New") {

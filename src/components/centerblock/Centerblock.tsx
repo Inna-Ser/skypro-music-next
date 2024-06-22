@@ -8,6 +8,8 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
   setFilter,
   setInitialTracks,
+  setIsFilteringAuthor,
+  setIsFilteringGenre,
 } from "@/store/slices/features/trackSlice";
 import { useEffect, useState } from "react";
 import { getTracks } from "@/api/Api";
@@ -42,12 +44,15 @@ const Search = () => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.trim();
     setSearchString(value);
-    if (value !== '') {
+    if (value !== "") {
       setIsFiltering(true);
-      dispatch(setFilter({ searchString: value, tracks: tracksList }));
+      const filteredTracks = tracksList.filter((track) =>
+        track.name.toLowerCase().includes(value.toLowerCase())
+      );
+      dispatch(setFilter({ searchString: value, tracks: filteredTracks }));
     } else {
       setIsFiltering(false);
-      dispatch(setFilter({ searchString: '', tracks: tracksList }));
+      dispatch(setFilter({ searchString: "", tracks: tracksList }));
       dispatch(setInitialTracks(tracksList)); // Восстанавливаем начальные треки, если строка поиска пустая
     }
   };
@@ -57,6 +62,10 @@ const Search = () => {
     dispatch(setFilter({ tracks: tracksList }));
     dispatch(setInitialTracks(tracksList));
     setSearchString(""); // Сброс значения строки поиска в компоненте Search
+    dispatch(setFilter({ author: [], tracks: tracksList })); // Сбрасываем фильтр по автору
+    dispatch(setIsFilteringAuthor(false));
+    dispatch(setFilter({ genre: [], tracks: tracksList })); // Сбрасываем фильтр по жанру
+    dispatch(setIsFilteringGenre(false));
   };
 
   return (
@@ -78,11 +87,7 @@ const Search = () => {
 
         {isFiltering === true && (
           <div className={styles.clearIcon} onClick={handleClear}>
-            {/* <svg className={styles.clearSvg}> */}
-              <use xlinkHref={"img/icon/sprite.svg#icon-close"}>
-                сбросить результаты поиска
-              </use>
-            {/* </svg> */}
+            <p>сбросить результаты поиска</p>
           </div>
         )}
       </div>
