@@ -20,6 +20,9 @@ type Props = {
 };
 const FilterAuthor = ({ closeDropdown, memoize, tracksList }: Props) => {
   const dispatch = useAppDispatch();
+  const isFilteringAuthor = useAppSelector(
+    (state) => state.tracks.isFilteringAuthor
+  );
 
   const uniqueAuthors = useMemo(() => {
     return Array.from(new Set(tracksList.map((track) => track.author)));
@@ -28,9 +31,13 @@ const FilterAuthor = ({ closeDropdown, memoize, tracksList }: Props) => {
   const handleAuthorChange = memoize(
     useCallback(
       (author: string) => {
-        dispatch(setIsFilteringAuthor(true));
-        dispatch(setFilter({ author: [author], tracks: tracksList })); // Передаем author как массив строк и tracksList
-        closeDropdown();
+        if (!isFilteringAuthor) {
+          dispatch(setIsFilteringAuthor(true));
+          dispatch(setFilter({ author: [author], tracks: tracksList })); // Передаем author как массив строк и tracksList
+          closeDropdown();
+        } else {
+          toggleReset();
+        }
       },
       [dispatch, tracksList, closeDropdown]
     )
@@ -62,11 +69,6 @@ const FilterAuthor = ({ closeDropdown, memoize, tracksList }: Props) => {
   );
 };
 
-type Props = {
-  tracksList: TrackItem[];
-  memoize: <T extends (...args: any[]) => any>(fn: T) => T;
-  closeDropdown: () => void;
-};
 const FilterYear = ({ closeDropdown, memoize, tracksList }: Props) => {
   const dispatch = useAppDispatch();
 
@@ -98,13 +100,11 @@ const FilterYear = ({ closeDropdown, memoize, tracksList }: Props) => {
   );
 };
 
-type Props = {
-  tracksList: TrackItem[];
-  memoize: <T extends (...args: any[]) => any>(fn: T) => T;
-  closeDropdown: () => void;
-};
 const FilterGenre = ({ closeDropdown, memoize, tracksList }: Props) => {
   const dispatch = useAppDispatch();
+  const isFilteringGenre = useAppSelector(
+    (state) => state.tracks.isFilteringGenre
+  );
 
   const uniqueGenre = useMemo(() => {
     return Array.from(new Set(tracksList.map((track) => track.genre)));
@@ -112,9 +112,13 @@ const FilterGenre = ({ closeDropdown, memoize, tracksList }: Props) => {
 
   const handleGenreChange = useCallback(
     (genre: string) => {
-      dispatch(setIsFilteringGenre(true));
-      dispatch(setFilter({ genre: [genre], tracks: tracksList }));
-      closeDropdown();
+      if (!isFilteringGenre) {
+        dispatch(setIsFilteringGenre(true));
+        dispatch(setFilter({ genre: [genre], tracks: tracksList }));
+        closeDropdown();
+      } else {
+        toggleReset();
+      }
     },
     [dispatch, tracksList, closeDropdown]
   );

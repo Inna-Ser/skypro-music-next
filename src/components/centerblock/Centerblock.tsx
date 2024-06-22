@@ -44,28 +44,32 @@ const Search = () => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.trim();
     setSearchString(value);
-    if (value !== "") {
-      setIsFiltering(true);
-      const filteredTracks = tracksList.filter((track) =>
-        track.name.toLowerCase().includes(value.toLowerCase())
-      );
-      dispatch(setFilter({ searchString: value, tracks: filteredTracks }));
-    } else {
-      setIsFiltering(false);
-      dispatch(setFilter({ searchString: "", tracks: tracksList }));
-      dispatch(setInitialTracks(tracksList)); // Восстанавливаем начальные треки, если строка поиска пустая
-    }
+    // if (value !== "") {
+    //   setIsFiltering(true);
+    //   const filteredTracks = tracksList.filter((track) =>
+    //     track.name.toLowerCase().includes(value.toLowerCase())
+    //   );
+    //   dispatch(setFilter({ searchString: value, tracks: filteredTracks }));
+    // } else {
+    setIsFiltering(true);
+    const filteredTracks = tracksList.filter((track) =>
+      track.name.toLowerCase().includes(value.toLowerCase())
+    );
+    dispatch(setFilter({ searchString: "", tracks: filteredTracks }));
+    //   dispatch(setInitialTracks(tracksList)); // Восстанавливаем начальные треки, если строка поиска пустая
+    // }
   };
 
   const handleClear = () => {
     setIsFiltering(false);
     dispatch(setFilter({ tracks: tracksList }));
     dispatch(setInitialTracks(tracksList));
-    setSearchString(""); // Сброс значения строки поиска в компоненте Search
-    dispatch(setFilter({ author: [], tracks: tracksList })); // Сбрасываем фильтр по автору
-    dispatch(setIsFilteringAuthor(false));
-    dispatch(setFilter({ genre: [], tracks: tracksList })); // Сбрасываем фильтр по жанру
+    setSearchString("");
+    dispatch(
+      setFilter({ searchString: "", author: [], genre: [], tracks: tracksList })
+    ); // Сбрасываем все фильтры
     dispatch(setIsFilteringGenre(false));
+    dispatch(setIsFilteringAuthor(false));
   };
 
   return (

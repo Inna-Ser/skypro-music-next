@@ -17,7 +17,7 @@ type TracksStateType = {
   filterOptions: {
     author: string[];
     genre: string[];
-    order: "First New" | "First Old" | "по умолчанию"; 
+    order: "First New" | "First Old" | "по умолчанию";
     searchString: string;
     tracks?: TrackItem[];
   };
@@ -137,7 +137,10 @@ const tracksSlice = createSlice({
         author: action.payload.author || state.filterOptions.author,
         genre: action.payload.genre || state.filterOptions.genre,
         order: action.payload.order || state.filterOptions.order,
-        searchString: action.payload.searchString || state.filterOptions.searchString,
+        searchString:
+          action.payload.searchString !== undefined
+            ? action.payload.searchString
+            : state.filterOptions.searchString,
         tracks: action.payload.tracks,
       };
 
@@ -147,48 +150,72 @@ const tracksSlice = createSlice({
 
         if (state.initialTracks) {
           const searchedTracks = state.initialTracks.filter((track) => {
-            return track.name.toLowerCase().includes(state.filterOptions.searchString.toLowerCase());
+            return track.name
+              .toLowerCase()
+              .includes(state.filterOptions.searchString.toLowerCase());
           });
           state.filterOptions.tracks = searchedTracks;
         }
-        
+
         // Фильтрация по автору
         if (state.isFilteringAuthor) {
           filteredTracks = filteredTracks.filter((track) => {
-            const hasSearchString = track.name.toLowerCase().includes(state.filterOptions.searchString.toLowerCase());
-            const hasAuthor = state.filterOptions.author?.length > 0 ? state.filterOptions.author.includes(track.author) : true;
+            const hasSearchString = track.name
+              .toLowerCase()
+              .includes(state.filterOptions.searchString.toLowerCase());
+            const hasAuthor =
+              state.filterOptions.author?.length > 0
+                ? state.filterOptions.author.includes(track.author)
+                : true;
             return hasSearchString && hasAuthor;
           });
- 
-// Sort by years based on selected order
+
+          // Sort by years based on selected order
           if (state.isSortedTracks) {
             filteredTracks.sort((a, b) => {
               if (state.filterOptions.order === "First New") {
-                return new Date(b.release_date).getTime() - new Date(a.release_date).getTime();
+                return (
+                  new Date(b.release_date).getTime() -
+                  new Date(a.release_date).getTime()
+                );
               } else if (state.filterOptions.order === "First Old") {
-                return new Date(a.release_date).getTime() - new Date(b.release_date).getTime();
+                return (
+                  new Date(a.release_date).getTime() -
+                  new Date(b.release_date).getTime()
+                );
               }
               return 0;
             });
           }
           state.filterPlaylistByAuthor = filteredTracks;
         }
-  
+
         // Filter by genre
         if (state.isFilteringGenre) {
           filteredTracks = filteredTracks.filter((track) => {
-            const hasSearchString = track.name.toLowerCase().includes(state.filterOptions.searchString.toLowerCase());
-            const hasGenre = state.filterOptions.genre?.length > 0 ? state.filterOptions.genre.includes(track.genre) : true;
+            const hasSearchString = track.name
+              .toLowerCase()
+              .includes(state.filterOptions.searchString.toLowerCase());
+            const hasGenre =
+              state.filterOptions.genre?.length > 0
+                ? state.filterOptions.genre.includes(track.genre)
+                : true;
             return hasSearchString && hasGenre;
           });
-  
+
           // Sort by years based on selected order
           if (state.isSortedTracks) {
             filteredTracks.sort((a, b) => {
               if (state.filterOptions.order === "First New") {
-                return new Date(b.release_date).getTime() - new Date(a.release_date).getTime();
+                return (
+                  new Date(b.release_date).getTime() -
+                  new Date(a.release_date).getTime()
+                );
               } else if (state.filterOptions.order === "First Old") {
-                return new Date(a.release_date).getTime() - new Date(b.release_date).getTime();
+                return (
+                  new Date(a.release_date).getTime() -
+                  new Date(b.release_date).getTime()
+                );
               }
               return 0;
             });
@@ -201,7 +228,6 @@ const tracksSlice = createSlice({
     },
   },
 });
-
 
 export const {
   setCurrentTrack,
