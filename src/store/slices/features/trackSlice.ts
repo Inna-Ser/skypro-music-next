@@ -139,8 +139,8 @@ const tracksSlice = createSlice({
         order: action.payload.order || state.filterOptions.order,
         searchString:
           action.payload.searchString !== undefined
-            ? action.payload.searchString
-            : state.filterOptions.searchString,
+            ? action.payload.searchString.toLowerCase()
+            : state.filterOptions.searchString.toLowerCase(),
         tracks: action.payload.tracks,
       };
 

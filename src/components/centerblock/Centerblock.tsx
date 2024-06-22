@@ -44,20 +44,13 @@ const Search = () => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.trim();
     setSearchString(value);
-    // if (value !== "") {
-    //   setIsFiltering(true);
-    //   const filteredTracks = tracksList.filter((track) =>
-    //     track.name.toLowerCase().includes(value.toLowerCase())
-    //   );
-    //   dispatch(setFilter({ searchString: value, tracks: filteredTracks }));
-    // } else {
+    
     setIsFiltering(true);
     const filteredTracks = tracksList.filter((track) =>
       track.name.toLowerCase().includes(value.toLowerCase())
     );
     dispatch(setFilter({ searchString: "", tracks: filteredTracks }));
-    //   dispatch(setInitialTracks(tracksList)); // Восстанавливаем начальные треки, если строка поиска пустая
-    // }
+    
   };
 
   const handleClear = () => {

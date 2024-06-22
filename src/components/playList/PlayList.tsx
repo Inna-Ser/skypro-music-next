@@ -13,7 +13,6 @@ export const PlayList: React.FC = () => {
   const [addTodoError, setAddTodoError] = useState<string | null>(null);
   const filteredTracks = useAppSelector((state) => state.tracks.filterPlaylist);
   const trackList = useAppSelector((state) => state.tracks.trackList);
-  const isSortedTracks = useAppSelector(state => state.tracks.isSortedTracks)
 
   const dispatch = useAppDispatch();
 
