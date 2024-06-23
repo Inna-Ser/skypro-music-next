@@ -16,11 +16,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ru">
       <ReduxProvider>
         <body className={inter.className}>
           <div className="wrapper">
-            <div className="contaner">{children}</div>{" "}
+            <div className="contaner">{children}</div>
           </div>
         </body>
       </ReduxProvider>

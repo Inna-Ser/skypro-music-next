@@ -7,5 +7,12 @@
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
-    overflow-y: auto;
   }
+  .playlist {
+    overflow: auto;
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #928888 #181818; /* Firefox */
+    
+  }
+
+  

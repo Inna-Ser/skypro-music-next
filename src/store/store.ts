@@ -1,26 +1,22 @@
-import { configureStore } from "@reduxjs/toolkit";
-import trackSlice from "./slices/trackSlice";
-import volumeSlice from "./slices/volumeSlice";
-import { tracksApi } from "../services/tracks";
-import { authApi } from "../services/auth";
+// src/store/store.ts
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { authReducer } from "./slices/features/authSlice";
 import {
   TypedUseSelectorHook,
   useDispatch,
   useSelector,
   useStore,
 } from "react-redux";
+import { tracksReducer } from "./slices/features/trackSlice";
 
+// Функция makeStore создает и возвращает хранилище Redux с помощью функции configureStore.
 export const makeStore = () => {
   return configureStore({
-    reducer: {
-      [tracksApi.reducerPath]: tracksApi.reducer,
-      [authApi.reducerPath]: authApi.reducer,
-      tracks: trackSlice,
-      volume: volumeSlice,
-    },
-
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat([tracksApi.middleware, authApi.middleware]),
+    // Мы передаем объект, в котором свойство reducer содержит корневой редьюсер, объединяющий все редьюсеры нашего приложения.
+    reducer: combineReducers({
+      auth: authReducer,
+      tracks: tracksReducer,
+    }),
   });
 };
 

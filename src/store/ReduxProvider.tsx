@@ -1,8 +1,9 @@
+// src/store/ReduxProvider.tsx
 "use client";
 
 import { useRef } from "react";
 import { Provider } from "react-redux";
-import { makeStore, AppStore } from "./store";
+import { AppStore, makeStore } from "./store";
 
 export default function ReduxProvider({
   children,

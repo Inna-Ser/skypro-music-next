@@ -2,8 +2,9 @@ import React from "react";
 import "./SidebarList.module.css";
 import Link from "next/link";
 import Skeleton from "react-loading-skeleton";
+import { TrackItem } from "@/tipes";
 
-export const SidebarList = ({ category, isLoading }) => {
+export const SidebarList = ({ category, isLoading }: TrackItem) => {
   return (
     <ul className="sidebar__item">
       {category.map((item) =>

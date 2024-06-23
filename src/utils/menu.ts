@@ -7,7 +7,7 @@ export const menu = [{
         title: "Мой плейлист"
     },
     {
-        link: "/login",
+        link: "/signin",
         title: "Выйти"
     },
 ];

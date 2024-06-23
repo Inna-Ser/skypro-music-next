@@ -1,55 +1,147 @@
 "use client";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { filterYears } from "../../utils/filterYears";
-import { tracks } from "../../utils/tracks";
 import styles from "./Filter.module.css";
 import classNames from "classnames";
-import { useThemeContext } from "../../themesComponent/ThemesComponent";
+import { TrackItem } from "@/tipes";
+import { useAppDispatch, useAppSelector } from "@/store/store";
+import {
+  setFilter,
+  setIsFilteringAuthor,
+  setIsFilteringGenre,
+  setIsSortByYears,
+} from "@/store/slices/features/trackSlice";
+import Image from "next/image";
 
-const FilterAuthor = () => {
-  const { theme } = useThemeContext();
+type Props = {
+  tracksList: TrackItem[];
+  memoize: <T extends (...args: any[]) => any>(fn: T) => T;
+  closeDropdown: () => void;
+};
+const FilterAuthor = ({ closeDropdown, memoize, tracksList }: Props) => {
+  const dispatch = useAppDispatch();
+  const isFilteringAuthor = useAppSelector(
+    (state) => state.tracks.isFilteringAuthor
+  );
+
+  const uniqueAuthors = useMemo(() => {
+    return Array.from(new Set(tracksList.map((track) => track.author)));
+  }, [tracksList]);
+
+  const handleAuthorChange = memoize(
+    useCallback(
+      (author: string) => {
+        if (!isFilteringAuthor) {
+          dispatch(setIsFilteringAuthor(true));
+          dispatch(setFilter({ author: [author], tracks: tracksList })); // Передаем author как массив строк и tracksList
+          closeDropdown();
+        } else {
+          toggleReset();
+        }
+      },
+      [dispatch, tracksList, closeDropdown]
+    )
+  );
+
+  const toggleReset = () => {
+    dispatch(setFilter({ author: [], tracks: tracksList })); // Сбрасываем фильтр по автору
+    dispatch(setIsFilteringAuthor(false));
+    closeDropdown();
+  };
+
   return (
-    <ul
-      className={
-        theme.mode === "dark" ? styles.filterListContaner : styles.light
-      }
-    >
-      {tracks.map(({ author, index }) => (
-        <li className={styles.filterListItem} key={index}>{author}</li>
+    <ul className={styles.filterListContaner}>
+      <p className={styles.resetAuthor} onClick={toggleReset}>
+        Filter reset
+      </p>
+      {uniqueAuthors.map((author, index) => (
+        <li
+          className={styles.filterListItem}
+          key={index}
+          onClick={() => {
+            handleAuthorChange(author);
+          }}
+        >
+          {author}
+        </li>
       ))}
     </ul>
   );
 };
 
-const FilterYear = () => {
-  const { theme } = useThemeContext();
+const FilterYear = ({ closeDropdown, memoize, tracksList }: Props) => {
+  const dispatch = useAppDispatch();
+
+  const handleYearChange = memoize(
+    useCallback(
+      (year: string) => {
+        dispatch(setIsSortByYears(true));
+        dispatch(setFilter({ order: year, tracks: tracksList }));
+        closeDropdown();
+      },
+      [dispatch, tracksList, closeDropdown]
+    )
+  );
+
   return (
-    <ul
-      className={
-        theme.mode === "dark" ? styles.filterListContaner : styles.light
-      }
-    >
-      {filterYears.map(({ year, index }) => (
-        <li className={styles.filterListItem} key={index}>{year}</li>
+    <ul className={styles.filterListContaner}>
+      {filterYears.map((filterYear, index) => (
+        <li
+          className={styles.filterListItem}
+          key={index}
+          onClick={() => {
+            handleYearChange(filterYear.year);
+          }}
+        >
+          {filterYear.year}
+        </li>
       ))}
     </ul>
   );
 };
 
-const FilterGenre = ({ tracks }) => {
-  const { theme } = useThemeContext();
-  const arrGenre = tracks.map((item) => item.genre);
-  const uniqueGenre = [...new Set(arrGenre)];
+const FilterGenre = ({ closeDropdown, memoize, tracksList }: Props) => {
+  const dispatch = useAppDispatch();
+  const isFilteringGenre = useAppSelector(
+    (state) => state.tracks.isFilteringGenre
+  );
+
+  const uniqueGenre = useMemo(() => {
+    return Array.from(new Set(tracksList.map((track) => track.genre)));
+  }, [tracksList]);
+
+  const handleGenreChange = useCallback(
+    (genre: string) => {
+      if (!isFilteringGenre) {
+        dispatch(setIsFilteringGenre(true));
+        dispatch(setFilter({ genre: [genre], tracks: tracksList }));
+        closeDropdown();
+      } else {
+        toggleReset();
+      }
+    },
+    [dispatch, tracksList, closeDropdown]
+  );
+
+  const toggleReset = () => {
+    dispatch(setFilter({ genre: [], tracks: tracksList })); // Сбрасываем фильтр по жанру
+    dispatch(setIsFilteringGenre(false));
+    closeDropdown();
+  };
+
   return (
     <div className={styles.filterListGenre}>
-      <ul
-        className={
-          theme.mode === "dark" ? styles.filterListContaner : styles.light
-        }
-      >
+      <ul className={styles.filterListContaner}>
+        <p className={styles.resetAuthor} onClick={toggleReset}>
+          Filter reset
+        </p>{" "}
         {uniqueGenre.map((genre, index) => (
-          <li className={styles.filterListItem} key={index}>
-            {genre}{" "}
+          <li
+            className={styles.filterListItem}
+            key={index}
+            onClick={() => handleGenreChange(genre)}
+          >
+            {genre}
           </li>
         ))}
       </ul>
@@ -58,9 +150,36 @@ const FilterGenre = ({ tracks }) => {
 };
 
 export const Filter = () => {
-  const [visible, setVisible] = useState(null);
+  const [visible, setVisible] = useState<string | null>(null);
+  const tracksList = useAppSelector((state) => state.tracks.trackList);
+  const setIsFilteringAuthor = useAppSelector(
+    (state) => state.tracks.isFilteringAuthor
+  );
+  const setIsFilteringGenre = useAppSelector(
+    (state) => state.tracks.isFilteringGenre
+  );
+  const filteredAuthorCount = useAppSelector(
+    (state) => state.tracks.filterPlaylistByAuthor.length
+  );
+  const filteredGenreCount = useAppSelector(
+    (state) => state.tracks.filterPlaylistByGenre.length
+  );
 
-  const toggleVisibility = (value) => {
+  function memoize(fn) {
+    const cache = {};
+
+    return function (...args) {
+      const key = args.toString();
+
+      if (key in cache) return cache[key];
+      else {
+        const result = fn.apply(this, args);
+        cache[key] = result;
+        return result;
+      }
+    };
+  }
+  const toggleVisibility = (value: string | null) => {
     if (value === visible) {
       setVisible(null);
     } else {
@@ -68,22 +187,34 @@ export const Filter = () => {
     }
   };
 
+  const closeDropdown = () => {
+    setVisible(null);
+  };
+
   return (
     <div className={styles.centerblockFilter}>
       <div className={styles.filterTitle}>Искать по:</div>
       <div className={styles.filterWrapper}>
+        {setIsFilteringAuthor && ( // Отображение currentMarker только если isFiltering === true
+          <div className={styles.currentMarker}>{filteredAuthorCount}</div>
+        )}
         <div
           className={
             visible === "author"
-              ? classNames(styles.filterButton, styles.active)
+              ? `${styles.filterButton} ${styles.active}`
               : styles.filterButton
           }
-          // exact="true"
           onClick={() => toggleVisibility("author")}
         >
           исполнителю
         </div>
-        {visible === "author" && <FilterAuthor />}
+        {visible === "author" && (
+          <FilterAuthor
+            tracksList={tracksList}
+            memoize={memoize}
+            closeDropdown={closeDropdown}
+          />
+        )}
       </div>
       <div className={styles.filterWrapper}>
         <div
@@ -96,9 +227,18 @@ export const Filter = () => {
         >
           году выпуска
         </div>
-        {visible === "years" && <FilterYear />}
+        {visible === "years" && (
+          <FilterYear
+            memoize={memoize}
+            closeDropdown={closeDropdown}
+            tracksList={tracksList}
+          />
+        )}
       </div>
       <div className={styles.filterWrapper}>
+        {setIsFilteringGenre && (
+          <div className={styles.currentMarker}>{filteredGenreCount}</div>
+        )}
         <div
           className={
             visible === "genre"
@@ -109,7 +249,13 @@ export const Filter = () => {
         >
           жанру
         </div>
-        {visible === "genre" && <FilterGenre tracks={tracks} />}
+        {visible === "genre" && (
+          <FilterGenre
+            tracksList={tracksList}
+            memoize={memoize}
+            closeDropdown={closeDropdown}
+          />
+        )}
       </div>
     </div>
   );

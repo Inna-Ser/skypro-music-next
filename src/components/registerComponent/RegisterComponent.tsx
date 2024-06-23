@@ -87,6 +87,8 @@ export const RegisterComponent = () => {
             className={styles.logoImage}
             src="/img/logo_modal.png"
             alt="logo"
+            width={140}
+            height={21}
           />
         </Link>
         <>

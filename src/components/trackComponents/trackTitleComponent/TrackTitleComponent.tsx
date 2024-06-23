@@ -1,48 +1,35 @@
-import { useSelector } from "react-redux";
-import { useThemeContext } from "../../../themesComponent/ThemesComponent";
+"use client";
+import { TrackItem } from "@/tipes";
 import styles from "./TrackTitleComponent.module.css";
 import classNames from "classnames";
+import { useAppSelector } from "@/store/store";
 
-export const TrackTitleImg = (props) => {
-  const { theme } = useThemeContext();
-  const currentTrack = useSelector((store) => store.tracks.currentTrack);
-  const isPlaying = useSelector((store) => store.tracks.isPlaying);
+export const TrackTitleImg = ({ id }: TrackItem) => {
+  const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
+  const isPlaying = useAppSelector((state) => state.tracks.isPlaying);
 
   return (
-    <div
-      className={
-        theme.mode === "dark" ? styles.trackTitleImage : styles.lightImg
-      }
-    >
-      {currentTrack?.id === props.id ? (
+    <div className={styles.trackTitleImage}>
+      {currentTrack?.id === id? (
         <div
           className={classNames(styles.currentMarker, {
             [styles.active]: isPlaying,
           })}
         ></div>
       ) : (
-        <svg className={styles.trackTitleSvg} alt="music">
-          <use
-            xlinkHref={
-              theme.mode === "dark"
-                ? "img/icon/sprite.svg#icon-note-dark"
-                : "img/icon/sprite.svg#icon-note-light"
-            }
-          ></use>
+        <svg className={styles.trackTitleSvg}>
+          <use xlinkHref={"img/icon/sprite.svg#icon-note-dark"}></use>
         </svg>
       )}
     </div>
   );
 };
 
-export const TrackTitleText = (props) => {
-  const { theme } = useThemeContext();
+export const TrackTitleText = ({ name }: TrackItem) => {
   return (
     <div className={styles.trackTitleText}>
-      <a
-        className={theme.mode === "dark" ? styles.trackTitleLink : styles.light}
-      >
-        {props.title}
+      <a className={styles.trackTitleLink}>
+        {name}
         <span className={styles.trackTitleSpan}></span>
       </a>
     </div>
