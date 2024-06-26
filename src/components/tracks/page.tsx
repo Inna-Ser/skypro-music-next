@@ -1,12 +1,13 @@
-"use client"
+"use client";
 import { getTracks } from "@/api/Api";
 import { Centerblock } from "@/components/centerblock/Centerblock";
 import { Filter } from "@/components/filterItem/Filter";
 import { setInitialTracks } from "@/store/slices/features/trackSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { TrackItem } from "@/tipes";
-// import styles from "@/tracks/TracksPage.module.css";
+import styles from "@components/tracks/TracksPage.module.css";
 import { useEffect } from "react";
+import { Search } from "@/components/centerblock/Centerblock";
 
 export default function MainTracsPage() {
   const allTracks = useAppSelector((state) => state.tracks.filterPlaylist);
@@ -22,10 +23,11 @@ export default function MainTracsPage() {
       });
   }, [setInitialTracks, dispatch]);
   return (
-    <>
-      <h2 className="centerblockH">Треки</h2>
+    <div className={styles.headerTrack}>
+      <Search />
+      <h2 className="centerblockH2">Треки</h2>
       <Filter />
-      <Centerblock allTracks={allTracks}/>
-    </>
+      <Centerblock allTracks={allTracks} />
+    </div>
   );
 }

@@ -1,5 +1,4 @@
-import { MainComponent } from "@components/mainComponent/MainComponent";
-import MainTracsPage from "../api/tracks/page";
+import MainTracsPage from "../components/tracks/page";
 
 export default function Home() {
   return <MainTracsPage />;

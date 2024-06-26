@@ -8,8 +8,12 @@ import {
   setPlayList,
 } from "@/store/slices/features/trackSlice";
 import { useEffect, useState } from "react";
+import { TrackItem } from "@/tipes";
 
-export const PlayList: React.FC = () => {
+type Props ={
+  allTracks: TrackItem;
+}
+export const PlayList = ({allTracks} : Props) => {
   const [addTodoError, setAddTodoError] = useState<string | null>(null);
   const filteredTracks = useAppSelector((state) => state.tracks.filterPlaylist);
   const trackList = useAppSelector((state) => state.tracks.trackList);

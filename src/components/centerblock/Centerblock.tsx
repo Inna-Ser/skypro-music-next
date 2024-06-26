@@ -39,7 +39,7 @@ export const ContentTitle = () => {
   );
 };
 
-const Search = () => {
+export const Search = () => {
   const dispatch = useAppDispatch();
   const [searchString, setSearchString] = useState<string>("");
   const tracksList = useAppSelector((state) => state.tracks.trackList); // Извлекаем массив треков из состояния
