@@ -14,7 +14,11 @@ import {
 import { useEffect, useState } from "react";
 import { getTracks } from "@/api/Api";
 
-const ContentTitle = () => {
+type Props ={
+  allTracks: TrackItem[];
+}
+
+export const ContentTitle = () => {
   return (
     <div className={classNames(styles.contentTitle, styles.playlistTitle)}>
       <div className={classNames(styles.playlistTitleCol, styles.col01)}>
@@ -92,29 +96,29 @@ const Search = () => {
   );
 };
 
-export const Centerblock = () => {
+export const Centerblock = ({allTracks} : Props) => {
   const [tracksList, setTracksList] = useState<TrackItem[]>([]);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    getTracks()
-      .then((data) => {
-        setTracksList(data);
-        dispatch(setInitialTracks(data));
-      })
-      .catch((error) => {
-        new Error(error.message);
-      });
-  }, [setTracksList, setInitialTracks]);
+  // useEffect(() => {
+  //   getTracks()
+  //     .then((data) => {
+  //       setTracksList(data);
+  //       dispatch(setInitialTracks(data));
+  //     })
+  //     .catch((error) => {
+  //       new Error(error.message);
+  //     });
+  // }, [setTracksList, setInitialTracks]);
 
   return (
     <div className={classNames(styles.mainCenterblock, styles.centerblock)}>
-      <Search />
+      {/* <Search />
       <h2 className={styles.centerblockH2}>Треки</h2>
-      <Filter />
+      <Filter /> */}
       <div className={styles.centerblockContent}>
         <ContentTitle />
-        <PlayList />
+        <PlayList allTracks={allTracks}/>
       </div>
     </div>
   );

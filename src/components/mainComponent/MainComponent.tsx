@@ -14,12 +14,10 @@ export const MainComponent = () => {
 
   return (
     <div className={styles.main}>
-      <Navigator />
       <div className={styles.widthrapper}>
-        <Centerblock tracksList={tracksList} />
+        <Centerblock />
       </div>
-      <Sidebar />
-      {!currentTrack ? null : <Audioplayer />}{" "}
+      {/* {!currentTrack ? null : <Audioplayer />}{" "} */}
     </div>
   );
 };

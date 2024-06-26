@@ -15,8 +15,8 @@ body {
 }
 
 .contaner {
+  display: flex;
     max-width: 1920px;
-  /* height: 100%; */
   margin: 0 auto;
   position: relative;
   background-color: #181818;}
@@ -92,6 +92,33 @@ body {
     cursor: pointer;
   }
   
-  
+  .main {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+  }
+   .audioplayer {
+    width: 100%;
+   }
+
+   .centerblockContent {
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+
   
   
