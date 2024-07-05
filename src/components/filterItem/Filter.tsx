@@ -4,7 +4,6 @@ import { filterYears } from "../../utils/filterYears";
 import styles from "./Filter.module.css";
 import classNames from "classnames";
 import { TrackItem } from "@/tipes";
-import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
   setFilter,
   setIsFilteringAuthor,
@@ -12,6 +11,7 @@ import {
   setIsSortByYears,
 } from "@/store/slices/features/trackSlice";
 import Image from "next/image";
+import { useAppDispatch, useAppSelector } from "@/hooks/store";
 
 type Props = {
   tracksList: TrackItem[];

@@ -7,19 +7,25 @@ import { menu } from "@/utils/menu";
 import Link from "next/link";
 
 type Props = {
-  isActive: boolean, link: string, title: string 
+  isActive: boolean;
+  link: string;
+  title: string;
+  onClick: (link: string) => void;
 };
-const MenuItem = (props: Props) => {
+const MenuItem = ({ onClick, isActive, link, title }: Props) => {
+  const handleClick = () => {
+    onClick(link);
+  };
   return (
     <li className={styles.menuListItem}>
       <Link
         className={classNames(styles.menuLink, {
-          [styles.active]: props.isActive,
+          [styles.active]: isActive,
         })}
-        href={props.link}
-        // exact
+        href={link}
+        onClick={handleClick}
       >
-        {props.title}
+        {title}
       </Link>
     </li>
   );
@@ -27,6 +33,9 @@ const MenuItem = (props: Props) => {
 
 export const Menu = () => {
   const [curentPage, setCurentPage] = useState("");
+  const handleItemClick = (link: string) => {
+    setCurentPage(link);
+  };
   return (
     <div className={styles.navigatorMenu}>
       <ul className={styles.menuList}>
@@ -36,6 +45,7 @@ export const Menu = () => {
             link={item.link}
             title={item.title}
             isActive={curentPage === item.link}
+            onClick={handleItemClick}
           />
         ))}
         <button

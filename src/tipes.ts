@@ -17,11 +17,13 @@ export type TrackItem = {
   logo: string | null;
   track_file: string;
   stared_user: User[];
-//   isPlaying: boolean;
   setIsPlaying: (isPlaying: boolean) => void;
   currentTrack: TrackItem;
   setCurrentTrack: () => void;
-//   isLoop: boolean;
-//   isActiv: boolean;
-//   isLiked: boolean;
+  isLiked: boolean;
+};
+
+export type SigninFormType = {
+  email: string;
+  password: string;
 };

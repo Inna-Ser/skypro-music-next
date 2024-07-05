@@ -8,7 +8,7 @@ export const SidebarList = () => {
     <ul className="sidebar__item">
       {categories.map((item) => (
         <li key={item.id}>
-          <Link href={`/category/${item.id}`}>
+          <Link href={`/tracks/category/${item.id}`}>
             <img src={item.img} alt={item.title} />
             <div className="sidebar__content">:</div>
           </Link>

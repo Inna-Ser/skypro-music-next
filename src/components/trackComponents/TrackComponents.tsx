@@ -3,11 +3,11 @@ import {
   TrackTitleText,
 } from "./trackTitleComponent/TrackTitleComponent";
 import styles from "./TrackComponents.module.css";
-import { useAppSelector } from "@/store/store";
 import { TrackItem } from "@/tipes";
+import { useAppSelector } from "@/hooks/store";
 
 
-export const TrackTitle = ({ id, name }: TrackItem) => {
+export const TrackTitle = ({ id, name }: TrackItem) => {  
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
   const isPlaying = useAppSelector((state) => state.tracks.isPlaying);
 

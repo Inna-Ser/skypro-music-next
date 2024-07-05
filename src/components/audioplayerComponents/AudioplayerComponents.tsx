@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import styles from "./AudioplayerComponents.module.css";
-import { TrackItem } from "@/tipes";
+import { useAppSelector } from "@/hooks/store";
 
 type Props = {
   author: string;
@@ -14,6 +14,8 @@ type Props = {
   playNextTrack: () => void;
   playPrevTrack: () => void;
   toggleShuffle: () => void;
+  toggleLike: () => void;
+  toggleDislike: () => void;
 };
 export const Prev = ({ playPrevTrack }: Props) => {
   const handleClick = () => {
@@ -22,7 +24,7 @@ export const Prev = ({ playPrevTrack }: Props) => {
   return (
     <div className={styles.playerBtnPrev} onClick={handleClick}>
       <svg className={styles.playerBtnPrevSvg}>
-        <use xlinkHref="img/icon/sprite.svg#icon-prev"></use>
+        <use xlinkHref="/img/icon/sprite.svg#icon-prev"></use>
       </svg>
     </div>
   );
@@ -38,7 +40,7 @@ export const Play = ({ togglePlay }: Props) => {
       onClick={handleClick}
     >
       <svg className={styles.playerBtnPlaySvg}>
-        <use xlinkHref="img/icon/sprite.svg#icon-play"></use>
+        <use xlinkHref="/img/icon/sprite.svg#icon-play"></use>
       </svg>
     </div>
   );
@@ -54,7 +56,7 @@ export const Pause = ({ togglePause }: Props) => {
       onClick={handleClick}
     >
       <svg className={styles.playerBtnPauseSvg}>
-        <use xlinkHref="img/icon/sprite.svg#icon-pause"></use>
+        <use xlinkHref="/img/icon/sprite.svg#icon-pause"></use>
       </svg>
     </div>
   );
@@ -67,7 +69,7 @@ export const Next = ({ playNextTrack }: Props) => {
   return (
     <div className={styles.playerBtnNext} onClick={handleClick}>
       <svg className={styles.playerBtnNextSvg}>
-        <use xlinkHref="img/icon/sprite.svg#icon-next"></use>
+        <use xlinkHref="/img/icon/sprite.svg#icon-next"></use>
       </svg>
     </div>
   );
@@ -86,7 +88,7 @@ export const Repeat = ({ playRepeatTrack, isLoop }: Props) => {
             : classNames(styles.playerBtnShuffleSvg, styles.active)
         }
       >
-        <use xlinkHref="img/icon/sprite.svg#icon-repeat"></use>
+        <use xlinkHref="/img/icon/sprite.svg#icon-repeat"></use>
       </svg>
     </div>
   );
@@ -105,7 +107,7 @@ export const Shuffle = ({ isActive, toggleShuffle }: Props) => {
             : classNames(styles.playerBtnShuffleSvg, styles.active)
         }
       >
-        <use xlinkHref="img/icon/sprite.svg#icon-shuffle"></use>
+        <use xlinkHref="/img/icon/sprite.svg#icon-shuffle"></use>
       </svg>
     </div>
   );
@@ -115,7 +117,7 @@ export const TrackPlayImage = () => {
   return (
     <div className={styles.trackPlayImage}>
       <svg className={styles.trackPlaySvg}>
-        <use xlinkHref={"img/icon/sprite.svg#icon-note-dark"}></use>
+        <use xlinkHref={"/img/icon/sprite.svg#icon-note-dark"}></use>
       </svg>
     </div>
   );
@@ -137,16 +139,37 @@ export function TrackPlayAlbum({ author }: Props) {
   );
 }
 
-export function TrackPlayLike() {
+export function TrackPlayLike({ toggleLike, toggleDislike }: Props) {
+  const isLiked = useAppSelector((store) => store.tracks.isLiked);
+  const isDisliked = useAppSelector((store) => store.tracks.isDisliked);
+
   return (
     <div className={styles.trackPlayLikeDis}>
-      <div className={classNames(styles.trackPlayLike, styles._btnIcon)}>
-        <svg className={styles.trackPlayLikeSvg}>
+      <div
+        className={classNames(styles.trackPlayLike, styles._btnIcon)}
+        onClick={toggleLike}
+      >
+        <svg
+          className={
+            !isLiked
+              ? styles.trackPlayLikeSvg
+              : classNames(styles.trackPlayLikeSvg, styles.active)
+          }
+        >
           <use xlinkHref="img/icon/sprite.svg#icon-like"></use>
         </svg>
       </div>
-      <div className={classNames(styles.trackPlayDislike, styles._btnIcon)}>
-        <svg className={styles.trackPlayDislikeSvg}>
+      <div
+        className={classNames(styles.trackPlayDislike, styles._btnIcon)}
+        onClick={toggleDislike}
+      >
+        <svg
+          className={
+            !isDisliked
+              ? styles.trackPlayDislikeSvg
+              : classNames(styles.trackPlayDislikeSvg, styles.active)
+          }
+        >
           <use xlinkHref="img/icon/sprite.svg#icon-dislike"></use>
         </svg>
       </div>

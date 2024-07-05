@@ -1,6 +1,15 @@
+import { fetchFavoriteTracks } from "@/api/Api";
 import { TrackItem } from "@/tipes";
 import { playShuffleTrack } from "@/utils/helper";
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
+export const getFavoriteTracks = createAsyncThunk(
+  "playlist/getFavoriteTracks",
+  async (access: string) => {
+    const favoriteTracks = await fetchFavoriteTracks(access);
+    return favoriteTracks;
+  }
+);
 
 type TracksStateType = {
   currentTrack: TrackItem | null;
@@ -129,7 +138,7 @@ const tracksSlice = createSlice({
         genre?: string[];
         order?: "First New" | "First Old" | "по умолчанию"; // Уточнение типов
         searchString?: string;
-        tracks: TrackItem[];
+        tracks?: TrackItem[];
       }>
     ) => {
       state.filterOptions = {
@@ -141,7 +150,7 @@ const tracksSlice = createSlice({
           action.payload.searchString !== undefined
             ? action.payload.searchString.toLowerCase()
             : state.filterOptions.searchString.toLowerCase(),
-        tracks: action.payload.tracks,
+        tracks: action.payload.tracks || state.filterOptions.tracks,
       };
 
       // Фильтрация треков
@@ -226,6 +235,25 @@ const tracksSlice = createSlice({
         state.filterPlaylist = filteredTracks;
       }
     },
+    setIsLiked: (state, action: PayloadAction<TrackItem>) => {
+      state.likedTracks.push(action.payload);
+    },
+
+    setIsDisliked: (state, action: PayloadAction<TrackItem>) => {
+      state.likedTracks = state.likedTracks.filter((elem) => {
+        elem.id !== action.payload.id;
+      });
+      state.isLiked = false;
+    },
+  },
+
+  extraReducers(builder) {
+    builder.addCase(
+      getFavoriteTracks.fulfilled,
+      (state, action: PayloadAction<TrackItem[]>) => {
+        state.likedTracks = action.payload;
+      }
+    );
   },
 });
 
@@ -241,6 +269,8 @@ export const {
   setIsFilteringAuthor,
   setIsFilteringGenre,
   setIsSortByYears,
+  setIsLiked,
+  setIsDisliked,
 } = tracksSlice.actions;
 
 export const tracksReducer = tracksSlice.reducer;

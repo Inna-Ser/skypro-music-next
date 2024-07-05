@@ -3,7 +3,7 @@ export const menu = [{
         title: "Главная"
     },
     {
-        link: "/playList",
+        link: "/tracks/category/${item.id}",
         title: "Мой плейлист"
     },
     {

@@ -1,7 +1,5 @@
-import Skeleton from "react-loading-skeleton";
 import { Personal } from "./personal/Personal";
 import { SidebarList } from "./sidebarList/SidebarList";
-import { categories } from "../../utils/categories";
 import classNames from "classnames";
 import styles from "./Sidebar.module.css";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useAppSelector } from "@/store/store";
+import { useAppSelector } from "@/hooks/store";
 import { Audioplayer } from "../audioplayer/Audioplayer";
 
 export const ClientComponent = () => {

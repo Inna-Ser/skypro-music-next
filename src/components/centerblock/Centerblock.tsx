@@ -4,7 +4,6 @@ import styles from "./Centerblock.module.css";
 import { PlayList } from "@components/playList/PlayList";
 import classNames from "classnames";
 import { TrackItem } from "@/tipes";
-import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
   setFilter,
   setInitialTracks,
@@ -12,7 +11,7 @@ import {
   setIsFilteringGenre,
 } from "@/store/slices/features/trackSlice";
 import { useEffect, useState } from "react";
-import { getTracks } from "@/api/Api";
+import { useAppDispatch, useAppSelector } from "@/hooks/store";
 
 type Props ={
   allTracks: TrackItem[];
@@ -32,7 +31,7 @@ export const ContentTitle = () => {
       </div>
       <div className={classNames(styles.playlistTitleCol, styles.col04)}>
         <svg className={styles.playlistTitleSvg}>
-          <use xlinkHref="img/icon/sprite.svg#icon-watch"></use>
+          <use xlinkHref="/img/icon/sprite.svg#icon-watch"></use>
         </svg>
       </div>
     </div>
@@ -42,7 +41,7 @@ export const ContentTitle = () => {
 export const Search = () => {
   const dispatch = useAppDispatch();
   const [searchString, setSearchString] = useState<string>("");
-  const tracksList = useAppSelector((state) => state.tracks.trackList); // Извлекаем массив треков из состояния
+  const tracksList = useAppSelector((state) => state.tracks.filterPlaylist); // Извлекаем массив треков из состояния
   const [isFiltering, setIsFiltering] = useState<boolean>(false);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,21 +58,21 @@ export const Search = () => {
 
   const handleClear = () => {
     setIsFiltering(false);
-    dispatch(setFilter({ tracks: tracksList }));
+    // dispatch(setFilter({ tracks: tracksList }));
     dispatch(setInitialTracks(tracksList));
     setSearchString("");
     dispatch(
-      setFilter({ searchString: "", author: [], genre: [], tracks: tracksList })
+      setFilter({ searchString: "" })
     ); // Сбрасываем все фильтры
-    dispatch(setIsFilteringGenre(false));
-    dispatch(setIsFilteringAuthor(false));
+    // dispatch(setIsFilteringGenre(false));
+    // dispatch(setIsFilteringAuthor(false));
   };
 
   return (
     <div className={styles.centerblockSearch}>
       <div className={styles.searchIcon}>
         <svg className={styles.searchSvg}>
-          <use xlinkHref={"img/icon/sprite.svg#icon-search-dark"}></use>
+          <use xlinkHref={"/img/icon/sprite.svg#icon-search-dark"}></use>
         </svg>
       </div>
       <div className={styles.searchContaner}>
@@ -96,26 +95,11 @@ export const Search = () => {
   );
 };
 
-export const Centerblock = ({allTracks} : Props) => {
-  const [tracksList, setTracksList] = useState<TrackItem[]>([]);
-  const dispatch = useAppDispatch();
-
-  // useEffect(() => {
-  //   getTracks()
-  //     .then((data) => {
-  //       setTracksList(data);
-  //       dispatch(setInitialTracks(data));
-  //     })
-  //     .catch((error) => {
-  //       new Error(error.message);
-  //     });
-  // }, [setTracksList, setInitialTracks]);
+export const Centerblock = ({allTracks}: Props) => {
 
   return (
     <div className={classNames(styles.mainCenterblock, styles.centerblock)}>
-      {/* <Search />
-      <h2 className={styles.centerblockH2}>Треки</h2>
-      <Filter /> */}
+      <Filter />
       <div className={styles.centerblockContent}>
         <ContentTitle />
         <PlayList allTracks={allTracks}/>

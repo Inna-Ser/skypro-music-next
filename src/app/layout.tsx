@@ -2,12 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/store/ReduxProvider";
-import { Navigator } from "@/components/navigator/Navigator";
-import { Sidebar } from "@/components/sidebar/Sidebar";
-import { Audioplayer } from "@/components/audioplayer/Audioplayer";
-import { useAppSelector } from "@/store/store";
-import { ClientComponent } from "@/components/clientComponentAudioplayer/ClientComponentAudioplayer";
-import { ContentTitle } from "@/components/centerblock/Centerblock";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,16 +20,7 @@ export default function RootLayout({
       <ReduxProvider>
         <body className={inter.className}>
           <div className="wrapper">
-            <div className="contaner">
-              <div className="main">
-                <Navigator />
-                {children}
-                <Sidebar />
-                <div className="audioplayer">
-                  <ClientComponent />
-                </div>
-              </div>
-            </div>
+            <div className="contaner">{children}</div>
           </div>
         </body>
       </ReduxProvider>

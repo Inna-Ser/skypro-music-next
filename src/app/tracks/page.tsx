@@ -3,13 +3,12 @@ import { getTracks } from "@/api/Api";
 import { Centerblock } from "@/components/centerblock/Centerblock";
 import { Filter } from "@/components/filterItem/Filter";
 import { setInitialTracks } from "@/store/slices/features/trackSlice";
-import { useAppDispatch, useAppSelector } from "@/store/store";
 import { TrackItem } from "@/tipes";
-import styles from "@components/tracks/TracksPage.module.css";
 import { useEffect } from "react";
 import { Search } from "@/components/centerblock/Centerblock";
+import { useAppDispatch, useAppSelector } from "@/hooks/store";
 
-export default function MainTracsPage() {
+const MainTracsPage = () => {
   const allTracks = useAppSelector((state) => state.tracks.filterPlaylist);
   const dispatch = useAppDispatch();
 
@@ -23,11 +22,12 @@ export default function MainTracsPage() {
       });
   }, [setInitialTracks, dispatch]);
   return (
-    <div className={styles.headerTrack}>
-      <Search />
-      <h2 className="centerblockH2">Треки</h2>
-      <Filter />
-      <Centerblock allTracks={allTracks} />
-    </div>
+      <div className="headerTrack">
+        {/* <Search /> */}
+        <h2 className="centerblockH2">Треки</h2>
+        <Centerblock allTracks={allTracks} />
+      </div>
   );
-}
+};
+
+export default MainTracsPage;

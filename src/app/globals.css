@@ -105,6 +105,7 @@ body {
     -ms-flex-pack: justify;
     justify-content: space-between;
   }
+  
    .audioplayer {
     width: 100%;
    }
@@ -129,6 +130,9 @@ body {
     margin-bottom: 45px;
   }
 
+  .myPlaylistContaner {
+    padding-top: 35px;
+  }
 
   
   
