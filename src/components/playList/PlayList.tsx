@@ -11,9 +11,9 @@ import { TrackItem } from "@/tipes";
 import { useAppDispatch, useAppSelector } from "@/hooks/store";
 
 type Props ={
-  allTracks: TrackItem[];
+  filterPlaylist: TrackItem[];
 }
-export const PlayList = ({allTracks}: Props) => {
+export const PlayList = ({filterPlaylist}: Props) => {
   const [addTodoError, setAddTodoError] = useState<string | null>(null);
   const trackList = useAppSelector((state) => state.tracks.trackList);
 
@@ -26,7 +26,7 @@ export const PlayList = ({allTracks}: Props) => {
   return (
     <div className={classNames(styles.contentPlaylist, styles.playlist)}>
       <p style={{ color: "purple" }}>{addTodoError}</p>
-      {allTracks.map((track) => (
+      {filterPlaylist.map((track) => (
         <Track
           key={track.id}
           id={track.id}

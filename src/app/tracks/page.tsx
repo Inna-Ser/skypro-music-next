@@ -9,7 +9,7 @@ import { Search } from "@/components/centerblock/Centerblock";
 import { useAppDispatch, useAppSelector } from "@/hooks/store";
 
 const MainTracsPage = () => {
-  const allTracks = useAppSelector((state) => state.tracks.filterPlaylist);
+  const filterPlaylist = useAppSelector((state) => state.tracks.filterPlaylist);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const MainTracsPage = () => {
       <div className="headerTrack">
         {/* <Search /> */}
         <h2 className="centerblockH2">Треки</h2>
-        <Centerblock allTracks={allTracks} />
+        <Centerblock filterPlaylist={filterPlaylist} />
       </div>
   );
 };

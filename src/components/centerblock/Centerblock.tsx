@@ -13,9 +13,9 @@ import {
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/store";
 
-type Props ={
-  allTracks: TrackItem[];
-}
+type Props = {
+  filterPlaylist: TrackItem[];
+};
 
 export const ContentTitle = () => {
   return (
@@ -41,19 +41,21 @@ export const ContentTitle = () => {
 export const Search = () => {
   const dispatch = useAppDispatch();
   const [searchString, setSearchString] = useState<string>("");
-  const tracksList = useAppSelector((state) => state.tracks.filterPlaylist); // Извлекаем массив треков из состояния
+  const tracksList = useAppSelector((state) => state.tracks.initialTracks); // Извлекаем массив треков из состояния
   const [isFiltering, setIsFiltering] = useState<boolean>(false);
+  const search = useAppSelector(
+    (state) => state.tracks.filterOptions.searchString
+  );
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.trim();
     setSearchString(value);
-    
+
     setIsFiltering(true);
     const filteredTracks = tracksList.filter((track) =>
       track.name.toLowerCase().includes(value.toLowerCase())
     );
-    dispatch(setFilter({ searchString: "", tracks: filteredTracks }));
-    
+    dispatch(setFilter({ searchString, tracks: filteredTracks }));
   };
 
   const handleClear = () => {
@@ -61,12 +63,14 @@ export const Search = () => {
     // dispatch(setFilter({ tracks: tracksList }));
     dispatch(setInitialTracks(tracksList));
     setSearchString("");
-    dispatch(
-      setFilter({ searchString: "" })
-    ); // Сбрасываем все фильтры
-    // dispatch(setIsFilteringGenre(false));
-    // dispatch(setIsFilteringAuthor(false));
+    dispatch(setFilter({ searchString: "" })); // Сбрасываем все фильтры
+    dispatch(setIsFilteringGenre(false));
+    dispatch(setIsFilteringAuthor(false));
   };
+
+  useEffect(() => {
+    setSearchString(search);
+  }, [search]);
 
   return (
     <div className={styles.centerblockSearch}>
@@ -87,7 +91,7 @@ export const Search = () => {
 
         {isFiltering === true && (
           <div className={styles.clearIcon} onClick={handleClear}>
-            <p>сбросить результаты поиска</p>
+            <p>сбросить результаты поиска и фильтрации</p>
           </div>
         )}
       </div>
@@ -95,14 +99,13 @@ export const Search = () => {
   );
 };
 
-export const Centerblock = ({allTracks}: Props) => {
-
+export const Centerblock = ({ filterPlaylist }: Props) => {
   return (
     <div className={classNames(styles.mainCenterblock, styles.centerblock)}>
       <Filter />
       <div className={styles.centerblockContent}>
         <ContentTitle />
-        <PlayList allTracks={allTracks}/>
+        <PlayList filterPlaylist={filterPlaylist} />
       </div>
     </div>
   );
