@@ -3,9 +3,9 @@ import {
   TrackTitleText,
 } from "./trackTitleComponent/TrackTitleComponent";
 import styles from "./TrackComponents.module.css";
-import { useAppSelector } from "@/store/store";
 import { TrackItem } from "@/tipes";
-
+import { useAppSelector } from "@/hooks/store";
+import { useLikeTracks } from "@/hooks/likes";
 
 export const TrackTitle = ({ id, name }: TrackItem) => {
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
@@ -13,9 +13,7 @@ export const TrackTitle = ({ id, name }: TrackItem) => {
 
   return (
     <div className={styles.trackTitle}>
-      <TrackTitleImg
-        id={id}
-      />
+      <TrackTitleImg id={id} />
       <TrackTitleText name={name} />
     </div>
   );
@@ -36,12 +34,20 @@ export const TrackAlbum = ({ album }: TrackItem) => {
     </div>
   );
 };
-
-export const TrackTime = ({ duration_in_seconds }: TrackItem) => {
+type Props = {
+  duration_in_seconds: number;
+  track: TrackItem;
+};
+export const TrackTime = ({ duration_in_seconds, track }: Props) => {
+  const { isLiked, handleLike } = useLikeTracks({ track });
   return (
     <div className={styles.trackTime}>
-      <svg className={styles.trackLikeSvg} >
-        <use xlinkHref="img/icon/sprite.svg#icon-like"></use>
+      <svg className={styles.trackLikeSvg} onClick={handleLike}>
+        {!isLiked ? (
+          <use xlinkHref="/img/icon/sprite.svg#icon-like" />
+        ) : (
+          <use xlinkHref="/img/icon/sprite.svg#icon-dislike" />
+        )}
       </svg>
       <span className={styles.trackTimeText}>{duration_in_seconds}</span>
     </div>

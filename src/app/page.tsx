@@ -1,7 +1,5 @@
-import {MainComponent} from "@components/mainComponent/MainComponent";
+import MainTracsPage from "./tracks/page";
 
 export default function Home() {
-  return (
-    <MainComponent />
-  );
+  return <MainTracsPage />;
 }
