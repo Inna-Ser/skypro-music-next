@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import { MenuItem } from "./Menu";
-import "@testing-library/jest-dom/extend-expect";
 import "@testing-library/jest-dom"; // Импортируем для использования метода toBeInTheDocument
 
 describe("MenuItem component", () => {

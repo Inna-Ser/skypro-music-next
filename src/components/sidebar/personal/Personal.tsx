@@ -19,7 +19,7 @@ export const Personal = () => {
   // }
   return (
     <div className={styles.sidebarPersonal}>
-      <p className={styles.sidebarPersonalName}>Иванов</p>
+      <p className={styles.sidebarPersonalName}>{userName}</p>
       <Link className={styles.sidebarIcon} href="/login">
         <Image
           alt="logout"

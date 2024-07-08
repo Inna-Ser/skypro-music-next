@@ -1,10 +1,7 @@
 import { ContentTitle } from "./Centerblock";
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect'; 
 import "@testing-library/jest-dom";  // Импортируем для использования метода toBeInTheDocument
-
-
 
 describe("Centertitle component", () => {
     it("должен корректно рендериться", () => {

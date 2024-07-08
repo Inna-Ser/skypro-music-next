@@ -35,8 +35,8 @@ export const LoginComponent = ({ params }: Props) => {
     e.preventDefault();
     try {
       await Promise.all([
-        dispatch(getToken(formData)).unwrap,
-        dispatch(getUser(formData)).unwrap,
+        dispatch(getToken(formData)).unwrap(),
+        dispatch(getUser(formData)).unwrap(),
       ]);
       router.push("/");
     } catch (error) {

@@ -57,7 +57,7 @@ export const RegisterComponent = () => {
         return;
       }
       alert("Регистрация...");
-      router.push("/login");
+      router.push("/signin");
     } catch (error) {
       setError((error as { message: string }).message);
     } finally {
@@ -106,7 +106,7 @@ export const RegisterComponent = () => {
             <input
               className={styles.loginInput}
               type="password"
-              name="repeat-password"
+              name="repeatPassword"
               placeholder="Подтвердите пароль"
               value={formData.repeatPassword}
               onChange={handleInputChange}

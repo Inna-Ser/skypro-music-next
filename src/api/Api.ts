@@ -31,7 +31,7 @@ export async function fetchFavoriteTracks(access: string) {
 }
 
 export async function addLike(id: string, access: string) {
-  const response = await fetch(`${baseHost}/track/${id}/favorite`, {
+  const response = await fetch(`${baseHost}/track/${id}/favorite/`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${access}`,
@@ -60,7 +60,7 @@ export async function getCategoryTracks(id: string) {
 }
 
 export async function addDisLike(id: string, access: string) {
-  const response = await fetch(`${baseHost}/track/${id}/favorite`, {
+  const response = await fetch(`${baseHost}/track/${id}/favorite/`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${access}`,
