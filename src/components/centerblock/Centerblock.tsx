@@ -91,7 +91,7 @@ export const Search = () => {
 
         {isFiltering === true && (
           <div className={styles.clearIcon} onClick={handleClear}>
-            <p>сбросить результаты поиска и фильтрации</p>
+            <p>сбросить все результаты</p>
           </div>
         )}
       </div>

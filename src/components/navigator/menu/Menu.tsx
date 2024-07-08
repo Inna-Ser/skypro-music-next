@@ -14,7 +14,7 @@ type Props = {
   title: string;
   onClick: (link: string) => void;
 };
-const MenuItem = ({ onClick, isActive, link, title }: Props) => {
+export const MenuItem = ({ onClick, isActive, link, title }: Props) => {
   const handleClick = () => {
     onClick(link);
   };

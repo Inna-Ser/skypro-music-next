@@ -17,8 +17,9 @@ type Props = {
 export const LoginComponent = ({ params }: Props) => {
   const dispatch = useAppDispatch();
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<null | string>(null);
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -37,9 +38,11 @@ export const LoginComponent = ({ params }: Props) => {
         dispatch(getToken(formData)).unwrap,
         dispatch(getUser(formData)).unwrap,
       ]);
-      router.push("/")
+      router.push("/");
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -98,9 +101,15 @@ export const LoginComponent = ({ params }: Props) => {
               onChange={handleInputChange}
             ></input>
           </div>
-          <button type={"submit"} className={styles.loginButton} onClick={handleLogin}></button>
-          <Link className={styles.loginLink} href={"/login"}>
+          <button
+            type={"submit"}
+            className={styles.loginButton}
+            onClick={handleLogin}
+          >
             Войти
+          </button>
+          <Link className={styles.loginLink} href="/signup">
+            Регистрироваться
           </Link>
         </>
       </div>

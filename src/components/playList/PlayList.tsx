@@ -34,6 +34,7 @@ export const PlayList = ({filterPlaylist}: Props) => {
           author={track.author}
           album={track.album}
           time={track.duration_in_seconds}
+          track={track}
           setCurrentTrack={() => dispatch(setCurrentTrack(track))}
         />
       ))}
