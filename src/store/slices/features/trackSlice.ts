@@ -4,7 +4,7 @@ import { playShuffleTrack } from "@/utils/helper";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getFavoriteTracks = createAsyncThunk(
-  "playlist/getFavoriteTracks",
+  "tracks/getFavoriteTracks",
   async (access: string) => {
     const favoriteTracks = await fetchFavoriteTracks(access);
     return favoriteTracks;

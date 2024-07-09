@@ -60,7 +60,6 @@ export const Search = () => {
 
   const handleClear = () => {
     setIsFiltering(false);
-    // dispatch(setFilter({ tracks: tracksList }));
     dispatch(setInitialTracks(tracksList));
     setSearchString("");
     dispatch(setFilter({ searchString: "" })); // Сбрасываем все фильтры

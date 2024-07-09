@@ -1,6 +1,8 @@
 import classNames from "classnames";
 import styles from "./AudioplayerComponents.module.css";
 import { useAppSelector } from "@/hooks/store";
+import { useLikeTracks } from "@/hooks/likes";
+import { TrackItem } from "@/tipes";
 
 type Props = {
   author: string;
@@ -14,8 +16,7 @@ type Props = {
   playNextTrack: () => void;
   playPrevTrack: () => void;
   toggleShuffle: () => void;
-  toggleLike: () => void;
-  toggleDislike: () => void;
+  track: TrackItem;
 };
 export const Prev = ({ playPrevTrack }: Props) => {
   const handleClick = () => {
@@ -139,38 +140,20 @@ export function TrackPlayAlbum({ author }: Props) {
   );
 }
 
-export function TrackPlayLike({ toggleLike, toggleDislike }: Props) {
-  const isLiked = useAppSelector((store) => store.tracks.isLiked);
-  const isDisliked = useAppSelector((store) => store.tracks.isDisliked);
-
+export function TrackPlayLike({ track }: Props) {
+  const { isLiked, handleLike } = useLikeTracks({ track });
   return (
     <div className={styles.trackPlayLikeDis}>
       <div
         className={classNames(styles.trackPlayLike, styles._btnIcon)}
-        onClick={toggleLike}
+        onClick={handleLike}
       >
-        <svg
-          className={
-            !isLiked
-              ? styles.trackPlayLikeSvg
-              : classNames(styles.trackPlayLikeSvg, styles.active)
-          }
-        >
-          <use xlinkHref="img/icon/sprite.svg#icon-like"></use>
-        </svg>
-      </div>
-      <div
-        className={classNames(styles.trackPlayDislike, styles._btnIcon)}
-        onClick={toggleDislike}
-      >
-        <svg
-          className={
-            !isDisliked
-              ? styles.trackPlayDislikeSvg
-              : classNames(styles.trackPlayDislikeSvg, styles.active)
-          }
-        >
-          <use xlinkHref="img/icon/sprite.svg#icon-dislike"></use>
+        <svg className={styles.trackPlayLikeSvg}>
+          {!isLiked ? (
+            <use xlinkHref="/img/icon/sprite.svg#icon-like" />
+          ) : (
+            <use xlinkHref="/img/icon/sprite.svg#icon-dislike" />
+          )}{" "}
         </svg>
       </div>
     </div>

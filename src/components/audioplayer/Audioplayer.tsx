@@ -26,14 +26,12 @@ import {
 } from "@/store/slices/features/trackSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/store";
 
-
 export const Audioplayer = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [currentVolume, setCurrentVolume] = useState<number>(0.5);
   const [isLoop, setIsLoop] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(false);
   const [localIsDisliked, setLocalIsDisliked] = useState<boolean>(false);
-
 
   const dispatch = useAppDispatch();
 
@@ -107,20 +105,15 @@ export const Audioplayer = () => {
     setIsActive((prev) => !prev);
   };
 
-  const toggleLike = () => {
-    dispatch(setIsLiked(true));
-  };
-
-  const toggleDislike = () => {
-    dispatch(setIsDisliked(!isDisabled));
-    setLocalIsDisliked((prev) => !prev);
-  };
-
   useEffect(() => {
     if (audioRef && audioRef.current) {
       audioRef.current.volume = currentVolume; // Устанавливаем начальное значение громкости
     }
   }, [audioRef, currentVolume]);
+
+  if (!currentTrack) {
+    return null;
+  }
 
   return (
     <>
@@ -163,10 +156,7 @@ export const Audioplayer = () => {
                 <TrackPlayAlbum
                   author={currentTrack ? currentTrack.author : "Unknown"}
                 />
-                <TrackPlayLike
-                  toggleLike={toggleLike}
-                  toggleDislike={toggleDislike}
-                />
+                <TrackPlayLike track={currentTrack} />
               </div>
             </div>
             <VolumeBlock
