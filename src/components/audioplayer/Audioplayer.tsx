@@ -17,8 +17,6 @@ import styles from "./Audioplayer.module.css";
 import { useEffect, useRef, useState } from "react";
 import { ProgressBar } from "./progressbar/Progressbar";
 import {
-  setIsDisliked,
-  setIsLiked,
   setIsPlaying,
   setIsShuffle,
   setNext,
@@ -31,14 +29,12 @@ export const Audioplayer = () => {
   const [currentVolume, setCurrentVolume] = useState<number>(0.5);
   const [isLoop, setIsLoop] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(false);
-  const [localIsDisliked, setLocalIsDisliked] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
 
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
   const isPlaying = useAppSelector((state) => state.tracks.isPlaying);
   const isShuffle = useAppSelector((state) => state.tracks.isShuffle);
-  const isDisliked = useAppSelector((state) => state.tracks.isDisliked);
 
   useEffect(() => {
     if (audioRef.current && currentTrack?.track_file) {
@@ -162,6 +158,7 @@ export const Audioplayer = () => {
             <VolumeBlock
               setCurrentVolume={setCurrentVolume}
               currentVolume={currentVolume}
+              audioRef={audioRef}
             />
           </div>
         </div>

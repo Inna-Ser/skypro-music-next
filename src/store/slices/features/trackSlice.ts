@@ -240,9 +240,9 @@ const tracksSlice = createSlice({
     },
 
     setIsDisliked: (state, action: PayloadAction<TrackItem>) => {
-      state.likedTracks = state.likedTracks.filter((elem) => {
-        elem.id !== action.payload.id;
-      });
+      state.likedTracks = state.likedTracks.filter(
+        (elem) => elem.id !== action.payload.id
+      );
       state.isLiked = false;
     },
   },

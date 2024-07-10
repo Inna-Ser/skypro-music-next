@@ -46,8 +46,8 @@ export const VolumeBlock = ({
             <use
               xlinkHref={
                 isMute
-                  ? "img/icon/sprite.svg#icon-volume-cancel-dark"
-                  : "img/icon/sprite.svg#icon-volume-dark"
+                  ? "/img/icon/sprite.svg#icon-volume-cancel-dark"
+                  : "/img/icon/sprite.svg#icon-volume-dark"
               }
             >
               /

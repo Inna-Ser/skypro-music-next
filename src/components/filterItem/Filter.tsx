@@ -10,7 +10,6 @@ import {
   setIsFilteringGenre,
   setIsSortByYears,
 } from "@/store/slices/features/trackSlice";
-import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/hooks/store";
 
 type Props = {
@@ -23,11 +22,9 @@ const FilterAuthor = ({ closeDropdown, memoize, tracksList }: Props) => {
   const isFilteringAuthor = useAppSelector(
     (state) => state.tracks.isFilteringAuthor
   );
-
   const uniqueAuthors = useMemo(() => {
     return Array.from(new Set(tracksList.map((track) => track.author)));
   }, [tracksList]);
-
   const handleAuthorChange = memoize(
     useCallback(
       (author: string) => {
@@ -76,7 +73,21 @@ const FilterYear = ({ closeDropdown, memoize, tracksList }: Props) => {
     useCallback(
       (year: string) => {
         dispatch(setIsSortByYears(true));
-        dispatch(setFilter({ order: year, tracks: tracksList }));
+        const filteredTracks = tracksList.filter((track) => {
+          const trackYear = new Date(track.release_date).getFullYear().toString();
+          return year === "по умолчанию" || trackYear === year;
+        });
+        dispatch(
+          setFilter({
+            order:
+              year === "по умолчанию"
+                ? year
+                : year === "First New"
+                ? "First New"
+                : "First Old",
+            tracks: tracksList,
+          })
+        );
         closeDropdown();
       },
       [dispatch, tracksList, closeDropdown]
@@ -100,7 +111,7 @@ const FilterYear = ({ closeDropdown, memoize, tracksList }: Props) => {
   );
 };
 
-const FilterGenre = ({ closeDropdown, memoize, tracksList }: Props) => {
+const FilterGenre = ({ closeDropdown, tracksList }: Props) => {
   const dispatch = useAppDispatch();
   const isFilteringGenre = useAppSelector(
     (state) => state.tracks.isFilteringGenre
@@ -120,7 +131,7 @@ const FilterGenre = ({ closeDropdown, memoize, tracksList }: Props) => {
         toggleReset();
       }
     },
-    [dispatch, tracksList, closeDropdown]
+    [dispatch, tracksList, closeDropdown, isFilteringGenre]
   );
 
   const toggleReset = () => {
@@ -165,10 +176,10 @@ export const Filter = () => {
     (state) => state.tracks.filterPlaylistByGenre.length
   );
 
-  function memoize(fn) {
+  function memoize(fn: any) {
     const cache = {};
 
-    return function (...args) {
+    return function (...args: any[]) {
       const key = args.toString();
 
       if (key in cache) return cache[key];

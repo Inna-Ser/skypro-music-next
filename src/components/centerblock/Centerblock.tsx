@@ -21,7 +21,7 @@ export const ContentTitle = () => {
   return (
     <div className={classNames(styles.contentTitle, styles.playlistTitle)}>
       <div className={classNames(styles.playlistTitleCol, styles.col01)}>
-        Трек
+        ТРЕК
       </div>
       <div className={classNames(styles.playlistTitleCol, styles.col02)}>
         ИСПОЛНИТЕЛЬ
@@ -50,18 +50,17 @@ export const Search = () => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.trim();
     setSearchString(value);
-
     setIsFiltering(true);
     const filteredTracks = tracksList.filter((track) =>
       track.name.toLowerCase().includes(value.toLowerCase())
     );
-    dispatch(setFilter({ searchString, tracks: filteredTracks }));
+    dispatch(setFilter({ searchString: value, tracks: filteredTracks }));
   };
 
   const handleClear = () => {
     setIsFiltering(false);
-    dispatch(setInitialTracks(tracksList));
     setSearchString("");
+    dispatch(setInitialTracks(tracksList));
     dispatch(setFilter({ searchString: "" })); // Сбрасываем все фильтры
     dispatch(setIsFilteringGenre(false));
     dispatch(setIsFilteringAuthor(false));

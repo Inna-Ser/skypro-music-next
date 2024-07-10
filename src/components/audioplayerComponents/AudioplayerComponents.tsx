@@ -1,24 +1,12 @@
 import classNames from "classnames";
 import styles from "./AudioplayerComponents.module.css";
-import { useAppSelector } from "@/hooks/store";
 import { useLikeTracks } from "@/hooks/likes";
 import { TrackItem } from "@/tipes";
 
-type Props = {
-  author: string;
-  name: string;
-  togglePlay: () => void;
-  togglePause: () => void;
-  playRepeatTrack: () => void;
-  isLoop: boolean;
-  isShuffle: boolean;
-  isActive: boolean;
-  playNextTrack: () => void;
+type PrevProps = {
   playPrevTrack: () => void;
-  toggleShuffle: () => void;
-  track: TrackItem;
 };
-export const Prev = ({ playPrevTrack }: Props) => {
+export const Prev = ({ playPrevTrack }: PrevProps) => {
   const handleClick = () => {
     playPrevTrack();
   };
@@ -31,7 +19,10 @@ export const Prev = ({ playPrevTrack }: Props) => {
   );
 };
 
-export const Play = ({ togglePlay }: Props) => {
+type PlayProps = {
+  togglePlay: () => void;
+};
+export const Play = ({ togglePlay }: PlayProps) => {
   const handleClick = () => {
     togglePlay();
   };
@@ -47,7 +38,10 @@ export const Play = ({ togglePlay }: Props) => {
   );
 };
 
-export const Pause = ({ togglePause }: Props) => {
+type PauseProps = {
+  togglePause: () => void;
+};
+export const Pause = ({ togglePause }: PauseProps) => {
   const handleClick = () => {
     togglePause();
   };
@@ -63,7 +57,10 @@ export const Pause = ({ togglePause }: Props) => {
   );
 };
 
-export const Next = ({ playNextTrack }: Props) => {
+type NextPrpops = {
+  playNextTrack: () => void;
+};
+export const Next = ({ playNextTrack }: NextPrpops) => {
   const handleClick = () => {
     playNextTrack();
   };
@@ -76,7 +73,11 @@ export const Next = ({ playNextTrack }: Props) => {
   );
 };
 
-export const Repeat = ({ playRepeatTrack, isLoop }: Props) => {
+type RepeatProps = {
+  playRepeatTrack: () => void;
+  isLoop: boolean;
+};
+export const Repeat = ({ playRepeatTrack, isLoop }: RepeatProps) => {
   return (
     <div
       className={classNames(styles.playerBtnRepeat, styles._btnIcon)}
@@ -95,7 +96,11 @@ export const Repeat = ({ playRepeatTrack, isLoop }: Props) => {
   );
 };
 
-export const Shuffle = ({ isActive, toggleShuffle }: Props) => {
+type ShuffleProps = {
+  isActive: boolean;
+  toggleShuffle: () => void;
+};
+export const Shuffle = ({ isActive, toggleShuffle }: ShuffleProps) => {
   return (
     <div
       className={classNames(styles.playerBtnShuffle, styles._btnIcon)}
@@ -124,7 +129,10 @@ export const TrackPlayImage = () => {
   );
 };
 
-export function TrackPlayAuthor({ name }: Props) {
+type AuthorProps = {
+  name: string;
+};
+export function TrackPlayAuthor({ name }: AuthorProps) {
   return (
     <div className={styles.trackPlayAuthor}>
       <div className={styles.trackPlayAuthorLink}>{name}</div>
@@ -132,7 +140,10 @@ export function TrackPlayAuthor({ name }: Props) {
   );
 }
 
-export function TrackPlayAlbum({ author }: Props) {
+type AlbumProps = {
+  author: string;
+};
+export function TrackPlayAlbum({ author }: AlbumProps) {
   return (
     <div className={styles.trackPlayAlbum}>
       <div className={styles.trackPlayAlbumLink}>{author}</div>
@@ -140,7 +151,10 @@ export function TrackPlayAlbum({ author }: Props) {
   );
 }
 
-export function TrackPlayLike({ track }: Props) {
+type LikeProps = {
+  track: TrackItem;
+};
+export function TrackPlayLike({ track }: LikeProps) {
   const { isLiked, handleLike } = useLikeTracks({ track });
   return (
     <div className={styles.trackPlayLikeDis}>

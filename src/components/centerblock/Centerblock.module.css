@@ -13,10 +13,7 @@
     -ms-flex-align: center;
     align-items: center;
     display: flex;
-
   }
-  
-  
   
   .centerblockContent {
     width: 100%;
@@ -51,6 +48,7 @@
       color: #d9b6ff;
     }
   }
+  
   .searchText {
     -webkit-box-flex: 100;
     -ms-flex-positive: 100;

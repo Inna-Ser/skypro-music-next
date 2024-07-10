@@ -8,13 +8,7 @@ import { getToken, getUser } from "@/store/slices/features/authSlice";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/hooks/store";
 
-type Props = {
-  params: {
-    email: string;
-    password: string;
-  };
-};
-export const LoginComponent = ({ params }: Props) => {
+export const LoginComponent = () => {
   const dispatch = useAppDispatch();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState<null | string>(null);
@@ -47,29 +41,7 @@ export const LoginComponent = ({ params }: Props) => {
       setIsSubmitting(false);
     }
   };
-  //     if (!email) {
-  //       setError("Не заполнено 'Почта'");
-  //       return;
-  //     }
-  //     if (!password) {
-  //       setError("Не заполнено 'Пароль'");
-  //       return;
-  //     }
-  //     signIn({ email, password })
-  //       .unwrap()
-  //       .then((response) => {
-  //         setUser(response);
-  //         navigate("/");
-  //       })
-  //       .catch((error) => {
-  //         throw new Error(error.message);
-  //       });
-  //   } catch (error) {
-  //     setError(error.message);
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
+  
   return (
     <div className={styles.login}>
       <div className={styles.loginBlock}>

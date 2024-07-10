@@ -1,7 +1,6 @@
-"use client"
+"use client";
 import { getCategoryTracks } from "@/api/Api";
 import { Centerblock } from "../centerblock/Centerblock";
-import { Filter } from "../filterItem/Filter";
 import { useAppDispatch, useAppSelector } from "@/hooks/store";
 import { useEffect } from "react";
 import { TrackItem } from "@/tipes";
@@ -20,7 +19,7 @@ export const CategoryComponent = ({ id }: { id: string }) => {
       .catch((error) => {
         new Error(error.message);
       });
-  }, [setInitialTracks, dispatch]);
+  }, [dispatch, id]);
 
   return (
     <div>
