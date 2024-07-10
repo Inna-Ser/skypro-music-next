@@ -6,10 +6,10 @@ import styles from "./Sidebar.module.css";
 export const Sidebar = () => {
   return (
     <div className={classNames(styles.mainSidebar, styles.sidebar)}>
-        <Personal />
+      <Personal />
       <div className={styles.sidebarBlock}>
         <div className={styles.sidebarList}>
-            <SidebarList />
+          <SidebarList />
         </div>
       </div>
     </div>

@@ -41,7 +41,7 @@ export const LoginComponent = () => {
       setIsSubmitting(false);
     }
   };
-  
+
   return (
     <div className={styles.login}>
       <div className={styles.loginBlock}>
@@ -81,7 +81,7 @@ export const LoginComponent = () => {
             Войти
           </button>
           <Link className={styles.loginLink} href="/signup">
-            Регистрироваться
+            Зарегистрироваться
           </Link>
         </>
       </div>

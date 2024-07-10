@@ -10,10 +10,10 @@ import { useEffect, useState } from "react";
 import { TrackItem } from "@/tipes";
 import { useAppDispatch, useAppSelector } from "@/hooks/store";
 
-type Props ={
+type Props = {
   filterPlaylist: TrackItem[];
-}
-export const PlayList = ({filterPlaylist}: Props) => {
+};
+export const PlayList = ({ filterPlaylist }: Props) => {
   const [addTodoError, setAddTodoError] = useState<string | null>(null);
   const trackList = useAppSelector((state) => state.tracks.trackList);
 

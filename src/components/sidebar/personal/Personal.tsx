@@ -13,10 +13,7 @@ export const Personal = () => {
   if (!userName) {
     return null;
   }
-  // const { user } = useContext(UserContext);
-  // if (!user) {
-  //   return <div>...loading</div>
-  // }
+
   return (
     <div className={styles.sidebarPersonal}>
       <p className={styles.sidebarPersonalName}>{userName}</p>

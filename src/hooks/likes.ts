@@ -1,11 +1,16 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "./store";
-import { getFavoriteTracks, setIsDisliked, setIsLiked } from "@/store/slices/features/trackSlice";
+import {
+  getFavoriteTracks,
+  setIsDisliked,
+  setIsLiked,
+} from "@/store/slices/features/trackSlice";
 import { addDisLike, addLike } from "@/api/Api";
 
 export const useInitializeLikedTracks = () => {
   const dispatch = useAppDispatch();
   const tokens = useAppSelector((state) => state.auth.tokens);
+
   useEffect(() => {
     if (tokens.access) {
       dispatch(getFavoriteTracks(tokens.access));
@@ -27,10 +32,10 @@ export const useLikeTracks = ({ track }: { track: any }) => {
     const action = isLiked ? addDisLike : addLike;
     try {
       await action(track.id, tokens.access);
-      isLiked? dispatch(setIsDisliked(track)): dispatch(setIsLiked(track));
+      isLiked ? dispatch(setIsDisliked(track)) : dispatch(setIsLiked(track));
     } catch (error) {
-        console.error(error);
+      console.error(error);
     }
   };
-  return {isLiked, handleLike};
+  return { isLiked, handleLike };
 };

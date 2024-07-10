@@ -17,7 +17,6 @@ export const RegisterComponent = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const dispatch = useAppDispatch();
   const navigate = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

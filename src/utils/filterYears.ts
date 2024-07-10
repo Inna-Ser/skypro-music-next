@@ -4,7 +4,4 @@ export const filterYears = [{
     {
         year: "First Old"
     },
-    {
-        year: "Random Order"
-    }
 ]

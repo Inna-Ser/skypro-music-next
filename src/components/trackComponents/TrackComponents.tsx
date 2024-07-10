@@ -8,8 +8,6 @@ import { useAppSelector } from "@/hooks/store";
 import { useLikeTracks } from "@/hooks/likes";
 
 export const TrackTitle = ({ id, name }: TrackItem) => {
-  const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
-  const isPlaying = useAppSelector((state) => state.tracks.isPlaying);
 
   return (
     <div className={styles.trackTitle}>

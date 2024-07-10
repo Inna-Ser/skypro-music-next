@@ -6,7 +6,11 @@ import Image from "next/image";
 import { menu } from "@/utils/menu";
 import Link from "next/link";
 import { useAppDispatch } from "@/hooks/store";
-import { setFilter, setIsFilteringAuthor, setIsFilteringGenre } from "@/store/slices/features/trackSlice";
+import {
+  setFilter,
+  setIsFilteringAuthor,
+  setIsFilteringGenre,
+} from "@/store/slices/features/trackSlice";
 
 type Props = {
   isActive: boolean;
@@ -36,11 +40,9 @@ export const MenuItem = ({ onClick, isActive, link, title }: Props) => {
 export const Menu = () => {
   const [curentPage, setCurentPage] = useState("");
   const dispatch = useAppDispatch();
-  
+
   const handleItemClick = (link: string) => {
-    dispatch(
-      setFilter({ searchString: "" })
-    ); // Сбрасываем все фильтры
+    dispatch(setFilter({ searchString: "" })); // Сбрасываем все фильтры
     dispatch(setIsFilteringGenre(false));
     dispatch(setIsFilteringAuthor(false));
     setCurentPage(link);
@@ -58,10 +60,7 @@ export const Menu = () => {
             onClick={handleItemClick}
           />
         ))}
-        <button
-          className={styles.menuButtonChangeTheme}
-          // onClick={handleClick}
-        >
+        <button className={styles.menuButtonChangeTheme}>
           <Image
             src={"/img/icon/dark.svg"}
             alt="cheng_theme"

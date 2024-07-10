@@ -74,7 +74,9 @@ const FilterYear = ({ closeDropdown, memoize, tracksList }: Props) => {
       (year: string) => {
         dispatch(setIsSortByYears(true));
         const filteredTracks = tracksList.filter((track) => {
-          const trackYear = new Date(track.release_date).getFullYear().toString();
+          const trackYear = new Date(track.release_date)
+            .getFullYear()
+            .toString();
           return year === "по умолчанию" || trackYear === year;
         });
         dispatch(
@@ -94,8 +96,17 @@ const FilterYear = ({ closeDropdown, memoize, tracksList }: Props) => {
     )
   );
 
+  const toggleReset = () => {
+    dispatch(setFilter({ order: [], tracks: tracksList })); // Сбрасываем фильтр по автору
+    dispatch(setIsSortByYears(false));
+    closeDropdown();
+  };
+
   return (
     <ul className={styles.filterListContaner}>
+      <p className={styles.resetAuthor} onClick={toggleReset}>
+        Filter reset
+      </p>
       {filterYears.map((filterYear, index) => (
         <li
           className={styles.filterListItem}

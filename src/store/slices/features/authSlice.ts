@@ -1,5 +1,5 @@
 import { fetchTokens, fetchUser } from "@/api/user";
-import { SigninFormType, TrackItem, User } from "@/tipes";
+import { SigninFormType, User } from "@/tipes";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const getUser = createAsyncThunk(

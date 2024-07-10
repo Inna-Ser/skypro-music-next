@@ -8,9 +8,8 @@ import {
 import "react-loading-skeleton/dist/skeleton.css";
 import classNames from "classnames";
 import styles from "./Track.module.css";
-import 'react-loading-skeleton/dist/skeleton.css';
+import "react-loading-skeleton/dist/skeleton.css";
 import { TrackItem } from "@/tipes";
-
 
 type Props = {
   isLoading: boolean;
@@ -54,7 +53,7 @@ export const Track = ({
         {isLoading ? (
           <Skeleton width={"320px"} height={"20px"} baseColor="grey" />
         ) : (
-          <TrackTime duration_in_seconds={time} track={track}/>
+          <TrackTime duration_in_seconds={time} track={track} />
         )}
       </div>
     </div>
