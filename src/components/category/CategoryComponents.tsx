@@ -7,7 +7,6 @@ import { TrackItem } from "@/tipes";
 import { setInitialTracks } from "@/store/slices/features/trackSlice";
 
 export const CategoryComponent = ({ id }: { id: string }) => {
-  // здесь прокидывать пропс или создавать в редуксе новое состояние?
   const filterPlaylist = useAppSelector((state) => state.tracks.filterPlaylist);
   const dispatch = useAppDispatch();
 
