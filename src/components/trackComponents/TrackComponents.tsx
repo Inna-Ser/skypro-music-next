@@ -36,8 +36,17 @@ type Props = {
   duration_in_seconds: number;
   track: TrackItem;
 };
+
+const formatTime = (seconds: number) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+};
+
 export const TrackTime = ({ duration_in_seconds, track }: Props) => {
   const { isLiked, handleLike } = useLikeTracks({ track });
+  const formattedTime = formatTime(duration_in_seconds);
+
   return (
     <div className={styles.trackTime}>
       <svg className={styles.trackLikeSvg} onClick={handleLike}>
@@ -47,7 +56,7 @@ export const TrackTime = ({ duration_in_seconds, track }: Props) => {
           <use xlinkHref="/img/icon/sprite.svg#icon-dislike" />
         )}
       </svg>
-      <span className={styles.trackTimeText}>{duration_in_seconds}</span>
+      <span className={styles.trackTimeText}>{formattedTime}</span>
     </div>
   );
 };

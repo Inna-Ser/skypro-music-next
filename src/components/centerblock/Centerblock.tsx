@@ -12,6 +12,7 @@ import {
 } from "@/store/slices/features/trackSlice";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/store";
+import { FavoriteComponent } from "../favoriteComponent/FavoriteComponent";
 
 type Props = {
   filterPlaylist: TrackItem[];
@@ -42,6 +43,7 @@ export const Search = () => {
   const dispatch = useAppDispatch();
   const [searchString, setSearchString] = useState<string>("");
   const tracksList = useAppSelector((state) => state.tracks.initialTracks); // Извлекаем массив треков из состояния
+  const likedTracks = useAppSelector((state) => state.tracks.likedTracks); // Извлекаем массив треков из состояния
   const [isFiltering, setIsFiltering] = useState<boolean>(false);
   const search = useAppSelector(
     (state) => state.tracks.filterOptions.searchString
@@ -51,9 +53,17 @@ export const Search = () => {
     const value = event.target.value.trim();
     setSearchString(value);
     setIsFiltering(true);
-    const filteredTracks = tracksList.filter((track) =>
-      track.name.toLowerCase().includes(value.toLowerCase())
-    );
+
+    let filteredTracks;
+    if (!FavoriteComponent) {
+      const filteredTracks = tracksList.filter((track) =>
+        track.name.toLowerCase().includes(value.toLowerCase())
+      );
+    } else  {
+      const filteredTracks = likedTracks.filter((track) =>
+        track.name.toLowerCase().includes(value.toLowerCase())
+      );
+    }
     dispatch(setFilter({ searchString: value, tracks: filteredTracks }));
   };
 
