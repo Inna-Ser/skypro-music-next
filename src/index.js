@@ -1,3 +1,3 @@
-const hello = require('./modules/hello-module')
+const hello = require('./moduls/hello-module')
 
 hello();

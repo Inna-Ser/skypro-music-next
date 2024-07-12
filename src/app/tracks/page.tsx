@@ -18,12 +18,13 @@ const MainTracsPage = () => {
       .catch((error) => {
         new Error(error.message);
       });
-  }, [dispatch]);
+  }, [setInitialTracks, dispatch]);
   return (
-    <div className="headerTrack">
-      <h2 className="centerblockH2">Треки</h2>
-      <Centerblock filterPlaylist={filterPlaylist} />
-    </div>
+      <div className="headerTrack">
+        {/* <Search /> */}
+        <h2 className="centerblockH2">Треки</h2>
+        <Centerblock filterPlaylist={filterPlaylist} />
+      </div>
   );
 };
 

@@ -59,7 +59,7 @@ export const Search = () => {
       const filteredTracks = tracksList.filter((track) =>
         track.name.toLowerCase().includes(value.toLowerCase())
       );
-    } else  {
+    } else {
       const filteredTracks = likedTracks.filter((track) =>
         track.name.toLowerCase().includes(value.toLowerCase())
       );
