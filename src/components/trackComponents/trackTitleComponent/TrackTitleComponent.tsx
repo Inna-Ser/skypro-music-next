@@ -2,7 +2,7 @@
 import { TrackItem } from "@/tipes";
 import styles from "./TrackTitleComponent.module.css";
 import classNames from "classnames";
-import { useAppSelector } from "@/store/store";
+import { useAppSelector } from "@/hooks/store";
 
 export const TrackTitleImg = ({ id }: TrackItem) => {
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
@@ -10,7 +10,7 @@ export const TrackTitleImg = ({ id }: TrackItem) => {
 
   return (
     <div className={styles.trackTitleImage}>
-      {currentTrack?.id === id? (
+      {currentTrack?.id === id ? (
         <div
           className={classNames(styles.currentMarker, {
             [styles.active]: isPlaying,
@@ -18,7 +18,7 @@ export const TrackTitleImg = ({ id }: TrackItem) => {
         ></div>
       ) : (
         <svg className={styles.trackTitleSvg}>
-          <use xlinkHref={"img/icon/sprite.svg#icon-note-dark"}></use>
+          <use xlinkHref={"/img/icon/sprite.svg#icon-note-dark"}></use>
         </svg>
       )}
     </div>

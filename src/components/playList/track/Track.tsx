@@ -8,8 +8,8 @@ import {
 import "react-loading-skeleton/dist/skeleton.css";
 import classNames from "classnames";
 import styles from "./Track.module.css";
-import 'react-loading-skeleton/dist/skeleton.css';
-
+import "react-loading-skeleton/dist/skeleton.css";
+import { TrackItem } from "@/tipes";
 
 type Props = {
   isLoading: boolean;
@@ -19,6 +19,7 @@ type Props = {
   genre: string;
   time: number;
   id: number;
+  track: TrackItem;
   setCurrentTrack: () => void;
 };
 export const Track = ({
@@ -28,6 +29,7 @@ export const Track = ({
   album,
   time,
   id,
+  track,
   setCurrentTrack,
 }: Props) => {
   return (
@@ -51,7 +53,7 @@ export const Track = ({
         {isLoading ? (
           <Skeleton width={"320px"} height={"20px"} baseColor="grey" />
         ) : (
-          <TrackTime duration_in_seconds={time} />
+          <TrackTime duration_in_seconds={time} track={track} />
         )}
       </div>
     </div>

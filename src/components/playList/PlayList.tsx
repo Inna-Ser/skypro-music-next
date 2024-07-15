@@ -2,16 +2,19 @@
 import classNames from "classnames";
 import { Track } from "./track/Track";
 import styles from "./PlayList.module.css";
-import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
   setCurrentTrack,
   setPlayList,
 } from "@/store/slices/features/trackSlice";
 import { useEffect, useState } from "react";
+import { TrackItem } from "@/tipes";
+import { useAppDispatch, useAppSelector } from "@/hooks/store";
 
-export const PlayList: React.FC = () => {
+type Props = {
+  filterPlaylist: TrackItem[];
+};
+export const PlayList = ({ filterPlaylist }: Props) => {
   const [addTodoError, setAddTodoError] = useState<string | null>(null);
-  const filteredTracks = useAppSelector((state) => state.tracks.filterPlaylist);
   const trackList = useAppSelector((state) => state.tracks.trackList);
 
   const dispatch = useAppDispatch();
@@ -23,7 +26,7 @@ export const PlayList: React.FC = () => {
   return (
     <div className={classNames(styles.contentPlaylist, styles.playlist)}>
       <p style={{ color: "purple" }}>{addTodoError}</p>
-      {filteredTracks.map((track) => (
+      {filterPlaylist.map((track) => (
         <Track
           key={track.id}
           id={track.id}
@@ -31,6 +34,7 @@ export const PlayList: React.FC = () => {
           author={track.author}
           album={track.album}
           time={track.duration_in_seconds}
+          track={track}
           setCurrentTrack={() => dispatch(setCurrentTrack(track))}
         />
       ))}

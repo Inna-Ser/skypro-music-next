@@ -1,6 +1,15 @@
+import { fetchFavoriteTracks } from "@/api/Api";
 import { TrackItem } from "@/tipes";
 import { playShuffleTrack } from "@/utils/helper";
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
+export const getFavoriteTracks = createAsyncThunk(
+  "tracks/getFavoriteTracks",
+  async (access: string) => {
+    const favoriteTracks = await fetchFavoriteTracks(access);
+    return favoriteTracks;
+  }
+);
 
 type TracksStateType = {
   currentTrack: TrackItem | null;
@@ -17,7 +26,7 @@ type TracksStateType = {
   filterOptions: {
     author: string[];
     genre: string[];
-    order: "First New" | "First Old" | "по умолчанию";
+    order: "First New" | "First Old";
     searchString: string;
     tracks?: TrackItem[];
   };
@@ -27,6 +36,7 @@ type TracksStateType = {
   isSortedTracks: boolean;
   filterPlaylistByAuthor: TrackItem[];
   filterPlaylistByGenre: TrackItem[];
+  filterPlaylistByYear: TrackItem[];
 };
 
 const initialState: TracksStateType = {
@@ -44,7 +54,7 @@ const initialState: TracksStateType = {
   filterOptions: {
     author: [],
     genre: [],
-    order: "по умолчанию",
+    order: "",
     searchString: "",
     tracks: [],
   },
@@ -54,6 +64,7 @@ const initialState: TracksStateType = {
   isSortedTracks: false,
   filterPlaylistByAuthor: [],
   filterPlaylistByGenre: [],
+  filterPlaylistByYear: [],
 };
 const tracksSlice = createSlice({
   name: "tracks",
@@ -127,9 +138,9 @@ const tracksSlice = createSlice({
       action: PayloadAction<{
         author?: string[];
         genre?: string[];
-        order?: "First New" | "First Old" | "по умолчанию"; // Уточнение типов
+        order?: "First New" | "First Old"; // Уточнение типов
         searchString?: string;
-        tracks: TrackItem[];
+        tracks?: TrackItem[];
       }>
     ) => {
       state.filterOptions = {
@@ -141,7 +152,7 @@ const tracksSlice = createSlice({
           action.payload.searchString !== undefined
             ? action.payload.searchString.toLowerCase()
             : state.filterOptions.searchString.toLowerCase(),
-        tracks: action.payload.tracks,
+        tracks: action.payload.tracks || state.filterOptions.tracks,
       };
 
       // Фильтрация треков
@@ -170,23 +181,6 @@ const tracksSlice = createSlice({
             return hasSearchString && hasAuthor;
           });
 
-          // Sort by years based on selected order
-          if (state.isSortedTracks) {
-            filteredTracks.sort((a, b) => {
-              if (state.filterOptions.order === "First New") {
-                return (
-                  new Date(b.release_date).getTime() -
-                  new Date(a.release_date).getTime()
-                );
-              } else if (state.filterOptions.order === "First Old") {
-                return (
-                  new Date(a.release_date).getTime() -
-                  new Date(b.release_date).getTime()
-                );
-              }
-              return 0;
-            });
-          }
           state.filterPlaylistByAuthor = filteredTracks;
         }
 
@@ -203,29 +197,48 @@ const tracksSlice = createSlice({
             return hasSearchString && hasGenre;
           });
 
-          // Sort by years based on selected order
-          if (state.isSortedTracks) {
-            filteredTracks.sort((a, b) => {
-              if (state.filterOptions.order === "First New") {
-                return (
-                  new Date(b.release_date).getTime() -
-                  new Date(a.release_date).getTime()
-                );
-              } else if (state.filterOptions.order === "First Old") {
-                return (
-                  new Date(a.release_date).getTime() -
-                  new Date(b.release_date).getTime()
-                );
-              }
-              return 0;
-            });
-          }
           state.filterPlaylistByGenre = filteredTracks;
         }
-
+        // Filter by year
+        if (state.isSortedTracks) {
+          filteredTracks = [...filteredTracks].sort((a, b) => {
+            if (state.filterOptions.order === "First New") {
+              return (
+                new Date(b.release_date).getTime() -
+                new Date(a.release_date).getTime()
+              );
+            } else if (state.filterOptions.order === "First Old") {
+              return (
+                new Date(a.release_date).getTime() -
+                new Date(b.release_date).getTime()
+              );
+            }
+            return 0;
+          });
+          state.filterPlaylistByYear = filteredTracks;
+        }
         state.filterPlaylist = filteredTracks;
       }
     },
+    setIsLiked: (state, action: PayloadAction<TrackItem>) => {
+      state.likedTracks.push(action.payload);
+    },
+
+    setIsDisliked: (state, action: PayloadAction<TrackItem>) => {
+      state.likedTracks = state.likedTracks.filter(
+        (elem) => elem.id !== action.payload.id
+      );
+      state.isLiked = false;
+    },
+  },
+
+  extraReducers(builder) {
+    builder.addCase(
+      getFavoriteTracks.fulfilled,
+      (state, action: PayloadAction<TrackItem[]>) => {
+        state.likedTracks = action.payload;
+      }
+    );
   },
 });
 
@@ -241,6 +254,8 @@ export const {
   setIsFilteringAuthor,
   setIsFilteringGenre,
   setIsSortByYears,
+  setIsLiked,
+  setIsDisliked,
 } = tracksSlice.actions;
 
 export const tracksReducer = tracksSlice.reducer;

@@ -180,14 +180,16 @@
     -ms-flex-align: center;
     align-items: center;
     margin-left: 30px;
+    &:hover {
+      stroke: #ACACAC
+    }
   }
   
-  .trackPlayLike,
-  .trackPlayDislike {
+  .trackPlayLike {
     padding: 5px;
     cursor: pointer;
   }
-  
+
   .trackPlayLikeSvg {
     width: 14px;
     height: 12px;
@@ -197,21 +199,11 @@
       stroke: #ACACAC;
     }
   }
-  
-  .trackPlayDislike {
-    margin-left: 28.5px;
-  }
-  
-  .trackPlayDislikeSvg {
-    width: 14.34px;
-    height: 13px;
-    fill: transparent;
-    stroke: #696969;
-    &:hover {
-      stroke: #ACACAC;
-    }
-  }
 
+  .trackPlayLikeSvg:hover {
+    stroke: #ACACAC; 
+  }
+  
   .light {
     margin-right: 30px;
     color: black;

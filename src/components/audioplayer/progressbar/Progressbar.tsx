@@ -33,7 +33,7 @@ export function ProgressBar({ audioRef }: Props) {
       audioRef.current.addEventListener("loadedmetadata", loadedMetadata);
       return () => {
         audioRef.current?.removeEventListener("timeupdate", updateTime);
-        audioRef.current?.addEventListener("loadedmetadata", loadedMetadata);
+        audioRef.current?.removeEventListener("loadedmetadata", loadedMetadata);
       };
     }
   }, [audioRef]);
@@ -54,7 +54,7 @@ export function ProgressBar({ audioRef }: Props) {
       ref={progressbarRef}
       type="range"
       min={0}
-      max={isNaN(duration) ? undefined : duration}
+      max={isNaN(duration) ? 0 : duration}
       value={currentTime}
       step={0.01}
       onChange={changeTiming}

@@ -9,19 +9,20 @@ import {
   TrackPlayAlbum,
   TrackPlayAuthor,
   TrackPlayImage,
+  TrackPlayLike,
 } from "@/components/audioplayerComponents/AudioplayerComponents";
 import { VolumeBlock } from "./volumeBlock/VolumeBlock";
 import { TrackTime } from "./trackTime/TrackTime";
 import styles from "./Audioplayer.module.css";
 import { useEffect, useRef, useState } from "react";
 import { ProgressBar } from "./progressbar/Progressbar";
-import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
   setIsPlaying,
   setIsShuffle,
   setNext,
   setPrev,
 } from "@/store/slices/features/trackSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/store";
 
 export const Audioplayer = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -106,6 +107,10 @@ export const Audioplayer = () => {
     }
   }, [audioRef, currentVolume]);
 
+  if (!currentTrack) {
+    return null;
+  }
+
   return (
     <>
       <audio
@@ -147,15 +152,13 @@ export const Audioplayer = () => {
                 <TrackPlayAlbum
                   author={currentTrack ? currentTrack.author : "Unknown"}
                 />
-                {/* <TrackPlayLike
-                  toggleLike={toggleLike}
-                  toggleDislike={"none"}
-                /> */}
+                <TrackPlayLike track={currentTrack} />
               </div>
             </div>
             <VolumeBlock
               setCurrentVolume={setCurrentVolume}
               currentVolume={currentVolume}
+              audioRef={audioRef}
             />
           </div>
         </div>

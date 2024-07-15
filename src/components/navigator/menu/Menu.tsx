@@ -5,21 +5,33 @@ import classNames from "classnames";
 import Image from "next/image";
 import { menu } from "@/utils/menu";
 import Link from "next/link";
+import { useAppDispatch } from "@/hooks/store";
+import {
+  setFilter,
+  setIsFilteringAuthor,
+  setIsFilteringGenre,
+} from "@/store/slices/features/trackSlice";
 
 type Props = {
-  isActive: boolean, link: string, title: string 
+  isActive: boolean;
+  link: string;
+  title: string;
+  onClick: (link: string) => void;
 };
-const MenuItem = (props: Props) => {
+export const MenuItem = ({ onClick, isActive, link, title }: Props) => {
+  const handleClick = () => {
+    onClick(link);
+  };
   return (
     <li className={styles.menuListItem}>
       <Link
         className={classNames(styles.menuLink, {
-          [styles.active]: props.isActive,
+          [styles.active]: isActive,
         })}
-        href={props.link}
-        // exact
+        href={link}
+        onClick={handleClick}
       >
-        {props.title}
+        {title}
       </Link>
     </li>
   );
@@ -27,6 +39,15 @@ const MenuItem = (props: Props) => {
 
 export const Menu = () => {
   const [curentPage, setCurentPage] = useState("");
+  const dispatch = useAppDispatch();
+
+  const handleItemClick = (link: string) => {
+    dispatch(setFilter({ searchString: "" })); // Сбрасываем все фильтры
+    dispatch(setIsFilteringGenre(false));
+    dispatch(setIsFilteringAuthor(false));
+    setCurentPage(link);
+  };
+
   return (
     <div className={styles.navigatorMenu}>
       <ul className={styles.menuList}>
@@ -36,12 +57,10 @@ export const Menu = () => {
             link={item.link}
             title={item.title}
             isActive={curentPage === item.link}
+            onClick={handleItemClick}
           />
         ))}
-        <button
-          className={styles.menuButtonChangeTheme}
-          // onClick={handleClick}
-        >
+        <button className={styles.menuButtonChangeTheme}>
           <Image
             src={"/img/icon/dark.svg"}
             alt="cheng_theme"

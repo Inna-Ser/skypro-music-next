@@ -13,16 +13,6 @@
     -ms-flex-align: center;
     align-items: center;
     display: flex;
-
-  }
-  
-  .centerblockH2 {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 64px;
-    line-height: 72px;
-    letter-spacing: -0.8px;
-    margin-bottom: 45px;
   }
   
   .centerblockContent {
@@ -58,6 +48,7 @@
       color: #d9b6ff;
     }
   }
+  
   .searchText {
     -webkit-box-flex: 100;
     -ms-flex-positive: 100;
