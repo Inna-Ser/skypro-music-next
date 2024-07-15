@@ -13,6 +13,7 @@ import {
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/store";
 import { FavoriteComponent } from "../favoriteComponent/FavoriteComponent";
+import { usePathname } from "next/navigation";
 
 type Props = {
   filterPlaylist: TrackItem[];
@@ -40,6 +41,7 @@ export const ContentTitle = () => {
 };
 
 export const Search = () => {
+  const path = usePathname();
   const dispatch = useAppDispatch();
   const [searchString, setSearchString] = useState<string>("");
   const tracksList = useAppSelector((state) => state.tracks.initialTracks); // Извлекаем массив треков из состояния
@@ -55,12 +57,12 @@ export const Search = () => {
     setIsFiltering(true);
 
     let filteredTracks;
-    if (!FavoriteComponent) {
-      const filteredTracks = tracksList.filter((track) =>
+    if (path === "/tracks") {
+      filteredTracks = tracksList.filter((track) =>
         track.name.toLowerCase().includes(value.toLowerCase())
       );
     } else {
-      const filteredTracks = likedTracks.filter((track) =>
+      filteredTracks = likedTracks.filter((track) =>
         track.name.toLowerCase().includes(value.toLowerCase())
       );
     }
